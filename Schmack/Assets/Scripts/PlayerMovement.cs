@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     void Gravity()
     {
         int layerMask = ~(1 << 8); //excludes the player layer from raycasts
-        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 0.6f, layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 0.5f, layerMask);
         if (hit.collider != null)
         {
             acceleration.y = 0;
@@ -71,13 +71,13 @@ public class PlayerMovement : MonoBehaviour
     void WallStick()
     {
         int layerMask = ~(1 << 8); //excludes the player from raycasts
-        RaycastHit2D leftHit = Physics2D.Raycast(position, Vector2.left, 0.6f, layerMask);
-        RaycastHit2D rightHit = Physics2D.Raycast(position, Vector2.right, 0.6f, layerMask);
+        RaycastHit2D leftHit = Physics2D.Raycast(position, Vector2.left, 0.5f, layerMask);
+        RaycastHit2D rightHit = Physics2D.Raycast(position, Vector2.right, 0.5f, layerMask);
         if(leftHit.collider != null)
         {
             if(acceleration.y > 0)
             {
-                acceleration.y /= 1.2f;
+                acceleration.y /= 1.3f;
             }
             isJumping = false;
             isSticking = true;
@@ -85,13 +85,12 @@ public class PlayerMovement : MonoBehaviour
             AddForce(0, downwardForce);
             position.x = leftHit.collider.transform.position.x + 
                 leftHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 + 
-                gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2 + 
-                0.2f;
+                gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2;
         }
         else if(rightHit.collider != null){
             if (acceleration.y > 0)
             {
-                acceleration.y /= 1.2f;
+                acceleration.y /= 1.3f;
             }
             isJumping = false;
             isSticking = true;
@@ -99,8 +98,7 @@ public class PlayerMovement : MonoBehaviour
             AddForce(0, downwardForce);
             position.x = rightHit.collider.transform.position.x -
                 rightHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 -
-                gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2 - 
-                0.2f;
+                gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2;
         }
         else
         {
