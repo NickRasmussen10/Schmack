@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    const float GRAVITY = 1.0f;
+
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration;
     [SerializeField] float mass;
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
+    [SerializeField] float stickiness; //between 0 and 1
     bool isJumping = false;
+    bool isSticking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,13 +29,14 @@ public class PlayerMovement : MonoBehaviour
     {
         velocity = Vector2.zero;
         Gravity();
+        WallStick();
 
         float h = Input.GetAxis("Horizontal");
         velocity.x = h * speed;
-        Debug.Log(velocity);
 
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
+            acceleration.y = 0; //cancel out any previous forces
             AddForce(0, jumpForce);
             isJumping = true;
         }
@@ -52,13 +57,54 @@ public class PlayerMovement : MonoBehaviour
         {
             acceleration.y = 0;
             isJumping = false;
+            isSticking = false;
             position.y = hit.collider.transform.position.y +
                 hit.collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 +
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2;
         }
+        else if(!isSticking)
+        {
+            acceleration.y -= GRAVITY;
+        }
+    }
+
+    void WallStick()
+    {
+        int layerMask = ~(1 << 8); //excludes the player from raycasts
+        RaycastHit2D leftHit = Physics2D.Raycast(position, Vector2.left, 0.6f, layerMask);
+        RaycastHit2D rightHit = Physics2D.Raycast(position, Vector2.right, 0.6f, layerMask);
+        if(leftHit.collider != null)
+        {
+            if(acceleration.y > 0)
+            {
+                acceleration.y /= 1.2f;
+            }
+            isJumping = false;
+            isSticking = true;
+            float downwardForce = -GRAVITY + stickiness;
+            AddForce(0, downwardForce);
+            position.x = leftHit.collider.transform.position.x + 
+                leftHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 + 
+                gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2 + 
+                0.2f;
+        }
+        else if(rightHit.collider != null){
+            if (acceleration.y > 0)
+            {
+                acceleration.y /= 1.2f;
+            }
+            isJumping = false;
+            isSticking = true;
+            float downwardForce = -GRAVITY + stickiness;
+            AddForce(0, downwardForce);
+            position.x = rightHit.collider.transform.position.x -
+                rightHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 -
+                gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2 - 
+                0.2f;
+        }
         else
         {
-            acceleration.y--;
+            isSticking = false;
         }
     }
 
