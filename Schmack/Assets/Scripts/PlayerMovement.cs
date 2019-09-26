@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private Vector2 position;
     private Vector2 velocity;
@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] float mass;
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
-
     bool isJumping = false;
 
     // Start is called before the first frame update
@@ -47,13 +46,14 @@ public class Player : MonoBehaviour
     /// </summary>
     void Gravity()
     {
-        int layerMask = ~(1 << 8);
+        int layerMask = ~(1 << 8); //excludes the player layer from raycasts
         RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down, 0.6f, layerMask);
-        if (hit.collider != null){
+        if (hit.collider != null)
+        {
             acceleration.y = 0;
             isJumping = false;
-            position.y = hit.collider.transform.position.y + 
-                hit.collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 + 
+            position.y = hit.collider.transform.position.y +
+                hit.collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 +
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2;
         }
         else
