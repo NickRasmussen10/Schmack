@@ -13,8 +13,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
     [SerializeField] float stickiness; //between 0 and 1
+    [SerializeField] float coefFriction;
     bool isJumping = false;
     bool isSticking = false;
+    bool isInAir = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +32,9 @@ public class PlayerMovement : MonoBehaviour
         velocity = Vector2.zero;
         Gravity();
         WallStick();
+        AddFriction();
 
-        float h = Input.GetAxis("Horizontal");
+        float h = Input.GetAxis("LeftHorizontal");
         velocity.x = h * speed;
 
         if (Input.GetButtonDown("Jump") && !isJumping)
@@ -58,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
             acceleration.y = 0;
             isJumping = false;
             isSticking = false;
+            isInAir = false;
             position.y = hit.collider.transform.position.y +
                 hit.collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 +
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2;
@@ -65,6 +69,11 @@ public class PlayerMovement : MonoBehaviour
         else if(!isSticking)
         {
             acceleration.y -= GRAVITY;
+            isInAir = true;
+        }
+        else
+        {
+            isInAir = true;
         }
     }
 
@@ -81,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
             }
             isJumping = false;
             isSticking = true;
-            float downwardForce = -GRAVITY + stickiness;
+            float downwardForce = -GRAVITY * stickiness;
             AddForce(0, downwardForce);
             position.x = leftHit.collider.transform.position.x + 
                 leftHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 + 
@@ -104,6 +113,22 @@ public class PlayerMovement : MonoBehaviour
         {
             isSticking = false;
         }
+    }
+
+    void AddFriction()
+    {
+        Debug.Log(isInAir);
+        Debug.Log(Mathf.Abs(velocity.x));
+        if (!isInAir && Mathf.Abs(acceleration.x) > 0)
+        {
+            AddForce(-acceleration.x * coefFriction, 0);
+            Debug.Log(velocity);
+        }
+    }
+
+    public void AddBowKnockback(Vector2 direction, float force)
+    {
+        AddForce(direction * force);
     }
 
     void AddForce(Vector2 force)

@@ -4,18 +4,35 @@ using UnityEngine;
 
 public class BowFiring : MonoBehaviour
 {
-    Vector2 direction;
+    PlayerMovement playerMovement;
+    Vector3 direction;
+    [SerializeField] float knockback;
+    float powerInput;
+    bool isDrawnBack = false;
     // Start is called before the first frame update
     void Start()
     {
-        direction = Vector2.zero;
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
+        direction = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
-        direction.x = Input.GetAxis("Horizontal2");
-        direction.y = Input.GetAxis("Vertical2");
-        Debug.Log(direction);
+        direction.x = Input.GetAxis("RightHorizontal");
+        direction.y = Input.GetAxis("RightVertical");
+
+        powerInput = Input.GetAxis("Fire1");
+        if(powerInput > 0.01f)
+        {
+            isDrawnBack = true;
+        }
+        else if(powerInput < 0.01f && isDrawnBack)
+        {
+            isDrawnBack = false;
+            playerMovement.AddBowKnockback(-direction, knockback);
+        }
+
+        Debug.DrawLine(transform.position, transform.position + (direction * 5f));
     }
 }
