@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BowFiring : MonoBehaviour
 {
-    PlayerMovement playerMovement;
-    Vector3 direction;
-    [SerializeField] float knockback;
-    float powerInput;
+    PlayerMovement playerMovement;  //PlayerMovement script applied to the same GameObject as this script
+    Vector3 direction;  //unit vector, where the bow is pointing
+    [SerializeField] float knockback;   //the amount of force applied to the player when they fire the bow
+    float powerInput;   //keeps track of whether or not the bow's trigger button has been pressed
+
     bool isDrawnBack = false;
     // Start is called before the first frame update
     void Start()
@@ -19,18 +20,23 @@ public class BowFiring : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //store the right joystick input in direction vector
         direction.x = Input.GetAxis("RightHorizontal");
         direction.y = Input.GetAxis("RightVertical");
 
+        //store the trigger input in powerInput
         powerInput = Input.GetAxis("Fire1");
-        if(powerInput > 0.01f)
+
+        //give the bow a small deadzone
+        if(powerInput > 0.1f)
         {
             isDrawnBack = true;
         }
-        else if(powerInput < 0.01f && isDrawnBack)
+        //if bow has been released from previous draw
+        else if(powerInput < 0.1f && isDrawnBack)
         {
             isDrawnBack = false;
-            playerMovement.AddBowKnockback(-direction, knockback);
+            playerMovement.AddBowKnockback(direction, knockback);
         }
 
         Debug.DrawLine(transform.position, transform.position + (direction * 5f));
