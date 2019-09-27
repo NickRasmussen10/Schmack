@@ -29,10 +29,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        velocity = Vector2.zero;
         Gravity();
-        WallStick();
-        AddFriction();
+
+        velocity = Vector2.zero;
 
         float h = Input.GetAxis("LeftHorizontal");
         velocity.x = h * speed;
@@ -43,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
             AddForce(0, jumpForce);
             isJumping = true;
         }
+        Debug.Log(acceleration);
+
+        AddFriction();
+        WallStick();
 
         velocity += acceleration * Time.deltaTime;
         position += velocity;
@@ -79,9 +82,9 @@ public class PlayerMovement : MonoBehaviour
 
     void WallStick()
     {
-        int layerMask = ~(1 << 8); //excludes the player from raycasts
-        RaycastHit2D leftHit = Physics2D.Raycast(position, Vector2.left, 0.5f, layerMask);
-        RaycastHit2D rightHit = Physics2D.Raycast(position, Vector2.right, 0.5f, layerMask);
+        LayerMask layerMask = LayerMask.GetMask("environment");
+        RaycastHit2D leftHit = CreateDynamicRaycast(Vector2.left, layerMask);
+        RaycastHit2D rightHit = CreateDynamicRaycast(Vector2.right, layerMask);
         if(leftHit.collider != null)
         {
             if(acceleration.y > 0)
@@ -117,12 +120,9 @@ public class PlayerMovement : MonoBehaviour
 
     void AddFriction()
     {
-        Debug.Log(isInAir);
-        Debug.Log(Mathf.Abs(velocity.x));
         if (!isInAir && Mathf.Abs(acceleration.x) > 0)
         {
             AddForce(-acceleration.x * coefFriction, 0);
-            Debug.Log(velocity);
         }
     }
 
@@ -139,5 +139,11 @@ public class PlayerMovement : MonoBehaviour
     {
         acceleration.x += x / mass;
         acceleration.y += y / mass;
+    }
+
+    RaycastHit2D CreateDynamicRaycast(Vector2 direction, LayerMask layerMask)
+    {
+        float distance = Mathf.Clamp(velocity.x * 2.5f, 0.5f, 2.0f);
+        return Physics2D.Raycast(position, direction, distance, layerMask);
     }
 }
