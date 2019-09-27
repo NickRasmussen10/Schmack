@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1133750561502110637}
   - component: {fileID: 1133750561502110636}
   - component: {fileID: 1133750561502110635}
+  - component: {fileID: 1005264958}
   - component: {fileID: 1005264954}
   m_Layer: 8
   m_Name: Player
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1133750561502110639}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.23, y: 0.87, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75957483, y: 0.75957483, z: 0.75957483}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -107,6 +108,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1005264958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133750561502110639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc94a2e90e5dfa748ac802c547f89537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockback: 40
 --- !u!114 &1005264954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,4 +136,5 @@ MonoBehaviour:
   mass: 1
   speed: 0.2
   jumpForce: 20
-  stickiness: 0.9
+  stickiness: 0.2
+  coefFriction: 0.2

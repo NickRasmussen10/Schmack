@@ -17,6 +17,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float stickiness; //between 0 and 1, lower = stickier, determines how much wall sticking slows the player's descent
     [SerializeField] float coefFriction;    //determines how much friction effects the player
 
+    //raycasting
+    LayerMask layerMask;
+    RaycastHit2D leftHit;
+    RaycastHit2D rightHit;
+    RaycastHit2D downHit;
+
     //flags
     bool isJumping = false;
     bool isSticking = false;
@@ -28,6 +34,8 @@ public class PlayerMovement : MonoBehaviour
         position = transform.position;
         velocity = Vector2.zero;
         acceleration = Vector2.zero;
+
+        layerMask = LayerMask.GetMask("environment");
     }
 
     // Update is called once per frame
@@ -36,14 +44,21 @@ public class PlayerMovement : MonoBehaviour
         //reset velocity
         velocity = Vector2.zero;
 
+        CastRays();
+
         //environmental forces
         Gravity();
         AddFriction();
-        WallStick();
 
         //player controls
         float h = Input.GetAxis("LeftHorizontal");
         velocity.x = h * speed;
+        int wallStick = WallStick();
+        if((wallStick == -1 && velocity.x < 0) || 
+            (wallStick == 1 && velocity.x > 0))
+        {
+            velocity.x = 0;
+        }
 
         if (Input.GetButtonDown("Jump") && !isJumping)
         {
@@ -63,12 +78,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void Gravity()
     {
-        //cast a ray downward from the player
-        LayerMask layerMask = LayerMask.GetMask("environment"); //specifies that only objects in the environment layer can be landed on
-        RaycastHit2D hit = CreateDynamicRaycast(Vector2.down, layerMask);
-
         //if the ray hits a platform
-        if (hit.collider != null)
+        if (downHit.collider != null && !(leftHit.collider == null || rightHit.collider == null))
         {
             isJumping = false;
             isSticking = false;
@@ -76,8 +87,8 @@ public class PlayerMovement : MonoBehaviour
 
             acceleration.y = 0;
             //snap player to the top of the platform
-            position.y = hit.collider.transform.position.y +
-                hit.collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 +
+            position.y = downHit.collider.transform.position.y +
+                downHit.collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 +
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2;
         }
         else if(!isSticking)
@@ -92,17 +103,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Slows the player's downward velocity if they are next to a wall
+    /// Slows the player's downward velocity if they are next to a wall, returns the direction of the wall on the x axis
     /// </summary>
-    void WallStick()
+    int WallStick()
     {
-        //cast a ray to the left and right of the player
-        LayerMask layerMask = LayerMask.GetMask("environment");
-        RaycastHit2D leftHit = CreateDynamicRaycast(Vector2.left, layerMask); //left
-        RaycastHit2D rightHit = CreateDynamicRaycast(Vector2.right, layerMask); //right
-
         //if the ray hits a platform to the left
-        if(leftHit.collider != null)
+        if (leftHit.collider != null)
         {
             isJumping = false;
             isSticking = true;
@@ -121,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
             position.x = leftHit.collider.transform.position.x + 
                 leftHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 + 
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2;
+            return -1;
         }
         //the the ray hits a platform to the right
         else if(rightHit.collider != null){
@@ -141,11 +148,23 @@ public class PlayerMovement : MonoBehaviour
             position.x = rightHit.collider.transform.position.x -
                 rightHit.collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 -
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2;
+            return 1;
         }
         else
         {
             isSticking = false;
+            return 0;
         }
+    }
+
+    /// <summary>
+    /// casts rays to the left, right, and underneath the player
+    /// </summary>
+    void CastRays()
+    {
+        leftHit = CreateDynamicRaycast(Vector2.left, layerMask); //left
+        rightHit = CreateDynamicRaycast(Vector2.right, layerMask); //right
+        downHit = CreateDynamicRaycast(Vector2.down, layerMask); //down
     }
 
     /// <summary>
