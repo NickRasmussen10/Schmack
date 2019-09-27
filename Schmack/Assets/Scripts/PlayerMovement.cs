@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     //flags
     bool isJumping = false;
     bool isSticking = false;
-    bool isInAir = false;
+    bool isFalling = false;
 
     // Start is called before the first frame update
     void Start()
@@ -79,11 +79,11 @@ public class PlayerMovement : MonoBehaviour
     void Gravity()
     {
         //if the ray hits a platform
-        if (downHit.collider != null && !(leftHit.collider == null || rightHit.collider == null))
+        if (downHit.collider != null && (leftHit.collider == null || rightHit.collider == null))
         {
             isJumping = false;
             isSticking = false;
-            isInAir = false;
+            isFalling = false;
 
             acceleration.y = 0;
             //snap player to the top of the platform
@@ -93,12 +93,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else if(!isSticking)
         {
-            isInAir = true;
             acceleration.y -= GRAVITY;
         }
-        else
+
+        if(downHit.collider == null && acceleration.y < 0)
         {
-            isInAir = true;
+            isFalling = true;
         }
     }
 
@@ -114,14 +114,17 @@ public class PlayerMovement : MonoBehaviour
             isSticking = true;
 
             //slow down any leftover upward acceleration
-            if (acceleration.y > 0)
-            {
-                acceleration.y /= 1.3f;
-            }
+            //if (acceleration.y > 0)
+            //{
+            //    acceleration.y /= 1.3f;
+            //}
 
-            //apply a force downward
-            float downwardForce = -GRAVITY * stickiness;
-            AddForce(0, downwardForce);
+            if (isFalling)
+            {
+                //apply a force downward
+                float downwardForce = -GRAVITY * stickiness;
+                AddForce(0, downwardForce);
+            }
 
             //snap player to the right of the platform
             position.x = leftHit.collider.transform.position.x + 
@@ -172,7 +175,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void AddFriction()
     {
-        if (!isInAir && Mathf.Abs(acceleration.x) > 0)
+        //if player is on ground and moving horizontally
+        if (downHit.collider != null && Mathf.Abs(acceleration.x) > 0)
         {
             AddForce(-acceleration.x * coefFriction, 0);
         }
