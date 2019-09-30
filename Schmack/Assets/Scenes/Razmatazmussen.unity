@@ -126,6 +126,23 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1133750560555565974}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1005264954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005264953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38505beb92038384887c6f76316ca6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 1
+  speed: 0.2
+  jumpForce: 1
+  stickiness: 0.2
+  coefFriction: 0.2
 --- !u!114 &1005264958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,7 +653,9 @@ PrefabInstance:
       propertyPath: jumpForce
       value: 20
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1005264958, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
+    - {fileID: 1005264954, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
 --- !u!1001 &4989182306175774204
 PrefabInstance:
