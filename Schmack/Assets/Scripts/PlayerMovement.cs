@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    const float GRAVITY = 0.1f;
+    const float GRAVITY = 1f;
 
     Vector2 position;
     Vector2 velocity;
     Vector2 acceleration;
-
-    Vector2 prev_velocity;
 
     RaycastHit2D[] raycastHits;
 
     [SerializeField] float mass;
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
-    [SerializeField] float stickiness;
+    [SerializeField] float stickiness; // smaller = more sticky
     [SerializeField] float coefFriction;
 
     bool isSticking = false;
@@ -29,34 +27,41 @@ public class PlayerMovement : MonoBehaviour
     {
         position = transform.position;
         acceleration = Vector2.zero;
-        raycastHits = new RaycastHit2D[3];
+        raycastHits = new RaycastHit2D[4];
+        SetRaycasts(LayerMask.GetMask("environment"));
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        velocity += acceleration * Time.deltaTime;
+        position += velocity;
+        SetRaycasts(LayerMask.GetMask("environment"));
+        WallSticking();
+        Gravity();
+        HeadHit();
+        BasicControls();
+        AddFriction();
+
         velocity = Vector2.zero;
 
-        SetRaycasts(LayerMask.GetMask("environment"));
-        Gravity();
-        BasicControls();
-        WallSticking();
-        AddFriction();
         SnapPositions();
-
-
-        Debug.Log("isFalling: " + isFalling);
-
-        velocity += acceleration;
-        position += velocity;
         transform.position = position;
-        prev_velocity = velocity;
     }
 
     void BasicControls()
     {
         float horizontalInput = Input.GetAxis("LeftHorizontal");
-        velocity.x = horizontalInput * speed;
+        acceleration.x = horizontalInput * speed;
+        if(raycastHits[1].collider != null && acceleration.x < 0)
+        {
+            acceleration.x = 0;
+        }
+        if(raycastHits[2].collider != null && acceleration.x > 0)
+        {
+            acceleration.x = 0;
+        }
 
         if(Input.GetButtonDown("Jump") && (!isJumping || isSticking))
         {
@@ -101,6 +106,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void HeadHit()
+    {
+        if(raycastHits[3].collider != null && !isFalling)
+        {
+            acceleration.y = 0;
+            isFalling = true;
+        }
+    }
+
     void AddFriction()
     {
         if(raycastHits[0].collider != null && Mathf.Abs(acceleration.x) > 0)
@@ -131,20 +145,67 @@ public class PlayerMovement : MonoBehaviour
                 raycastHits[2].collider.GetComponent<BoxCollider2D>().bounds.size.x / 2 -
                 gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2;
         }
+
+        if(raycastHits[3].collider != null)
+        {
+            position.y = raycastHits[3].collider.transform.position.y -
+                raycastHits[3].collider.GetComponent<BoxCollider2D>().bounds.size.y / 2 -
+                gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2;
+        }
     }
 
     void SetRaycasts(LayerMask layerMask)
     {
         if (isFalling)
         {
-            raycastHits[0] = Physics2D.Raycast(position, Vector2.down, 0.5f + prev_velocity.y, layerMask);
+            Vector3 dest = new Vector3();
+            dest = transform.position + (Vector3.down * (0.5f - velocity.y));
+            Debug.DrawLine(position, dest, Color.magenta);
+            raycastHits[0] = Physics2D.Raycast(position, Vector2.down, 0.5f - velocity.y, layerMask);
         }
         else
         {
+            Vector3 dest = new Vector3();
+            dest = transform.position + (Vector3.down * 0.5f);
+            Debug.DrawLine(position, dest, Color.magenta);
             raycastHits[0] = Physics2D.Raycast(position, Vector2.down, 0.5f, layerMask);
         }
-        raycastHits[1] = Physics2D.Raycast(position, Vector2.left, 0.5f + prev_velocity.x, layerMask);
-        raycastHits[2] = Physics2D.Raycast(position, Vector2.right, 0.5f + prev_velocity.x, layerMask);
+
+        Debug.DrawLine(position, position + Vector2.up * (0.5f + velocity.y), Color.magenta);
+        raycastHits[3] = Physics2D.Raycast(position, Vector2.up, 0.5f + velocity.y, layerMask);
+
+        
+        
+
+        if (raycastHits[1].collider != null)
+        {
+            Vector3 dest1 = new Vector3();
+            dest1 = transform.position + (Vector3.left * 0.5f);
+            Debug.DrawLine(position, dest1, Color.magenta);
+            raycastHits[1] = Physics2D.Raycast(position, Vector2.left, 0.5f, layerMask);
+        }
+        else
+        {
+            Vector3 dest1 = new Vector3();
+            dest1 = transform.position + (Vector3.left * (0.5f + velocity.x));
+            Debug.DrawLine(position, dest1, Color.magenta);
+            raycastHits[1] = Physics2D.Raycast(position, Vector2.left, 0.5f + velocity.x, layerMask);
+        }
+
+        if (raycastHits[2].collider != null)
+        {
+            Vector3 dest2 = new Vector3();
+            dest2 = transform.position + (Vector3.right * 0.5f);
+            Debug.DrawLine(position, dest2, Color.magenta);
+            raycastHits[2] = Physics2D.Raycast(position, Vector2.right, 0.5f, layerMask);
+        }
+        else
+        {
+            Vector3 dest2 = new Vector3();
+            dest2 = transform.position + (Vector3.right * (0.5f + velocity.x));
+            Debug.DrawLine(position, dest2, Color.magenta);
+            raycastHits[2] = Physics2D.Raycast(position, Vector2.right, 0.5f + velocity.x, layerMask);
+        }
     }
 
     public void AddBowKnockback(Vector2 direction, float force)

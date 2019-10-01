@@ -139,9 +139,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 1
-  speed: 0.2
-  jumpForce: 1
-  stickiness: 0.2
+  speed: 10
+  jumpForce: 20
+  stickiness: 0.15
   coefFriction: 0.2
 --- !u!114 &1005264958
 MonoBehaviour:
