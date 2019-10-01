@@ -7,16 +7,17 @@ abstract public class Projectile : MonoBehaviour
     protected const float GRAVITY = 1f;
 
     //physics vectors
-    protected Vector2 position;
-    protected Vector2 velocity;
-    protected Vector2 acceleration;
+    protected Vector2 position = Vector2.zero;
+    protected Vector2 velocity = Vector2.zero;
+    protected Vector2 acceleration = Vector2.zero;
 
     //physics varaibles
-    [SerializeField] float mass;
-    [SerializeField] float coefFriction;
+    [SerializeField] float mass = 1;
+    [SerializeField] float coefFriction = 1;
 
     //array to keep track of collisions in all 4 cardinal directions
     protected RaycastHit2D[] raycastHits;
+    bool[] isHitting;
 
 
 
@@ -24,8 +25,8 @@ abstract public class Projectile : MonoBehaviour
     protected void Start()
     {
         position = transform.position;
-        acceleration = Vector2.zero;
         raycastHits = new RaycastHit2D[4];
+        isHitting = new bool[4];
         SetRaycasts(LayerMask.GetMask("environment"));
     }
 
@@ -34,14 +35,15 @@ abstract public class Projectile : MonoBehaviour
     {
         velocity += acceleration * Time.deltaTime;
         position += velocity;
-        SetRaycasts(LayerMask.GetMask("environment"));
 
         Gravity();
-        AddFriction();
-        SnapPositions();
+        //AddFriction();
 
         velocity = Vector2.zero;
+
+        SnapPositions();
         transform.position = position;
+        SetRaycasts(LayerMask.GetMask("environment"));
     }
 
     /// <summary>
@@ -133,7 +135,7 @@ abstract public class Projectile : MonoBehaviour
             Vector3 dest = new Vector3();
             dest = transform.position + (Vector3.down * 0.5f);
             Debug.DrawLine(position, dest, Color.magenta);
-            raycastHits[0] = Physics2D.Raycast(position, Vector2.down, 0.5f, layerMask);
+            raycastHits[0] = Physics2D.Raycast(position, Vector2.down, gameObject.GetComponent<BoxCollider2D>().bounds.size.y/2, layerMask);
         }
 
         Debug.DrawLine(position, position + Vector2.up * (0.5f + velocity.y), Color.magenta);

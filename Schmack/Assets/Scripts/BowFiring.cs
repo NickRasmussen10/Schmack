@@ -9,6 +9,9 @@ public class BowFiring : MonoBehaviour
     [SerializeField] float knockback;   //the amount of force applied to the player when they fire the bow
     float powerInput;   //keeps track of whether or not the bow's trigger button has been pressed
 
+    List<GameObject> arrows = new List<GameObject>();
+    [SerializeField] GameObject pref_arrow;
+
     bool isDrawnBack = false;
     // Start is called before the first frame update
     void Start()
@@ -36,7 +39,13 @@ public class BowFiring : MonoBehaviour
         else if(powerInput < 0.1f && isDrawnBack)
         {
             isDrawnBack = false;
-            playerMovement.AddBowKnockback(direction, knockback);
+            if (!playerMovement.GetIsOnGround())
+            {
+                playerMovement.AddBowKnockback(direction, knockback);
+            }
+            GameObject newArrow = Instantiate(pref_arrow, transform.position, Quaternion.identity);
+            newArrow.GetComponent<Arrow>().SetStartingAcceleration(direction * knockback * 0.5f);
+            arrows.Add(newArrow);
         }
 
         Debug.DrawLine(transform.position, transform.position + (direction * 5f));

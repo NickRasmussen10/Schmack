@@ -13,15 +13,16 @@ public class PlayerMovement : Projectile
     bool isSticking = false;
     bool isJumping = false;
     bool isFalling = true;
+    public bool GetIsOnGround() { if (raycastHits[0].collider != null) return true; return false; }
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
         base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
         base.Update();
 
@@ -49,7 +50,7 @@ public class PlayerMovement : Projectile
         float horizontalInput = Input.GetAxis("LeftHorizontal");
         velocity.x = horizontalInput * speed;
 
-        if(Input.GetButtonDown("Jump") && (!isJumping || isSticking))
+        if (Input.GetButtonDown("Jump") && (!isJumping || isSticking))
         {
             AddForce(0, jumpForce);
             isJumping = true;
