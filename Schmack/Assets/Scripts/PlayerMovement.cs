@@ -6,18 +6,22 @@ public class PlayerMovement : MonoBehaviour
 {
     const float GRAVITY = 1f;
 
+    //physics vectors
     Vector2 position;
     Vector2 velocity;
     Vector2 acceleration;
 
+    //array to keep track of collisions in all 4 cardinal directions
     RaycastHit2D[] raycastHits;
 
+    //physics/platforming variables
     [SerializeField] float mass;
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
     [SerializeField] float stickiness; // smaller = more sticky
     [SerializeField] float coefFriction;
 
+    //bool flags to know what the player's current state is
     bool isSticking = false;
     bool isJumping = false;
     bool isFalling = true;
@@ -50,6 +54,9 @@ public class PlayerMovement : MonoBehaviour
         transform.position = position;
     }
 
+    /// <summary>
+    /// handles the basic controller input for the player (horizontal movemnet, jumping)
+    /// </summary>
     void BasicControls()
     {
         float horizontalInput = Input.GetAxis("LeftHorizontal");
@@ -70,6 +77,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// raises isSticking flag when player is next to a wall
+    /// </summary>
     void WallSticking()
     {
         if(raycastHits[1].collider != null || raycastHits[2].collider != null)
@@ -82,6 +92,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// handles player falling to the ground, including slower fall for wall sticking
+    /// </summary>
     void Gravity()
     {
         if(raycastHits[0].collider != null)
@@ -98,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isFalling && isSticking)
         {
+            //slower descent
             acceleration.y -= GRAVITY * stickiness;
         }
         else if(raycastHits[0].collider == null)
@@ -106,6 +121,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// stops the player's ascent if they jump into the underside of a platform
+    /// </summary>
     void HeadHit()
     {
         if(raycastHits[3].collider != null && !isFalling)
@@ -115,6 +133,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// applies a force to slow horizontal motion if player is on the ground
+    /// </summary>
     void AddFriction()
     {
         if(raycastHits[0].collider != null && Mathf.Abs(acceleration.x) > 0)
@@ -123,6 +144,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// snaps the player's position to perfectly adjacent to any platform they are colliding with (avoids overlapping)
+    /// </summary>
     void SnapPositions()
     {
         if(raycastHits[0].collider != null)
@@ -154,6 +178,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// casts rays in all 4 cardinal directions from player for collision detection
+    /// </summary>
+    /// <param name="layerMask"></param>
     void SetRaycasts(LayerMask layerMask)
     {
         if (isFalling)
@@ -208,6 +237,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// applies knockback force to player
+    /// </summary>
+    /// <param name="direction">direction the bow is facing</param>
+    /// <param name="force">how much knockback to apply</param>
     public void AddBowKnockback(Vector2 direction, float force)
     {
         AddForce(-direction * force);
