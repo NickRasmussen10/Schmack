@@ -139,10 +139,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 1
-  speed: 10
+  coefFriction: 1.6
+  speed: 0.2
   jumpForce: 20
-  stickiness: 0.15
-  coefFriction: 0.2
+  stickiness: 0.9
 --- !u!114 &1005264958
 MonoBehaviour:
   m_ObjectHideFlags: 0
