@@ -52,6 +52,7 @@ public class PlayerMovement : Projectile
 
         if (Input.GetButtonDown("Jump") && (!isJumping || isSticking))
         {
+            Debug.Log("jump");
             AddForce(0, jumpForce);
             isJumping = true;
         }

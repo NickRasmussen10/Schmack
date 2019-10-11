@@ -18,6 +18,7 @@ public class Arrow : Projectile
 
     public void SetStartingAcceleration(Vector2 a)
     {
+        Debug.Log("set starting acc");
         AddForce(a);
     }
 }
