@@ -192,6 +192,32 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 105.90547
       objectReference: {fileID: 0}
+    - target: {fileID: 8394267366853844520, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394267366853844520, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394267366853844520, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.19389248
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394267366853844520, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b9062e2d9d9ff314a9e91f5e2842163e,
+        type: 3}
+    - target: {fileID: 8394267366853844520, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7, type: 3}
 --- !u!1001 &447422589
