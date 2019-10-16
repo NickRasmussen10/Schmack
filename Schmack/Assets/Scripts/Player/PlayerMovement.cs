@@ -1,0 +1,122 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    Rigidbody2D rb;
+
+    [Header("Movement Variables")]
+    [SerializeField] float acceleration = 8;
+    [SerializeField] float maxSpeed = 10;
+    [SerializeField] float jumpForce = 250;
+
+    [Header("Wall sticking")]
+    [SerializeField] float stickiness = 1.0f;
+    [SerializeField] float horizontalForce = 50;
+    [SerializeField] float wallJumpLimiter = 1.5f;
+
+    RaycastHit2D[] raycastHits = new RaycastHit2D[3];
+
+    bool isFalling = false;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = gameObject.GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        rb.AddForce(new Vector2(Input.GetAxis("LeftHorizontal") * acceleration, 0.0f));
+        if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
+        {
+            if(rb.velocity.x > 0)
+            {
+                Debug.Log("going right");
+                //apply friction to the left
+
+                rb.AddForce(new Vector2(-acceleration, 0.0f));
+                if(rb.velocity.x < 0)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                }
+            }
+            else if(rb.velocity.x < 0)
+            {
+                Debug.Log("going left");
+                //apply friciton to the right
+
+                rb.AddForce(new Vector2(acceleration, 0.0f));
+                if (rb.velocity.x > 0)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                }
+            }
+        }
+
+        CastRays();
+        if(!CheckRayCollision(0) && rb.velocity.y < 0)
+        {
+            isFalling = true;
+        }
+        else
+        {
+            isFalling = false;
+        }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (CheckRayCollision(0))
+            {
+                rb.AddForce(new Vector2(0.0f, jumpForce));
+            }
+            else if (CheckRayCollision(1))
+            {
+                rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
+            }
+            else if (CheckRayCollision(2))
+            {
+                rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
+            }
+        }
+
+        if ((CheckRayCollision(1) || CheckRayCollision(2)) && isFalling)
+        {
+            rb.AddForce(-Physics2D.gravity / stickiness);
+            
+
+        }
+
+        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+    }
+
+    void CastRays()
+    {
+        raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
+        Debug.DrawLine(transform.position, transform.position + (Vector3)(Vector2.down * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)), Color.magenta);
+
+        raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
+        Debug.DrawLine(transform.position, transform.position + (Vector3)(Vector2.left * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)), Color.magenta);
+
+        raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
+        Debug.DrawLine(transform.position, transform.position + (Vector3)(Vector2.right * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)), Color.magenta);
+    }
+
+    /// <summary>
+    /// returns true is the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    bool CheckRayCollision(int index)
+    {
+        //oof ouch owie my code
+        return raycastHits[index].collider != null;
+    }
+
+    bool CheckWallStick()
+    {
+        return CheckRayCollision(1) || CheckRayCollision(2);
+    }
+}
