@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5118899305807791960}
   - component: {fileID: 4996108243719625846}
   - component: {fileID: 8668347394939522707}
+  - component: {fileID: 287022940}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -98,7 +99,7 @@ MonoBehaviour:
   maxSpeed: 7
   jumpForce: 300
   stickiness: 1.5
-  horizontalForce: 200
+  horizontalForce: 300
   wallJumpLimiter: 1.5
 --- !u!50 &4996108243719625846
 Rigidbody2D:
@@ -147,3 +148,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &287022940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683959363695374923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4ae8e11a68d84041b6b66eae0953a25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
+    type: 3}
+  shotPower: 1000
