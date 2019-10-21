@@ -34,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if(rb.velocity.x > 0)
             {
-                Debug.Log("going right");
                 //apply friction to the left
 
                 rb.AddForce(new Vector2(-acceleration, 0.0f));
@@ -45,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
             }
             else if(rb.velocity.x < 0)
             {
-                Debug.Log("going left");
                 //apply friciton to the right
 
                 rb.AddForce(new Vector2(acceleration, 0.0f));
@@ -95,17 +93,12 @@ public class PlayerMovement : MonoBehaviour
     void CastRays()
     {
         raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
-        Debug.DrawLine(transform.position, transform.position + (Vector3)(Vector2.down * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)), Color.magenta);
-
         raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
-        Debug.DrawLine(transform.position, transform.position + (Vector3)(Vector2.left * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)), Color.magenta);
-
         raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
-        Debug.DrawLine(transform.position, transform.position + (Vector3)(Vector2.right * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)), Color.magenta);
     }
 
     /// <summary>
-    /// returns true is the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
+    /// returns true if the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
