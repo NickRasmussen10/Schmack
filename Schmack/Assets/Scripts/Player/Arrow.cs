@@ -17,8 +17,9 @@ public class Arrow : Projectile
     {
         base.Update();
 
-        if (hasHit)
+        if (hasHit && rb)
         {
+            transform.right = rb.velocity;
             Destroy(rb);
         }
     }
