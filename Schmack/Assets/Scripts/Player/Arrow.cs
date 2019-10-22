@@ -10,6 +10,7 @@ public class Arrow : Projectile
     new void Start()
     {
         base.Start();
+        transform.right = -rb.velocity;
     }
 
     // Update is called once per frame
