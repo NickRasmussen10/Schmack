@@ -21,7 +21,7 @@ public class Arrow : Projectile
         if (hasHit && rb != null)
         {
             Destroy(rb);
-            
+            Destroy(collider);
         }
         else if(rb != null)
         {
@@ -34,6 +34,10 @@ public class Arrow : Projectile
         if (collision.gameObject.tag != "Player")
         {
             hasHit = true;
+            if (collision.gameObject.tag == "Enemy")
+            {
+                gameObject.transform.parent = collision.gameObject.transform;
+            }
         }
     }
 

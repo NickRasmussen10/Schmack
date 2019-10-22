@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8987681481873553308}
   - component: {fileID: 7967544189602766052}
   - component: {fileID: 6582538903825764402}
+  - component: {fileID: 3970962134882201174}
   - component: {fileID: 6414716277903624988}
   - component: {fileID: 7213697373357087225}
   - component: {fileID: 2040160927361796150}
@@ -104,8 +105,21 @@ MonoBehaviour:
   maxSpeed: 7
   jumpForce: 300
   stickiness: 1.5
-  horizontalForce: 300
-  wallJumpLimiter: 1.5
+  horizontalForce: 400
+  wallJumpLimiter: 1
+--- !u!114 &3970962134882201174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796780426144441633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d697a4bede7617b4ea3df6c4e99dc7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!50 &6414716277903624988
 Rigidbody2D:
   serializedVersion: 4
@@ -169,7 +183,8 @@ MonoBehaviour:
     type: 3}
   shotPower: 1000
   shotCooldown: 1
-  knockbackForce: 1
+  knockbackForce: 500
+  shootPoint: {fileID: 4526460684055605620}
 --- !u!114 &1456378438319670464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,18 +666,24 @@ PrefabInstance:
     - target: {fileID: 1690535963170209633, guid: e1632cc9bddac0447aa3eaf828208737,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.10024462
+      value: -0.09938791
       objectReference: {fileID: 0}
     - target: {fileID: 1690535963170209633, guid: e1632cc9bddac0447aa3eaf828208737,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.002995758
+      value: -0.00038667838
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1632cc9bddac0447aa3eaf828208737, type: 3}
 --- !u!4 &6431375937842250827 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1332191323896173173, guid: e1632cc9bddac0447aa3eaf828208737,
+    type: 3}
+  m_PrefabInstance: {fileID: 5421263732907267646}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4526460684055605620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8497459783543203658, guid: e1632cc9bddac0447aa3eaf828208737,
     type: 3}
   m_PrefabInstance: {fileID: 5421263732907267646}
   m_PrefabAsset: {fileID: 0}

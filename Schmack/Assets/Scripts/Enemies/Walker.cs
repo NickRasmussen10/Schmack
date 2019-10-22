@@ -10,6 +10,7 @@ public class Walker : Enemy
     float timer = 0.0f;
     float detectionRange = 0.5f; //how close does he need to get before he arrives at either end of the range
     GameObject target;
+    Vector2 scale;
 
     // Start is called before the first frame update
     new void Start()
@@ -18,6 +19,9 @@ public class Walker : Enemy
         target = end;
         timer = waitTime;
         direction = (target.transform.position - gameObject.transform.position).normalized;
+        scale = transform.localScale;
+        scale.x = target == start ? scale.x : -scale.x;
+        transform.localScale = scale;
     }
 
     // Update is called once per frame
@@ -42,6 +46,8 @@ public class Walker : Enemy
                 target = target == start ? end : start;
 
                 direction = (target.transform.position - gameObject.transform.position).normalized;
+                scale.x *= -1;
+                transform.localScale = scale;
 
                 timer = waitTime;
             }

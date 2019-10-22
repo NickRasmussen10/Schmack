@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 8814156240975164784}
   - component: {fileID: 8814156240975164785}
   - component: {fileID: 8814156240975164790}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Walker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   acceleration: 5
-  maxSpeed: 1
+  maxSpeed: 3
   start: {fileID: 8814156241571308991}
   end: {fileID: 8814156241324827116}
   waitTime: 1
@@ -204,7 +204,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8814156241324827116}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 7.29, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3256255118622763601}
@@ -234,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8814156241571308991}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.86, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3256255118622763601}

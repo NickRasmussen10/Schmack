@@ -7,6 +7,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] float maxHealth = 100.0f;
     [SerializeField] protected float acceleration = 1.0f;
     [SerializeField] protected float maxSpeed = 0.5f;
+    [SerializeField] float playerKnockback;
+    public float GetKnockback() { return playerKnockback; }
     protected Rigidbody2D rb;
 
     float health;
@@ -22,7 +24,10 @@ public abstract class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        
+        if(health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     protected void TakeDamage(float damage)
@@ -31,4 +36,12 @@ public abstract class Enemy : MonoBehaviour
     }
 
     protected abstract void Move();
+
+    protected void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Arrow")
+        {
+            TakeDamage(50);
+        }
+    }
 }

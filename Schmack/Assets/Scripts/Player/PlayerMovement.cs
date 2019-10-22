@@ -92,9 +92,12 @@ public class PlayerMovement : MonoBehaviour
 
     void CastRays()
     {
-        raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
-        raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, LayerMask.GetMask("environment"));
-        raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, LayerMask.GetMask("environment"));
+        int layer_environment = 1 << 9;
+        int layer_enemies = 1 << 11;
+        int finalLayerMask = layer_environment | layer_enemies;
+        raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask);
+        raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask);
+        raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask);
     }
 
     /// <summary>
@@ -113,12 +116,20 @@ public class PlayerMovement : MonoBehaviour
         return CheckRayCollision(1) || CheckRayCollision(2);
     }
 
-    public void AddKnockback(Vector2 knockback)
+    public void AddKnockback(Vector2 knockback, bool groundRequired)
     {
-        if (!CheckRayCollision(0))
+        if (groundRequired)
+        {
+            if (!CheckRayCollision(0))
+            {
+                AddForce(knockback);
+            }
+        }
+        else
         {
             AddForce(knockback);
         }
+        
     }
 
     private void AddForce(Vector2 force) { rb.AddForce(force); }
