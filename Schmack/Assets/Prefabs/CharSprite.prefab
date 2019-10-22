@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 283287291015661436}
   - component: {fileID: -7426690800809089210}
   - component: {fileID: -2515613588585990369}
+  - component: {fileID: 5711855719576460706}
   m_Layer: 8
   m_Name: CharSprite
   m_TagString: Player
@@ -196,7 +197,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.11360583, y: -0.23099852}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
+    border: {x: 0.32, y: 0.56, z: 0.32, w: 0.56}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.65, y: 2.97}
     newSize: {x: 1.65, y: 2.97}
@@ -207,6 +208,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4227881, y: 2.508003}
   m_EdgeRadius: 0
+--- !u!114 &5711855719576460706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3524184629179766262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4ae8e11a68d84041b6b66eae0953a25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
+    type: 3}
+  shotPower: 1
 --- !u!1 &3524184629354897706
 GameObject:
   m_ObjectHideFlags: 0
