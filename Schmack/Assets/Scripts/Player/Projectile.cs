@@ -25,7 +25,8 @@ public abstract class Projectile : MonoBehaviour
     {
         if (rb)
         {
-            transform.right = rb.velocity;
+            transform.LookAt((Vector2)transform.position + rb.velocity);
+            //transform.right = rb.velocity;
         }
     }
 }
