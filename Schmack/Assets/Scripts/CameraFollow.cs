@@ -8,7 +8,7 @@ public class CameraFollow : MonoBehaviour
 {
     public GameObject player;       // Reference to the player that the camera will follow
 
-    private Vector3 offset;         // Offset distance between the player and the camera
+    public Vector3 offset;         // Offset distance between the player and the camera
 
     // Start is called before the first frame update
     void Start()
