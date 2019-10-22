@@ -23,10 +23,6 @@ public abstract class Projectile : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        if (rb)
-        {
-            transform.LookAt((Vector2)transform.position + rb.velocity);
-            //transform.right = rb.velocity;
-        }
+        
     }
 }

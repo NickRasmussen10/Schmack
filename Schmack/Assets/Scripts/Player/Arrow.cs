@@ -17,10 +17,14 @@ public class Arrow : Projectile
     {
         base.Update();
 
-        if (hasHit && rb)
+        if (hasHit && rb != null)
+        {
+            Destroy(rb);
+            
+        }
+        else if(rb != null)
         {
             transform.right = rb.velocity;
-            Destroy(rb);
         }
     }
 
