@@ -17,7 +17,7 @@ public abstract class Projectile : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
-        Debug.Log("arrow start");
+
     }
 
     // Update is called once per frame
@@ -25,9 +25,8 @@ public abstract class Projectile : MonoBehaviour
     {
         if (rb)
         {
-            rotation.x = rb.velocity.normalized.x;
-            rotation.y = rb.velocity.normalized.y;
+            transform.LookAt((Vector2)transform.position + rb.velocity);
+            //transform.right = rb.velocity;
         }
-        transform.rotation = rotation;
     }
 }

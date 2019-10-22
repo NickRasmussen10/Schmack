@@ -11,6 +11,8 @@ public class Bow : MonoBehaviour
     List<GameObject> arrows = new List<GameObject>();
     [SerializeField] GameObject pref_arrow;
     [SerializeField] float shotPower = 1.0f;
+    [SerializeField] float shotCooldown = 1.0f;
+    float timer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -22,16 +24,20 @@ public class Bow : MonoBehaviour
     void Update()
     {
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
-
         powerInput = Input.GetAxis("Fire1");
 
-        if(powerInput == 1)
+        if(timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
+
+        if(powerInput == 1 && timer <= 0.0f)
         {
             isDrawnBack = true;
         }
         else if(powerInput == 0 && isDrawnBack)
         {
-            Debug.Log("Pew");
+            timer = shotCooldown;
             isDrawnBack = false;
             GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
             newArrow.GetComponent<Arrow>().AddForce(direction * shotPower);

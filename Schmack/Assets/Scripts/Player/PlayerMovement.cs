@@ -93,8 +93,11 @@ public class PlayerMovement : MonoBehaviour
     void CastRays()
     {
         raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
-        raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
-        raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, LayerMask.GetMask("environment"));
+        Debug.DrawLine(transform.position, (Vector2)transform.position + (Vector2.down * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f)));
+        raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, LayerMask.GetMask("environment"));
+        Debug.DrawLine(transform.position, (Vector2)transform.position + (Vector2.left * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f)));
+        raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, LayerMask.GetMask("environment"));
+        Debug.DrawLine(transform.position, (Vector2)transform.position + (Vector2.right * ((gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f)));
     }
 
     /// <summary>
