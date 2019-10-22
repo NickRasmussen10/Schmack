@@ -5485,7 +5485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: 9c338761023087c419ce96ab7b2c3c03, type: 2}
+  profile: {fileID: 11400000, guid: 4f26e39173f79484eb75652157e54f78, type: 2}
 --- !u!114 &1775641071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5512,6 +5512,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
+        type: 3}
+      propertyPath: ShapeModule.type
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 30.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8270886432238142468, guid: 5a94c1ba3593dcd4182a054151b4e12c,
         type: 3}
@@ -5567,31 +5592,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
-        type: 3}
-      propertyPath: VelocityModule.enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
-        type: 3}
-      propertyPath: ShapeModule.type
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
-        type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 30.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
-        type: 3}
-      propertyPath: ShapeModule.radiusThickness
-      value: 1.0000
-      objectReference: {fileID: 0}
-    - target: {fileID: 2579273758770007262, guid: 5a94c1ba3593dcd4182a054151b4e12c,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a94c1ba3593dcd4182a054151b4e12c, type: 3}
