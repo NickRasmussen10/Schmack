@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(new Vector2(Input.GetAxis("LeftHorizontal") * acceleration, 0.0f));
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if(rb.velocity.x > 0)
+            if(rb.velocity.x > 0 && CheckRayCollision(0))
             {
                 //apply friction to the left
 
@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
                     rb.velocity = new Vector2(0, rb.velocity.y);
                 }
             }
-            else if(rb.velocity.x < 0)
+            else if(rb.velocity.x < 0 && CheckRayCollision(0))
             {
                 //apply friciton to the right
 
@@ -115,4 +115,15 @@ public class PlayerMovement : MonoBehaviour
     {
         return CheckRayCollision(1) || CheckRayCollision(2);
     }
+
+    public void AddKnockback(Vector2 knockback)
+    {
+        if (!CheckRayCollision(0))
+        {
+            AddForce(knockback);
+        }
+    }
+
+    private void AddForce(Vector2 force) { rb.AddForce(force); }
+    private void AddForce(float x, float y) { rb.AddForce(new Vector2(x, y)); }
 }

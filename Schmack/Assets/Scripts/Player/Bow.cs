@@ -12,6 +12,7 @@ public class Bow : MonoBehaviour
     [SerializeField] GameObject pref_arrow;
     [SerializeField] float shotPower = 1.0f;
     [SerializeField] float shotCooldown = 1.0f;
+    [SerializeField] float knockbackForce = 1.0f;
     float timer = 0.0f;
 
     // Start is called before the first frame update
@@ -42,6 +43,7 @@ public class Bow : MonoBehaviour
             GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
             newArrow.GetComponent<Arrow>().AddForce(direction * shotPower);
             arrows.Add(newArrow);
+            gameObject.GetComponent<PlayerMovement>().AddKnockback(-direction * knockbackForce);
         }
     }
 }
