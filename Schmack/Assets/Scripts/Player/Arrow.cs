@@ -24,7 +24,7 @@ public class Arrow : Projectile
         }
         else if(rb != null)
         {
-            transform.right = rb.velocity;
+            transform.left = rb.velocity;
         }
     }
 
