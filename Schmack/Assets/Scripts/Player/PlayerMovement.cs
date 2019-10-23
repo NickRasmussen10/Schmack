@@ -6,35 +6,76 @@ public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
 
-    [Header("Movement Variables")]
-    [SerializeField] float acceleration = 8;
-    [SerializeField] float maxSpeed = 10;
-    [SerializeField] float jumpForce = 250;
+    [Header("Movement - Vibing")]
+    [SerializeField] float acceleration_fast = 8;
+    [SerializeField] float maxSpeed_fast = 10;
+    [SerializeField] float jumpForce_fast = 250;
+
+    [Header("Movement - Not Vibing")]
+    [SerializeField] float acceleration_slow = 4;
+    [SerializeField] float maxSpeed_slow = 5;
+    [SerializeField] float jumpForce_slow = 200;
 
     [Header("Wall sticking")]
     [SerializeField] float stickiness = 1.0f;
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 1.5f;
 
+    float acceleration;
+    float maxSpeed;
+    float jumpForce;
+
     RaycastHit2D[] raycastHits = new RaycastHit2D[3];
 
     bool isFalling = false;
+    bool vibing = false;
+    public bool GetVibing() { return vibing; }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
+        vibing = false;
+        acceleration = acceleration_slow;
+        maxSpeed = maxSpeed_slow;
+        jumpForce = jumpForce_slow;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("Vibe_Temp"))
+        {
+            VibeCheck();
+        }
         JoystickMovement();
         CastRays();
-        //if is going downward, flag them as falling
+        //if player is going downward, flag them as falling
         isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
         WallStick();
+    }
+
+    /// <summary>
+    /// handles swapping between vibe state and yuck state
+    /// </summary>
+    void VibeCheck()
+    {
+        Debug.Log("vibe check");
+        vibing = !vibing;
+
+        if (vibing)
+        {
+            acceleration = acceleration_fast;
+            maxSpeed = maxSpeed_fast;
+            jumpForce = jumpForce_fast;
+        }
+        else
+        {
+            acceleration = acceleration_slow;
+            maxSpeed = maxSpeed_slow;
+            jumpForce = jumpForce_slow;
+        }
     }
 
     void JoystickMovement()
