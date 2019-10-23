@@ -825,7 +825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d697a4bede7617b4ea3df6c4e99dc7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 100
 --- !u!114 &7165203409215261864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -838,6 +838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38505beb92038384887c6f76316ca6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToVibe: 3
   acceleration_fast: 8
   maxSpeed_fast: 10
   jumpForce_fast: 250
@@ -860,7 +861,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.009079933, y: -0.07062113}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.07072491}
@@ -871,7 +872,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 0.4813385, y: 2.4739218}
   m_EdgeRadius: 0
 --- !u!50 &3633507917171904026
 Rigidbody2D:
@@ -906,7 +907,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ae8e11a68d84041b6b66eae0953a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pref_arrow: {fileID: 0}
+  indicator: {fileID: 435901467579359303, guid: aba549ca634a2944a815e6f2d1300be2,
+    type: 3}
+  pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
+    type: 3}
   shotPower: 1
   shotCooldown: 1
   knockbackForce: 1
