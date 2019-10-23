@@ -83,7 +83,7 @@ SpriteRenderer:
   m_Size: {x: 1.65, y: 2.97}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5118899305807791960
@@ -140,7 +140,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.20696092}
   m_SpriteTilingProperty:
-    border: {x: 0.32, y: 0.56, z: 0.32, w: 0.56}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.65, y: 2.97}
     newSize: {x: 1.65, y: 2.97}
@@ -168,6 +168,9 @@ MonoBehaviour:
   shotPower: 10
   shotCooldown: 1
   knockbackForce: 1
+  shootPoint: {fileID: 0}
+  timeScaleMin: 0.5
+  timeScaleMax: 1
 --- !u!114 &-8618196487139585110
 MonoBehaviour:
   m_ObjectHideFlags: 0
