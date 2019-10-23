@@ -743,7 +743,6 @@ GameObject:
   - component: {fileID: 8067614170982075601}
   - component: {fileID: 3633507917171904026}
   - component: {fileID: 6002866320425063521}
-  - component: {fileID: 8335659302506908809}
   m_Layer: 8
   m_Name: Player 2
   m_TagString: Player
@@ -839,9 +838,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38505beb92038384887c6f76316ca6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 8
-  maxSpeed: 10
-  jumpForce: 250
+  acceleration_fast: 8
+  maxSpeed_fast: 10
+  jumpForce_fast: 250
+  acceleration_slow: 4
+  maxSpeed_slow: 5
+  jumpForce_slow: 200
   stickiness: 1
   horizontalForce: 50
   wallJumpLimiter: 1.5
@@ -911,21 +913,6 @@ MonoBehaviour:
   shootPoint: {fileID: 0}
   timeScaleMin: 0.5
   timeScaleMax: 1
---- !u!111 &8335659302506908809
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7944556125056427149}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &8057929288360149723
 GameObject:
   m_ObjectHideFlags: 0

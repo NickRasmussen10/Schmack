@@ -31,9 +31,12 @@ public class PlayerMovement : MonoBehaviour
     bool vibing = false;
     public bool GetVibing() { return vibing; }
 
+    private Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         vibing = false;
         acceleration = acceleration_slow;
@@ -80,7 +83,16 @@ public class PlayerMovement : MonoBehaviour
 
     void JoystickMovement()
     {
-        rb.AddForce(new Vector2(Input.GetAxis("LeftHorizontal") * acceleration, 0.0f));
+        float hInput = Input.GetAxis("LeftHorizontal");
+        if(hInput==0)
+        {
+            anim.SetBool("IsRunning", false);
+        }
+        else
+        {
+            anim.SetBool("IsRunning", true);
+        }
+        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
             if (rb.velocity.x > 0 && CheckRayCollision(0))
