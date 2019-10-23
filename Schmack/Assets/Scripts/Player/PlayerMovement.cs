@@ -29,20 +29,30 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        JoystickMovement();
+        CastRays();
+        //if is going downward, flag them as falling
+        isFalling = rb.velocity.y < 0 ? true : false;
+        Jump();
+        WallStick();
+    }
+
+    void JoystickMovement()
+    {
         rb.AddForce(new Vector2(Input.GetAxis("LeftHorizontal") * acceleration, 0.0f));
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if(rb.velocity.x > 0 && CheckRayCollision(0))
+            if (rb.velocity.x > 0 && CheckRayCollision(0))
             {
                 //apply friction to the left
 
                 rb.AddForce(new Vector2(-acceleration, 0.0f));
-                if(rb.velocity.x < 0)
+                if (rb.velocity.x < 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
                 }
             }
-            else if(rb.velocity.x < 0 && CheckRayCollision(0))
+            else if (rb.velocity.x < 0 && CheckRayCollision(0))
             {
                 //apply friciton to the right
 
@@ -53,17 +63,11 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+    }
 
-        CastRays();
-        if(!CheckRayCollision(0) && rb.velocity.y < 0)
-        {
-            isFalling = true;
-        }
-        else
-        {
-            isFalling = false;
-        }
-
+    void Jump()
+    {
         if (Input.GetButtonDown("Jump"))
         {
             if (CheckRayCollision(0))
@@ -79,17 +83,22 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
             }
         }
+    }
 
+    /// <summary>
+    /// handles detection and application of wall stick
+    /// </summary>
+    void WallStick()
+    {
         if ((CheckRayCollision(1) || CheckRayCollision(2)) && isFalling)
         {
             rb.AddForce(-Physics2D.gravity / stickiness);
-            
-
         }
-
-        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
     }
 
+    /// <summary>
+    /// casts rays from player's center
+    /// </summary>
     void CastRays()
     {
         int layer_environment = 1 << 9;
@@ -103,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// returns true if the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">index of the raycastHit to test from raycastHits array</param>
     /// <returns></returns>
     bool CheckRayCollision(int index)
     {
@@ -111,27 +120,31 @@ public class PlayerMovement : MonoBehaviour
         return raycastHits[index].collider != null;
     }
 
-    bool CheckWallStick()
-    {
-        return CheckRayCollision(1) || CheckRayCollision(2);
-    }
-
+    /// <summary>
+    /// applies the given force to the player
+    /// </summary>
+    /// <param name="knockback">the force to be applied to the player</param>
+    /// <param name="groundRequired">does the player need to be on the ground?</param>
     public void AddKnockback(Vector2 knockback, bool groundRequired)
     {
         if (groundRequired)
         {
             if (!CheckRayCollision(0))
             {
-                AddForce(knockback);
+                rb.AddForce(knockback);
             }
         }
         else
         {
-            AddForce(knockback);
+            rb.AddForce(knockback);
         }
         
     }
 
-    private void AddForce(Vector2 force) { rb.AddForce(force); }
+    /// <summary>
+    /// helper function to RigidBody.AddForce to allow seperated components without having to manually make a new vector
+    /// </summary>
+    /// <param name="x">force in the x direction</param>
+    /// <param name="y">force in the y direction</param>
     private void AddForce(float x, float y) { rb.AddForce(new Vector2(x, y)); }
 }

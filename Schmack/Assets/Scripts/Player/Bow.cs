@@ -9,18 +9,24 @@ public class Bow : MonoBehaviour
     float powerInput = 0.0f;
 
     List<GameObject> arrows = new List<GameObject>();
+
+    [Header("Firing")]
     [SerializeField] GameObject pref_arrow;
     [SerializeField] float shotPower = 1.0f;
     [SerializeField] float shotCooldown = 1.0f;
     [SerializeField] float knockbackForce = 1.0f;
 
     [SerializeField] GameObject shootPoint;
-    float timer = 0.0f;
+    float coolDownTimer = 0.0f;
+
+    [Header("Timescaling")]
+    [SerializeField] float timeScaleMin = 0.5f; //the slowest the game will go on bow drawback
+    [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -29,18 +35,20 @@ public class Bow : MonoBehaviour
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
 
-        if(timer > 0)
+        if(coolDownTimer > 0)
         {
-            timer -= Time.deltaTime;
+            coolDownTimer -= Time.deltaTime;
         }
 
-        if(powerInput == 1 && timer <= 0.0f)
+        if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
+            Time.timeScale = timeScaleMin;
             isDrawnBack = true;
         }
         else if(powerInput == 0 && isDrawnBack)
         {
-            timer = shotCooldown;
+            Time.timeScale = timeScaleMax;
+            coolDownTimer = shotCooldown;
             isDrawnBack = false;
             GameObject newArrow = Instantiate(pref_arrow, shootPoint.transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
             newArrow.GetComponent<Arrow>().AddForce(direction * shotPower);
