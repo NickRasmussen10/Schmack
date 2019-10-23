@@ -6,6 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
 
+    [Header("Vibe")]
+    [SerializeField] float timeToVibe = 3;
+
     [Header("Movement - Vibing")]
     [SerializeField] float acceleration_fast = 8;
     [SerializeField] float maxSpeed_fast = 10;
@@ -24,12 +27,15 @@ public class PlayerMovement : MonoBehaviour
     float acceleration;
     float maxSpeed;
     float jumpForce;
+    float vibeThreshold = 0.0f;
 
     RaycastHit2D[] raycastHits = new RaycastHit2D[3];
 
     bool isFalling = false;
     bool vibing = false;
     public bool GetVibing() { return vibing; }
+
+    float vibeTimer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -39,14 +45,17 @@ public class PlayerMovement : MonoBehaviour
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
+        vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.9f;
+        vibeTimer = timeToVibe;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Vibe_Temp"))
+        VibeCheck();
+        if (vibeTimer <= 0)
         {
-            VibeCheck();
+            VibeChange();
         }
         JoystickMovement();
         CastRays();
@@ -56,10 +65,25 @@ public class PlayerMovement : MonoBehaviour
         WallStick();
     }
 
+    void VibeCheck()
+    {
+        if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold))
+        {
+            Debug.Log("vibe incoming");
+            vibeTimer -= Time.deltaTime;
+        }
+        else
+        {
+            vibeTimer = timeToVibe;
+        }
+    }
+
+
+
     /// <summary>
     /// handles swapping between vibe state and yuck state
     /// </summary>
-    void VibeCheck()
+    void VibeChange()
     {
         Debug.Log("vibe check");
         vibing = !vibing;
