@@ -10,6 +10,9 @@ public class Bow : MonoBehaviour
 
     List<GameObject> arrows = new List<GameObject>();
 
+    [SerializeField] GameObject indicator;
+    float indicatorDistance = 2.0f;
+
     [Header("Firing")]
     [SerializeField] GameObject pref_arrow;
     [SerializeField] float shotPower = 1.0f;
@@ -35,10 +38,9 @@ public class Bow : MonoBehaviour
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
 
-        if(coolDownTimer > 0)
-        {
-            coolDownTimer -= Time.deltaTime;
-        }
+        if (direction.sqrMagnitude > 0) SetIndicatorPosition();
+
+        if(coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
 
         if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
@@ -55,5 +57,13 @@ public class Bow : MonoBehaviour
             arrows.Add(newArrow);
             gameObject.GetComponent<PlayerMovement>().AddKnockback(-direction * knockbackForce, true);
         }
+    }
+
+    /// <summary>
+    /// note: this implementation of indicator will become obsolete when player arm/bow rotation is implemented
+    /// </summary>
+    void SetIndicatorPosition()
+    {
+        indicator.transform.position = (Vector2)transform.position + (direction * indicatorDistance);
     }
 }
