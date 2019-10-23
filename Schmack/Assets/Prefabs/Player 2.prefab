@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d697a4bede7617b4ea3df6c4e99dc7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 100
 --- !u!114 &7165203409215261864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,11 +839,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38505beb92038384887c6f76316ca6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 8
-  maxSpeed: 10
-  jumpForce: 250
+  timeToVibe: 1
+  acceleration_fast: 20
+  maxSpeed_fast: 10
+  jumpForce_fast: 350
+  acceleration_slow: 10
+  maxSpeed_slow: 6
+  jumpForce_slow: 250
   stickiness: 1
-  horizontalForce: 50
+  horizontalForce: 350
   wallJumpLimiter: 1.5
 --- !u!61 &8067614170982075601
 BoxCollider2D:
@@ -858,7 +862,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.021766812, y: -0.026085854}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.07072491}
@@ -869,7 +873,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.0001, y: 0.0001}
+  m_Size: {x: 0.67539304, y: 2.5721312}
   m_EdgeRadius: 0
 --- !u!50 &3633507917171904026
 Rigidbody2D:
@@ -891,7 +895,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6002866320425063521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,11 +908,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ae8e11a68d84041b6b66eae0953a25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pref_arrow: {fileID: 0}
-  shotPower: 1
+  pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
+    type: 3}
+  shotPower: 1000
   shotCooldown: 1
-  knockbackForce: 1
-  shootPoint: {fileID: 0}
+  knockbackForce: 500
+  shootPoint: {fileID: 555284230542117002}
   timeScaleMin: 0.5
   timeScaleMax: 1
 --- !u!111 &8335659302506908809
@@ -1174,6 +1179,12 @@ PrefabInstance:
 --- !u!4 &555284230542117003 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 432229367919697030, guid: b6232c83d1f7da64e91646d8b70ebfad,
+    type: 3}
+  m_PrefabInstance: {fileID: 165316251505038349}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &555284230542117002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 432229367919697031, guid: b6232c83d1f7da64e91646d8b70ebfad,
     type: 3}
   m_PrefabInstance: {fileID: 165316251505038349}
   m_PrefabAsset: {fileID: 0}

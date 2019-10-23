@@ -278,6 +278,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 659ae5bc9cdbaea499dde2b9e9d47ba7, type: 3}
+--- !u!1 &941446359 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7944556125056427149, guid: a4ec8b8b7b700944bbe0944509fff90e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1369938983}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1218936775
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -558,13 +564,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1281933060}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c811e5c6deb23f0428ff19abbd044d03, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a4debd66ad36204680022d774d8d9c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flow: {fileID: 0}
-  noFlow: {fileID: 0}
-  rain: {fileID: 0}
-  inFlow: 0
+  player: {fileID: 941446359}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1001 &1369938983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -631,56 +635,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4386465585214155445, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7165203409215261864, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: acceleration_slow
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7165203409215261864, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: acceleration_fast
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7165203409215261864, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: maxSpeed_slow
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7165203409215261864, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: timeToVibe
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8067614170982075601, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: -0.026085854
-      objectReference: {fileID: 0}
-    - target: {fileID: 8067614170982075601, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 2.5721312
-      objectReference: {fileID: 0}
-    - target: {fileID: 8067614170982075601, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Offset.x
-      value: -0.021766812
-      objectReference: {fileID: 0}
-    - target: {fileID: 8067614170982075601, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.67539304
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633507917171904026, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ec8b8b7b700944bbe0944509fff90e, type: 3}
