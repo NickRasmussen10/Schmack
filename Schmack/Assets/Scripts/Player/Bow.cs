@@ -10,7 +10,8 @@ public class Bow : MonoBehaviour
 
     List<GameObject> arrows = new List<GameObject>();
 
-    [SerializeField] GameObject indicator;
+    [SerializeField] GameObject pref_indicator;
+    GameObject indicator;
     float indicatorDistance = 2.0f;
 
     [Header("Firing")]
@@ -29,7 +30,7 @@ public class Bow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        indicator = Instantiate(pref_indicator);
     }
 
     // Update is called once per frame
