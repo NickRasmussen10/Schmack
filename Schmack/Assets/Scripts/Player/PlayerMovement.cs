@@ -116,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("IsRunning", true);
         }
         rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
+        
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
             if (rb.velocity.x > 0 && CheckRayCollision(0))
@@ -140,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+        if (rb.velocity.x > 0) gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else if(rb.velocity.x < 0) gameObject.transform.localScale = new Vector3(-1, 1, 1);
     }
 
     void Jump()
