@@ -145,7 +145,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("TakeOff");
-            anim.SetBool("IsJumping", true);
             if (CheckRayCollision(0))
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
@@ -158,6 +157,10 @@ public class PlayerMovement : MonoBehaviour
             else if (CheckRayCollision(2))
             {
                 rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
+            }
+            else
+            {
+                anim.SetBool("IsJumping", true);
             }
             
         }
