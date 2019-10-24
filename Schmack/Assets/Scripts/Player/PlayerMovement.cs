@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     RaycastHit2D[] raycastHits = new RaycastHit2D[3];
 
     bool isFalling = false;
+    bool isGrounded = false;
+    bool isOnWall = false;
     bool vibing = false;
     public bool GetVibing() { return vibing; }
 
@@ -114,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("IsRunning", true);
         }
         rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
+        
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
             if (rb.velocity.x > 0 && CheckRayCollision(0))
@@ -138,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+        if (rb.velocity.x > 0) gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else if(rb.velocity.x < 0) gameObject.transform.localScale = new Vector3(-1, 1, 1);
     }
 
     void Jump()
@@ -145,10 +150,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             anim.SetTrigger("TakeOff");
-            if (CheckRayCollision(0))
+            if (isGrounded)
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
-                anim.SetBool("IsJumping", false);
             }
             else if (CheckRayCollision(1))
             {
@@ -158,12 +162,16 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
             }
-            else
-            {
-                anim.SetBool("IsJumping", true);
-            }
             
         }
+
+        JumpAnimations();
+    }
+
+    void JumpAnimations()
+    {
+        if (isGrounded) anim.SetBool("IsJumping", false);
+        else anim.SetBool("IsJumping", true);
     }
 
     /// <summary>
@@ -171,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void WallStick()
     {
-        if ((CheckRayCollision(1) || CheckRayCollision(2)) && isFalling)
+        if (isOnWall && isFalling)
         {
             rb.AddForce(-Physics2D.gravity / stickiness);
         }
@@ -185,9 +193,15 @@ public class PlayerMovement : MonoBehaviour
         int layer_environment = 1 << 9;
         int layer_enemies = 1 << 11;
         int finalLayerMask = layer_environment | layer_enemies;
-        raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask);
-        raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask);
-        raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask);
+        //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
+        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null) isGrounded = true;
+        else isGrounded = false;
+
+        //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
+        if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null ||
+            (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null) &&
+            !isGrounded) isOnWall = true;
+        else isOnWall = false;
     }
 
     /// <summary>

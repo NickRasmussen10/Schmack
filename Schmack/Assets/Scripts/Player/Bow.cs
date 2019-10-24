@@ -40,6 +40,7 @@ public class Bow : MonoBehaviour
         powerInput = Input.GetAxis("Fire1");
 
         if (direction.sqrMagnitude > 0) SetIndicatorPosition();
+        else { indicator.SetActive(false); }
 
         if(coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
 
@@ -65,6 +66,7 @@ public class Bow : MonoBehaviour
     /// </summary>
     void SetIndicatorPosition()
     {
+        indicator.SetActive(true);
         indicator.transform.position = (Vector2)transform.position + (direction * indicatorDistance);
     }
 }
