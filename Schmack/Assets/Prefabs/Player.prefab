@@ -88,7 +88,7 @@ MonoBehaviour:
   maxSpeed_slow: 7
   jumpForce_slow: 250
   stickiness: 1
-  horizontalForce: 50
+  horizontalForce: 350
   wallJumpLimiter: 1.5
 --- !u!114 &6095022649630159293
 MonoBehaviour:
@@ -110,8 +110,9 @@ MonoBehaviour:
   shotCooldown: 1
   knockbackForce: 500
   shootPoint: {fileID: 8532634141500619840}
-  timeScaleMin: 0.5
+  timeScaleMin: 0.1
   timeScaleMax: 1
+  timeScale: 0
 --- !u!50 &1713254931261033139
 Rigidbody2D:
   serializedVersion: 4
@@ -127,7 +128,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

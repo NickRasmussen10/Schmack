@@ -26,11 +26,13 @@ public class Bow : MonoBehaviour
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.5f; //the slowest the game will go on bow drawback
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
+    public float timeScale;
 
     // Start is called before the first frame update
     void Start()
     {
         indicator = Instantiate(pref_indicator);
+        timeScale = timeScaleMax;
     }
 
     // Update is called once per frame
@@ -46,12 +48,12 @@ public class Bow : MonoBehaviour
 
         if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
-            Time.timeScale = timeScaleMin;
+            timeScale = timeScaleMin;
             isDrawnBack = true;
         }
         else if(powerInput == 0 && isDrawnBack)
         {
-            Time.timeScale = timeScaleMax;
+            timeScale = timeScaleMax;
             coolDownTimer = shotCooldown;
             isDrawnBack = false;
             GameObject newArrow = Instantiate(pref_arrow, shootPoint.transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
