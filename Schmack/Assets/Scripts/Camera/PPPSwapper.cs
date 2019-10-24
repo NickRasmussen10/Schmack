@@ -5,8 +5,8 @@ using UnityEngine.PostProcessing;
 
 public class PPPSwapper : MonoBehaviour
 {
-    [SerializeField] PostProcessingProfile goodVibe;
-    [SerializeField] PostProcessingProfile badVibe;
+    [SerializeField] PostProcessingProfile flow;
+    [SerializeField] PostProcessingProfile noFlow;
 
     bool vibing;
     PlayerMovement playerMovement;
@@ -22,16 +22,17 @@ public class PPPSwapper : MonoBehaviour
     void Update()
     {
         //if the vibe has changed
-        if(vibing != playerMovement.GetVibing())
+        if (vibing != playerMovement.GetVibing())
         {
             vibing = playerMovement.GetVibing();
             if (vibing)
             {
-                GetComponent<PostProcessingBehaviour>().profile = goodVibe;
+                GetComponent<PostProcessingBehaviour>().profile = flow;
+
             }
             else
             {
-                GetComponent<PostProcessingBehaviour>().profile = badVibe;
+                GetComponent<PostProcessingBehaviour>().profile = noFlow;
             }
         }
     }

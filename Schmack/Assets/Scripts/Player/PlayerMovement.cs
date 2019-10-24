@@ -71,7 +71,6 @@ public class PlayerMovement : MonoBehaviour
         isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
         WallStick();
-        RBAddForce(rb, Physics2D.gravity, temp_bow.timeScale);
     }
 
     void VibeCheck()
@@ -120,17 +119,14 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("IsRunning", true);
         }
-        //rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-        RBAddForce(rb, new Vector2(hInput * acceleration, 0.0f), temp_bow.timeScale);
+        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
         
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
             if (rb.velocity.x > 0 && CheckRayCollision(0))
             {
                 //apply friction to the left
-
-                //rb.AddForce(new Vector2(-acceleration, 0.0f));
-                RBAddForce(rb, new Vector2(-acceleration, 0.0f), temp_bow.timeScale);
+                rb.AddForce(new Vector2(-acceleration, 0.0f));
                 if (rb.velocity.x < 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
@@ -139,9 +135,7 @@ public class PlayerMovement : MonoBehaviour
             else if (rb.velocity.x < 0 && CheckRayCollision(0))
             {
                 //apply friciton to the right
-
-                //rb.AddForce(new Vector2(acceleration, 0.0f));
-                RBAddForce(rb, new Vector2(acceleration, 0.0f), temp_bow.timeScale);
+                rb.AddForce(new Vector2(acceleration, 0.0f));
                 if (rb.velocity.x > 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
@@ -160,18 +154,15 @@ public class PlayerMovement : MonoBehaviour
             anim.SetTrigger("TakeOff");
             if (isGrounded)
             {
-                //rb.AddForce(new Vector2(0.0f, jumpForce));
-                RBAddForce(rb, new Vector2(0.0f, jumpForce), temp_bow.timeScale);
+                rb.AddForce(new Vector2(0.0f, jumpForce));
             }
             else if (CheckRayCollision(1))
             {
-                //rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
-                RBAddForce(rb, new Vector2(horizontalForce, jumpForce * wallJumpLimiter), temp_bow.timeScale);
+                rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
             }
             else if (CheckRayCollision(2))
             {
-                //rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
-                RBAddForce(rb, new Vector2(-horizontalForce, jumpForce * wallJumpLimiter), temp_bow.timeScale);
+                rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
             }
             
         }
@@ -192,8 +183,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isOnWall && isFalling)
         {
-            //rb.AddForce(-Physics2D.gravity / stickiness);
-            RBAddForce(rb, -Physics2D.gravity / stickiness, temp_bow.timeScale);
+            rb.AddForce(-Physics2D.gravity / stickiness);
         }
     }
 
@@ -237,14 +227,12 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!CheckRayCollision(0))
             {
-                //rb.AddForce(knockback);
-                RBAddForce(rb, knockback, temp_bow.timeScale);
+                rb.AddForce(knockback);
             }
         }
         else
         {
-            //rb.AddForce(knockback);
-            RBAddForce(rb, knockback, temp_bow.timeScale);
+            rb.AddForce(knockback);
         }
         
     }
@@ -255,6 +243,4 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="x">force in the x direction</param>
     /// <param name="y">force in the y direction</param>
     private void AddForce(float x, float y) { rb.AddForce(new Vector2(x, y)); }
-
-    void RBAddForce(Rigidbody2D rb, Vector2 force, float tScale) { rb.AddForce(force * tScale); }
 }
