@@ -38,7 +38,7 @@ public class Bow : MonoBehaviour
     {
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
-        Debug.Log(powerInput);
+        Debug.Log("Power input: " + powerInput);
 
         if (direction.sqrMagnitude > 0) SetIndicatorPosition();
         else { indicator.SetActive(false); }
