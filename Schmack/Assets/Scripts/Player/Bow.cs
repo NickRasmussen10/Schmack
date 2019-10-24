@@ -38,8 +38,10 @@ public class Bow : MonoBehaviour
     {
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
+        Debug.Log(powerInput);
 
         if (direction.sqrMagnitude > 0) SetIndicatorPosition();
+        else { indicator.SetActive(false); }
 
         if(coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
 
@@ -65,6 +67,7 @@ public class Bow : MonoBehaviour
     /// </summary>
     void SetIndicatorPosition()
     {
+        indicator.SetActive(true);
         indicator.transform.position = (Vector2)transform.position + (direction * indicatorDistance);
     }
 }
