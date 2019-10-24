@@ -71,7 +71,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold / 2))
         {
-            Debug.Log("vibe incoming");
             vibeTimer -= Time.deltaTime;
         }
         else
@@ -87,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void VibeChange()
     {
-        Debug.Log("vibe check");
         vibing = !vibing;
 
         if (vibing)
