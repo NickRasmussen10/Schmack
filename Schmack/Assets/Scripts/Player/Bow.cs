@@ -55,7 +55,6 @@ public class Bow : MonoBehaviour
             if (lerpVal < 0) lerpVal = 0;
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            Debug.Log(Time.timeScale);
             if(!isDrawnBack) isDrawnBack = true;
         }
         else if(powerInput == 0 && isDrawnBack)

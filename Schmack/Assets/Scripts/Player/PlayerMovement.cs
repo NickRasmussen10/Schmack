@@ -180,31 +180,21 @@ public class PlayerMovement : MonoBehaviour
             }
             
         }
-        //JumpAnimations();
     }
 
-    //void JumpAnimations()
-    //{
-    //    if (isGrounded) anim.SetBool("IsJumping", false);
-    //    else anim.SetBool("IsJumping", true);
-    //}
 
     void Animations()
     {
-        //animations borked because resetting every frame?
-        if (!isOnWall && !isGrounded)
+        anim.SetBool("OnWall", isOnWall);
+        anim.SetBool("IsVibing", vibing);
+        if (!isOnWall || !isGrounded)
             anim.SetBool("IsJumping", true);
         else
             anim.SetBool("IsJumping", false);
-        anim.SetBool("OnWall", isOnWall);
-        anim.SetBool("IsFalling", isFalling);
-        anim.SetBool("IsVibing", vibing);
         if (Mathf.Abs(rb.velocity.x) > 0 && isGrounded)
             anim.SetBool("IsRunning", true);
         else if (rb.velocity.x == 0)
             anim.SetBool("IsRunning", false);
-
-        anim.SetBool("Loading", bow.isDrawnBack);
     }
 
     /// <summary>

@@ -313,31 +313,31 @@ AnimatorStateMachine:
     m_Position: {x: 540, y: -500, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8461490971117257913}
-    m_Position: {x: 575, y: -435, z: 0}
+    m_Position: {x: 910, y: -460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1823082454123831494}
-    m_Position: {x: 610, y: -370, z: 0}
+    m_Position: {x: 940, y: -400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1910793847652560742}
-    m_Position: {x: 645, y: -305, z: 0}
+    m_Position: {x: 980, y: -330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7256094288157514999}
-    m_Position: {x: 680, y: -240, z: 0}
+    m_Position: {x: 1010, y: -270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -637383787106415764}
-    m_Position: {x: 715, y: -175, z: 0}
+    m_Position: {x: 1050, y: -200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5614174257313072504}
-    m_Position: {x: 750, y: -110, z: 0}
+    m_Position: {x: 1080, y: -140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2928147641796342674}
-    m_Position: {x: 785, y: -45, z: 0}
+    m_Position: {x: 1120, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7678651834184794857}
-    m_Position: {x: 820, y: 20, z: 0}
+    m_Position: {x: 1150, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3556508166209242251}
-    m_Position: {x: 855, y: 85, z: 0}
+    m_Position: {x: 1190, y: 60, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -2818149616875516261}
@@ -1088,9 +1088,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.05
+  m_TransitionDuration: 0.04446256
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 0.78876233
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1134,9 +1134,6 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: OnWall
-    m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: IsJumping
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4536633538068263817}
