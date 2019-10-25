@@ -28,33 +28,32 @@ public class PlayerMovement : MonoBehaviour
     float maxSpeed;
     float jumpForce;
     float vibeThreshold = 0.0f;
+    Vector2 direction = Vector2.zero;
+    Bow bow;
 
     RaycastHit2D[] raycastHits = new RaycastHit2D[3];
 
     bool isFalling = false;
     bool isGrounded = false;
     bool isOnWall = false;
-    bool vibing = false;
-    public bool GetVibing() { return vibing; }
+    public bool vibing = false;
 
     private Animator anim;
     float vibeTimer = 0.0f;
-
-    Bow temp_bow;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        bow = gameObject.GetComponent<Bow>();
         vibing = false;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
         vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.9f;
         vibeTimer = timeToVibe;
-
-        temp_bow = gameObject.GetComponent<Bow>();
+        direction = new Vector2(1.0f, 1.0f);
     }
 
     // Update is called once per frame
@@ -66,11 +65,13 @@ public class PlayerMovement : MonoBehaviour
             VibeChange();
         }
         JoystickMovement();
+        UpdatePlayerDirection();
         CastRays();
         //if player is going downward, flag them as falling
         isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
         WallStick();
+        Animations();
     }
 
     void VibeCheck()
@@ -110,15 +111,7 @@ public class PlayerMovement : MonoBehaviour
 
     void JoystickMovement()
     {
-        float hInput = Input.GetAxis("LeftHorizontal");
-        if(hInput==0)
-        {
-            anim.SetBool("IsRunning", false);
-        }
-        else
-        {
-            anim.SetBool("IsRunning", true);
-        }
+        float hInput = Input.GetAxis("LeftHorizontal"); ;
         rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
         
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
@@ -143,8 +136,29 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-        if (rb.velocity.x > 0) gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if(rb.velocity.x < 0) gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        if (rb.velocity.x > 0)
+            gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else if(rb.velocity.x < 0)
+            gameObject.transform.localScale = new Vector3(-1, 1, 1);
+    }
+
+    void UpdatePlayerDirection()
+    {
+        if (bow.direction.sqrMagnitude > 0)
+        {
+            Debug.Log("bow direction");
+            direction.x = bow.direction.x > 0 ? 1 : -1;
+        }
+        else if (isOnWall)
+        {
+            direction.x = CheckRayCollision(1) ? 1 : -1;
+        }
+        else
+        {
+            direction.x *= (direction.x > 0) == (rb.velocity.x >= 0) ? 1 : -1;
+        }
+
+        gameObject.transform.localScale = direction;
     }
 
     void Jump()
@@ -166,14 +180,31 @@ public class PlayerMovement : MonoBehaviour
             }
             
         }
-
-        JumpAnimations();
+        //JumpAnimations();
     }
 
-    void JumpAnimations()
+    //void JumpAnimations()
+    //{
+    //    if (isGrounded) anim.SetBool("IsJumping", false);
+    //    else anim.SetBool("IsJumping", true);
+    //}
+
+    void Animations()
     {
-        if (isGrounded) anim.SetBool("IsJumping", false);
-        else anim.SetBool("IsJumping", true);
+        //animations borked because resetting every frame?
+        if (!isOnWall && !isGrounded)
+            anim.SetBool("IsJumping", true);
+        else
+            anim.SetBool("IsJumping", false);
+        anim.SetBool("OnWall", isOnWall);
+        anim.SetBool("IsFalling", isFalling);
+        anim.SetBool("IsVibing", vibing);
+        if (Mathf.Abs(rb.velocity.x) > 0 && isGrounded)
+            anim.SetBool("IsRunning", true);
+        else if (rb.velocity.x == 0)
+            anim.SetBool("IsRunning", false);
+
+        anim.SetBool("Loading", bow.isDrawnBack);
     }
 
     /// <summary>
@@ -196,14 +227,18 @@ public class PlayerMovement : MonoBehaviour
         int layer_enemies = 1 << 11;
         int finalLayerMask = layer_environment | layer_enemies;
         //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
-        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null) isGrounded = true;
-        else isGrounded = false;
+        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
+            isGrounded = true;
+        else
+            isGrounded = false;
 
         //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
         if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null ||
             (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null) &&
-            !isGrounded) isOnWall = true;
-        else isOnWall = false;
+            !isGrounded)
+            isOnWall = true;
+        else
+            isOnWall = false;
     }
 
     /// <summary>

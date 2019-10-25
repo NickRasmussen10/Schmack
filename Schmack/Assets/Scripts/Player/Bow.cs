@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Bow : MonoBehaviour
 {
-    Vector2 direction;
-    bool isDrawnBack = false;
+    public Vector2 direction;
+    public bool isDrawnBack = false;
     float powerInput = 0.0f;
 
     List<GameObject> arrows = new List<GameObject>();
@@ -56,7 +56,7 @@ public class Bow : MonoBehaviour
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             Debug.Log(Time.timeScale);
-            isDrawnBack = true;
+            if(!isDrawnBack) isDrawnBack = true;
         }
         else if(powerInput == 0 && isDrawnBack)
         {
@@ -69,6 +69,10 @@ public class Bow : MonoBehaviour
             newArrow.GetComponent<Arrow>().AddForce(direction * shotPower);
             arrows.Add(newArrow);
             gameObject.GetComponent<PlayerMovement>().AddKnockback(-direction * knockbackForce, true);
+        }
+        else
+        {
+            isDrawnBack = false;
         }
     }
 
