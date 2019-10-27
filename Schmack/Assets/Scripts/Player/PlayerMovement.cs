@@ -195,6 +195,8 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("IsRunning", true);
         else if (rb.velocity.x == 0)
             anim.SetBool("IsRunning", false);
+        anim.SetBool("Shooting", bow.isDrawnBack);
+
     }
 
     /// <summary>

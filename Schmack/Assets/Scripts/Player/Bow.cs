@@ -73,6 +73,9 @@ public class Bow : MonoBehaviour
         {
             isDrawnBack = false;
         }
+
+
+        Debug.Log(isDrawnBack);
     }
 
     /// <summary>
