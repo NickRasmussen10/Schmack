@@ -187,7 +187,7 @@ public class PlayerMovement : MonoBehaviour
     {
         anim.SetBool("OnWall", isOnWall);
         anim.SetBool("IsVibing", vibing);
-        if (!isOnWall || !isGrounded)
+        if (!isOnWall && !isGrounded)
             anim.SetBool("IsJumping", true);
         else
             anim.SetBool("IsJumping", false);
