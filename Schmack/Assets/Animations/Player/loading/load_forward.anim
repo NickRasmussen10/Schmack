@@ -327,7 +327,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: 0, y: 0, z: 10.656}
+        value: {x: 0, y: 0, z: 80.995}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -718,6 +718,34 @@ AnimationClip:
     path: spine/r_upperarm/r_forearm/bow/bow/string/arrow_player (1)
     classID: 1
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1.5666667
+        value: 6
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_SortingOrder
+    path: spine/l_upperarm/l_forearm/arrow_player
+    classID: 212
+    script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
@@ -816,6 +844,13 @@ AnimationClip:
       script: {fileID: 0}
       typeID: 1
       customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 368233295
+      attribute: 3762991556
+      script: {fileID: 0}
+      typeID: 212
+      customType: 26
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 4252192631
@@ -2276,7 +2311,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 10.656
+        value: 80.995
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -3083,6 +3118,34 @@ AnimationClip:
     path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
     classID: 4
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1.5666667
+        value: 6
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_SortingOrder
+    path: spine/l_upperarm/l_forearm/arrow_player
+    classID: 212
+    script: {fileID: 0}
   m_EulerEditorCurves:
   - curve:
       serializedVersion: 2
@@ -3330,8 +3393,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
-    path: spine/r_upperarm
+    attribute: m_LocalEulerAngles.z
+    path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3341,7 +3404,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: spine/r_upperarm
+    path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3350,8 +3413,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: spine/r_upperarm
+    attribute: m_LocalEulerAngles.x
+    path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3541,7 +3604,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
+    path: spine/r_upperarm
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3551,7 +3614,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
+    path: spine/r_upperarm
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3561,7 +3624,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: spine/r_upperarm/r_forearm/bow/bow/string/string_root/string_root_3
+    path: spine/r_upperarm
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 1
