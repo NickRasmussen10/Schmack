@@ -24,6 +24,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
 
+    enum AnimationState
+    {
+        idle,
+        running,
+        jumping,
+        wallstick,
+    }
+    AnimationState animState;
+
     float acceleration;
     float maxSpeed;
     float jumpForce;
@@ -47,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponent<Bow>();
+        animState = AnimationState.idle;
         vibing = false;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
@@ -135,6 +145,8 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+        else
+            animState = AnimationState.running;
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
         if (rb.velocity.x > 0)
             gameObject.transform.localScale = new Vector3(1, 1, 1);
@@ -146,7 +158,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (bow.direction.sqrMagnitude > 0)
         {
-            Debug.Log("bow direction");
             direction.x = bow.direction.x > 0 ? 1 : -1;
         }
         else if (isOnWall)
@@ -178,25 +189,22 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
             }
-            
         }
+
+        if (!isGrounded && !isOnWall)
+            animState = AnimationState.jumping;
     }
 
 
     void Animations()
     {
+        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetBool("OnWall", isOnWall);
+        anim.SetBool("IsJumping", !isGrounded && !isOnWall);
         anim.SetBool("IsVibing", vibing);
-        if (!isOnWall && !isGrounded)
-            anim.SetBool("IsJumping", true);
-        else
-            anim.SetBool("IsJumping", false);
-        if (Mathf.Abs(rb.velocity.x) > 0 && isGrounded)
-            anim.SetBool("IsRunning", true);
-        else if (rb.velocity.x == 0)
-            anim.SetBool("IsRunning", false);
-        anim.SetBool("Drawn", bow.isDrawnBack);
+        Debug.Log(rb.velocity.x);
 
+        bool faceingForward = (direction.x > 0) == (rb.velocity.x > 0) ? true : false; //if direction.x and velocity.x are both positive or negative, facing forward is true
     }
 
     /// <summary>
@@ -206,6 +214,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isOnWall && isFalling)
         {
+            animState = AnimationState.wallstick;
             rb.AddForce(-Physics2D.gravity / stickiness);
         }
     }
