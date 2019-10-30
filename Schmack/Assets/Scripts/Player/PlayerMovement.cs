@@ -149,15 +149,11 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
         {
             x = Input.GetAxis("RightHorizontal");
-            Debug.Log("Face bow");
-            Debug.Log(x);
             direction.x = x > 0 ? 1 : -1;
         }
         else if(Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0)
         {
             x = Input.GetAxis("LeftHorizontal");
-            Debug.Log("face run");
-            Debug.Log(x);
             direction.x = x > 0 ? 1 : -1;
         }
         else if (isOnWall)
@@ -203,7 +199,6 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("Fire", bow.fire);
         if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime  >= 1.0f && anim.GetCurrentAnimatorStateInfo(0).IsName("standing_fire"))
         {
-            Debug.Log("fire ended");
             anim.Play("standing_load");
         }
     }
