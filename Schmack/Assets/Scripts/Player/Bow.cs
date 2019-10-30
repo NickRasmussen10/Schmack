@@ -6,6 +6,7 @@ public class Bow : MonoBehaviour
 {
     public Vector2 direction;
     public bool isDrawnBack = false;
+    public bool fire = false;
     float powerInput = 0.0f;
 
     List<GameObject> arrows = new List<GameObject>();
@@ -41,6 +42,8 @@ public class Bow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (fire)
+            fire = false;
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
 
@@ -51,6 +54,7 @@ public class Bow : MonoBehaviour
 
         if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
+            fire = true;
             if(lerpVal > 0) lerpVal -= Time.deltaTime * 3f;
             if (lerpVal < 0) lerpVal = 0;
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
@@ -73,9 +77,6 @@ public class Bow : MonoBehaviour
         {
             isDrawnBack = false;
         }
-
-
-        Debug.Log(isDrawnBack);
     }
 
     /// <summary>
