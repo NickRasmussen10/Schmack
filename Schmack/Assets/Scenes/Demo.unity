@@ -4062,46 +4062,53 @@ MonoBehaviour:
   sounds:
   - name: BG
     clip: {fileID: 8300000, guid: 4367958b343d2a44697d83106680b02f, type: 3}
-    volume: 0.437
+    volume: 1
     pitch: 1
     volRand: 0
     pitchRand: 0
+    loop: 1
   - name: BowDraw
     clip: {fileID: 8300000, guid: e57b48095ec935f49a8c9c68bf4c9c28, type: 3}
     volume: 0
     pitch: 0
     volRand: 0
     pitchRand: 0
+    loop: 0
   - name: BowFire
     clip: {fileID: 8300000, guid: cece8c00bb4c9094193aa4b82a98d6d8, type: 3}
     volume: 0
     pitch: 0
     volRand: 0
     pitchRand: 0
+    loop: 0
   - name: ArrowFly
     clip: {fileID: 8300000, guid: bc35eaba5e0bf974d9508e508a961d88, type: 3}
     volume: 0
     pitch: 0
     volRand: 0
     pitchRand: 0
+    loop: 0
   - name: Walk
     clip: {fileID: 8300000, guid: 5ca5a028bafc4e947aa64812d952da93, type: 3}
     volume: 0
     pitch: 0
     volRand: 0
     pitchRand: 0
+    loop: 0
   - name: Ambient
     clip: {fileID: 8300000, guid: 975a342805f8f4341afdcdb9b3f01475, type: 3}
-    volume: 0.224
+    volume: 1
     pitch: 0
     volRand: 0
     pitchRand: 0
+    loop: 1
   - name: Enemy
     clip: {fileID: 8300000, guid: add0a4e2647cbec488436ac812ce1667, type: 3}
     volume: 0
     pitch: 0
     volRand: 0
     pitchRand: 0
+    loop: 0
 --- !u!4 &1267079195
 Transform:
   m_ObjectHideFlags: 0
@@ -4652,10 +4659,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1497588730}
   - component: {fileID: 1497588729}
-  - component: {fileID: 1497588728}
   - component: {fileID: 1497588731}
   - component: {fileID: 1497588733}
   - component: {fileID: 1497588732}
+  - component: {fileID: 1497588728}
   - component: {fileID: 1497588734}
   m_Layer: 0
   m_Name: Main Camera

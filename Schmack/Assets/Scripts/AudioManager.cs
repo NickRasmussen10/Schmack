@@ -20,12 +20,15 @@ public class Sound
     [Range(0f,0.5f)]        //Slider for pitch randomization
     public float pitchRand = 0.1f;  //Random Pitch multiplyer
 
+    public bool loop = false;
+
     private AudioSource source; //reference to Audio Source
     
     public void SetSource(AudioSource _source)
     {
         source = _source;
         source.clip = clip;     //Sets Audio clip
+        source.loop = loop;     //Sets loop value
     }
 
     //Method to play the audio
@@ -34,6 +37,7 @@ public class Sound
         source.volume = volume * (1 + Random.Range(-volRand / 2f, volRand / 2f));
         source.pitch = pitch * (1 + Random.Range(-pitchRand / 2f, pitchRand / 2f));
         source.Play();
+        Debug.Log("play");
     }
 }
 

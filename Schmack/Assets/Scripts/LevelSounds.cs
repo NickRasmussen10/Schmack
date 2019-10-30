@@ -7,21 +7,17 @@ public class LevelSounds : MonoBehaviour
 
     public AudioManager audioMan;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if(audioMan==null)
         {
             Debug.LogError("No audio manager found in scene");
         }
         audioMan = AudioManager.instance;
-
-        audioMan.PlaySound("BG");
-        audioMan.PlaySound("Ambient");
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        audioMan.PlaySound("BGMusic");
+        audioMan.PlaySound("AmbientSound");
     }
 }
