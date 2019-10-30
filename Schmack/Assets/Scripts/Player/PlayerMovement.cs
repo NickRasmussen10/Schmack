@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     float maxSpeed;
     float jumpForce;
     float vibeThreshold = 0.0f;
-    Vector2 direction = Vector2.zero;
+    public Vector2 direction = Vector2.zero;
     Bow bow;
 
     RaycastHit2D[] raycastHits = new RaycastHit2D[3];
@@ -145,9 +145,20 @@ public class PlayerMovement : MonoBehaviour
 
     void UpdatePlayerDirection()
     {
-        if (bow.direction.sqrMagnitude > 0)
+        float x = 0;
+        if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
         {
-            direction.x = bow.direction.x > 0 ? 1 : -1;
+            x = Input.GetAxis("RightHorizontal");
+            Debug.Log("Face bow");
+            Debug.Log(x);
+            direction.x = x > 0 ? 1 : -1;
+        }
+        else if(Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0)
+        {
+            x = Input.GetAxis("LeftHorizontal");
+            Debug.Log("face run");
+            Debug.Log(x);
+            direction.x = x > 0 ? 1 : -1;
         }
         else if (isOnWall)
         {
@@ -155,7 +166,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            direction.x *= (direction.x > 0) == (rb.velocity.x >= 0) ? 1 : -1;
+            //direction.x = rb.velocity.normalized.x;
+            //bow.direction.x = direction.x;
         }
 
         gameObject.transform.localScale = direction;
@@ -165,7 +177,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            anim.SetTrigger("TakeOff");
             if (isGrounded)
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
@@ -189,8 +200,12 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("IsJumping", !isGrounded && !isOnWall);
         anim.SetBool("IsVibing", vibing);
         anim.SetBool("Drawn", bow.isDrawnBack);
-        if (bow.fire)
-            anim.SetTrigger("Fire");
+        anim.SetBool("Fire", bow.fire);
+        if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime  >= 1.0f && anim.GetCurrentAnimatorStateInfo(0).IsName("standing_fire"))
+        {
+            Debug.Log("fire ended");
+            anim.Play("standing_load");
+        }
     }
 
     /// <summary>
