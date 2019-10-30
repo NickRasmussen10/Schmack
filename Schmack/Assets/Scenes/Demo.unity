@@ -4059,7 +4059,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db4eb6e30cec9b1488b6d0e5f7962b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: BG
+    clip: {fileID: 8300000, guid: 4367958b343d2a44697d83106680b02f, type: 3}
+    volume: 0.437
+    pitch: 1
+    volRand: 0
+    pitchRand: 0
+  - name: BowDraw
+    clip: {fileID: 8300000, guid: e57b48095ec935f49a8c9c68bf4c9c28, type: 3}
+    volume: 0
+    pitch: 0
+    volRand: 0
+    pitchRand: 0
+  - name: BowFire
+    clip: {fileID: 8300000, guid: cece8c00bb4c9094193aa4b82a98d6d8, type: 3}
+    volume: 0
+    pitch: 0
+    volRand: 0
+    pitchRand: 0
+  - name: ArrowFly
+    clip: {fileID: 8300000, guid: bc35eaba5e0bf974d9508e508a961d88, type: 3}
+    volume: 0
+    pitch: 0
+    volRand: 0
+    pitchRand: 0
+  - name: Walk
+    clip: {fileID: 8300000, guid: 5ca5a028bafc4e947aa64812d952da93, type: 3}
+    volume: 0
+    pitch: 0
+    volRand: 0
+    pitchRand: 0
+  - name: Ambient
+    clip: {fileID: 8300000, guid: 975a342805f8f4341afdcdb9b3f01475, type: 3}
+    volume: 0.224
+    pitch: 0
+    volRand: 0
+    pitchRand: 0
+  - name: Enemy
+    clip: {fileID: 8300000, guid: add0a4e2647cbec488436ac812ce1667, type: 3}
+    volume: 0
+    pitch: 0
+    volRand: 0
+    pitchRand: 0
 --- !u!4 &1267079195
 Transform:
   m_ObjectHideFlags: 0
@@ -4614,6 +4656,7 @@ GameObject:
   - component: {fileID: 1497588731}
   - component: {fileID: 1497588733}
   - component: {fileID: 1497588732}
+  - component: {fileID: 1497588734}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4727,6 +4770,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: 4f26e39173f79484eb75652157e54f78, type: 2}
+--- !u!114 &1497588734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497588727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb42979735a7944e91a6e1b81f70f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMan: {fileID: 1267079194}
 --- !u!4 &1501005741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8369201819341908234, guid: f0864f2a91b1c3a47aee15ac7ed26588,
