@@ -14,6 +14,12 @@ public class Sound
     [Range(0.5f,1.5f)]      //Slider for pitch
     public float pitch = 1f;
 
+    [Range(0f,0.5f)]        //Slider for volume randomization
+    public float volRand = 0.1f;   //Random Volume multiplyer
+
+    [Range(0f,0.5f)]        //Slider for pitch randomization
+    public float pitchRand = 0.1f;  //Random Pitch multiplyer
+
     private AudioSource source; //reference to Audio Source
     
     public void SetSource(AudioSource _source)
@@ -25,25 +31,51 @@ public class Sound
     //Method to play the audio
     public void Play()
     {
-        source.volume = volume;
-        source.pitch = pitch;
+        source.volume = volume * (1 + Random.Range(-volRand / 2f, volRand / 2f));
+        source.pitch = pitch * (1 + Random.Range(-pitchRand / 2f, pitchRand / 2f));
         source.Play();
     }
 }
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager instance;
+
     [SerializeField]
     Sound[] sounds;
+
+    private void Awake()
+    {
+        if(instance!=null)
+        {
+            Debug.LogError("More than one AudioManager in scene");
+        }
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        for(int i=0;i<sounds.Length;i++)
+        {
+            GameObject _go = new GameObject("Sound_" + i + "_" + sounds[i].name);
+            _go.transform.SetParent(this.transform);
+            sounds[i].SetSource(_go.AddComponent<AudioSource>());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlaySound(string name)
     {
-        
+        for(int i=0; i<sounds.Length;i++)
+        {
+            if(sounds[i].name==name)
+            {
+                sounds[i].Play();
+                return;
+            }
+        }
+        Debug.LogWarning("AudioManager: Sound not found in list: " + name);
     }
+
+
 }
