@@ -15,6 +15,8 @@ public class Bow : MonoBehaviour
     GameObject indicator;
     float indicatorDistance = 2.0f;
 
+    [SerializeField] GameObject[] arms;
+
     [Header("Firing")]
     [SerializeField] GameObject pref_arrow;
     [SerializeField] float shotPower = 1.0f;
@@ -47,14 +49,23 @@ public class Bow : MonoBehaviour
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
 
-        if (direction.sqrMagnitude > 0) SetIndicatorPosition();
-        else { indicator.SetActive(false); }
+        if(direction.sqrMagnitude == 0)
+            direction.x = gameObject.GetComponent<PlayerMovement>().direction.x;
+        SetIndicatorPosition();
+
+        //Vector2 target = (Vector2)transform.position + (direction * indicatorDistance);
+        //float angle = Mathf.Atan2((target - (Vector2)transform.position).y,
+        //        (target - (Vector2)transform.position).x)
+        //        * Mathf.Rad2Deg;
+        //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 360.0f);
+
+        //arms[0].transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 360.0f);
+        //arms[1].transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 360.0f);
 
         if(coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
 
         if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
-            fire = true;
             if(lerpVal > 0) lerpVal -= Time.deltaTime * 3f;
             if (lerpVal < 0) lerpVal = 0;
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
@@ -63,6 +74,7 @@ public class Bow : MonoBehaviour
         }
         else if(powerInput == 0 && isDrawnBack)
         {
+            fire = true;
             lerpVal = 1.0f;
             Time.timeScale = timeScaleMax;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -84,7 +96,6 @@ public class Bow : MonoBehaviour
     /// </summary>
     void SetIndicatorPosition()
     {
-        indicator.SetActive(true);
         indicator.transform.position = (Vector2)transform.position + (direction * indicatorDistance);
     }
 }
