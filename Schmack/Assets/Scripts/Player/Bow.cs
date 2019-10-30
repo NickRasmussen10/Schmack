@@ -13,7 +13,7 @@ public class Bow : MonoBehaviour
 
     [SerializeField] GameObject pref_indicator;
     GameObject indicator;
-    float indicatorDistance = 2.0f;
+    float indicatorDistance = 5.0f;
 
     [SerializeField] GameObject[] arms;
 
@@ -29,9 +29,11 @@ public class Bow : MonoBehaviour
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.5f; //the slowest the game will go on bow drawback
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
+    [SerializeField] float timeScaleTime = 3.0f;
     public float timeScale;
 
     float lerpVal = 0.0f;
+    float dilationTime = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -53,29 +55,16 @@ public class Bow : MonoBehaviour
             direction.x = gameObject.GetComponent<PlayerMovement>().direction.x;
         SetIndicatorPosition();
 
-        //Vector2 target = (Vector2)transform.position + (direction * indicatorDistance);
-        //float angle = Mathf.Atan2((target - (Vector2)transform.position).y,
-        //        (target - (Vector2)transform.position).x)
-        //        * Mathf.Rad2Deg;
-        //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 360.0f);
-
-        //arms[0].transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 360.0f);
-        //arms[1].transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward), 360.0f);
-
         if(coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
 
         if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
-            if(lerpVal > 0) lerpVal -= Time.deltaTime * 3f;
-            if (lerpVal < 0) lerpVal = 0;
-            Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            TimeDilation(true);
             if(!isDrawnBack) isDrawnBack = true;
         }
         else if(powerInput == 0 && isDrawnBack)
         {
             fire = true;
-            lerpVal = 1.0f;
             Time.timeScale = timeScaleMax;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             coolDownTimer = shotCooldown;
@@ -88,6 +77,32 @@ public class Bow : MonoBehaviour
         else
         {
             isDrawnBack = false;
+        }
+    }
+
+    void TimeDilation(bool slowingDown)
+    {
+        if (slowingDown)
+        {
+            if (lerpVal > 0)
+                lerpVal -= Time.deltaTime * 3f;
+            if (lerpVal < 0)
+                lerpVal = 0;
+            Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        }
+        else
+        {
+            if(dilationTime <= 0)
+            {
+                if (lerpVal < 1.0f)
+                    lerpVal += Time.deltaTime;
+                if (lerpVal > 1.0f)
+                    lerpVal = 1.0f;
+                lerpVal += Time.deltaTime;
+                Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            }
         }
     }
 

@@ -18,12 +18,12 @@ public class Arrow : Projectile
     {
         base.Update();
 
-        if (hasHit && rb != null)
-        {
-            Destroy(rb);
-            Destroy(collider);
-        }
-        else if(rb != null)
+        //if (hasHit && rb != null)
+        //{
+        //    Destroy(rb);
+        //    Destroy(collider);
+        //}
+        if(rb != null)
         {
             transform.right = -rb.velocity;
         }
@@ -33,7 +33,8 @@ public class Arrow : Projectile
     {
         if (collision.gameObject.tag != "Player")
         {
-            hasHit = true;
+            Destroy(rb);
+            Destroy(collider);
             if (collision.gameObject.tag == "Enemy")
             {
                 gameObject.transform.parent = collision.gameObject.transform;

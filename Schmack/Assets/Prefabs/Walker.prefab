@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 366174638617327027}
   - component: {fileID: 4955178199215676347}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 66941968964358404}
   - component: {fileID: 4235533910783203970}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2612831256774664509}
   - component: {fileID: 5683799359917959421}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8885433719607837468}
   - component: {fileID: 8894065171636075454}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 575621498397331524}
   - component: {fileID: 2560835634747408207}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,9 +414,9 @@ GameObject:
   - component: {fileID: 907325013}
   - component: {fileID: 907325009}
   - component: {fileID: 907325010}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Walker
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -449,13 +449,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  acceleration: 2
-  maxSpeed: 1
+  acceleration: 10
+  maxSpeed: 2
   playerKnockback: 400
   start: {fileID: 0}
   end: {fileID: 0}
   waitTime: 1
-  visionRange: 1
+  visionRange: 5
 --- !u!50 &907325013
 Rigidbody2D:
   serializedVersion: 4
@@ -476,7 +476,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &907325009
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -539,7 +539,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1017348743969149766}
   - component: {fileID: 8511668490971470076}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -624,7 +624,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3699894065320134319}
   - component: {fileID: 7366313011339121307}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -704,7 +704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5224177330586270136}
   - component: {fileID: 6236234797593691900}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Walker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -756,7 +756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6616894375774352039}
   - component: {fileID: 9188533583061431930}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: enemy_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
