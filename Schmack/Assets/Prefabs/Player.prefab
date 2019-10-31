@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6095022649630159293}
   - component: {fileID: 1713254931261033139}
   - component: {fileID: 1808700627706242724}
+  - component: {fileID: 11608595}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -61,16 +62,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38505beb92038384887c6f76316ca6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToVibe: 3
+  timeToVibe: 1.6
+  vibeFailTime: 0.5
   acceleration_fast: 30
   maxSpeed_fast: 10
-  jumpForce_fast: 400
+  jumpForce_fast: 600
   acceleration_slow: 20
   maxSpeed_slow: 7
-  jumpForce_slow: 300
+  jumpForce_slow: 600
   stickiness: 1
-  horizontalForce: 350
-  wallJumpLimiter: 1.5
+  horizontalForce: 550
+  wallJumpLimiter: 1
   direction: {x: 0, y: 0}
   vibing: 0
 --- !u!114 &6095022649630159293
@@ -95,7 +97,7 @@ MonoBehaviour:
   - {fileID: 7544158400119947057}
   pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
     type: 3}
-  shotPower: 1000
+  shotPower: 1500
   shotCooldown: 1
   knockbackForce: 500
   shootPoint: {fileID: 8532634141500619840}
@@ -131,7 +133,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7172196165138337591}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -150,6 +152,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.43690932, y: 2.518849}
   m_EdgeRadius: 0
+--- !u!70 &11608595
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7172196165138337591}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.014707923, y: -0.023532629}
+  m_Size: {x: 0.52941585, y: 2.5766854}
+  m_Direction: 0
 --- !u!1001 &8205212844493760852
 PrefabInstance:
   m_ObjectHideFlags: 0

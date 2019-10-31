@@ -20,8 +20,7 @@ public class StartButton : MonoBehaviour
     {
         if(collision.gameObject.tag=="Arrow")
         {
-            Debug.Log("ya boi");
-
+            GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
             GameObject.Find("start").GetComponent<SceneSwitch>().LoadScene(1);
         }
     }

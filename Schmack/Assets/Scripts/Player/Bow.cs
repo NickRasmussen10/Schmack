@@ -25,6 +25,7 @@ public class Bow : MonoBehaviour
 
     [SerializeField] GameObject shootPoint;
     float coolDownTimer = 0.0f;
+    int frameDelay = 0;
 
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.5f; //the slowest the game will go on bow drawback
@@ -59,12 +60,20 @@ public class Bow : MonoBehaviour
 
         if(powerInput == 1 && coolDownTimer <= 0.0f)
         {
-            TimeDilation(true);
-            if(!isDrawnBack) isDrawnBack = true;
+            if (!isDrawnBack) isDrawnBack = true;
+            if (frameDelay == 10)
+            {
+                TimeDilation(true);
+            }
+            else
+            {
+                frameDelay++;
+            }
         }
         else if(powerInput == 0 && isDrawnBack)
         {
             fire = true;
+            frameDelay = 0;
             Time.timeScale = timeScaleMax;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             coolDownTimer = shotCooldown;
