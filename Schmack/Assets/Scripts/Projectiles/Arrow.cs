@@ -35,10 +35,7 @@ public class Arrow : Projectile
         {
             Destroy(rb);
             Destroy(collider);
-            if (collision.gameObject.tag == "Enemy")
-            {
-                gameObject.transform.parent = collision.gameObject.transform;
-            }
+            gameObject.transform.parent = collision.gameObject.transform;
         }
     }
 
