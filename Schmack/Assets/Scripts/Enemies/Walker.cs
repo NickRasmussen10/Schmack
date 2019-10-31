@@ -20,7 +20,7 @@ public class Walker : Enemy
     new void Start()
     {
         base.Start();
-        target = end;
+        target = start;
         timer = waitTime;
         direction = (target.transform.position - gameObject.transform.position).normalized;
         direction.y = 0;
