@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Vibe")]
     [SerializeField] float timeToVibe = 3;
+    [SerializeField] float vibeFailTime = 1;
 
     [Header("Movement - Vibing")]
     [SerializeField] float acceleration_fast = 8;
@@ -51,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
-        vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.9f;
+        vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.7f;
         vibeTimer = timeToVibe;
         direction = new Vector2(1.0f, 1.0f);
     }
@@ -76,13 +77,17 @@ public class PlayerMovement : MonoBehaviour
 
     void VibeCheck()
     {
-        if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold / 4))
+        if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold))
         {
             vibeTimer -= Time.deltaTime;
         }
-        else
+        else if(!vibing)
         {
             vibeTimer = timeToVibe;
+        }
+        else
+        {
+            vibeTimer = vibeFailTime;
         }
     }
 

@@ -451,7 +451,7 @@ MonoBehaviour:
   maxHealth: 100
   acceleration: 50
   maxSpeed: 5
-  playerKnockback: 400
+  playerKnockback: 1000
   start: {fileID: 0}
   end: {fileID: 0}
   waitTime: 1
