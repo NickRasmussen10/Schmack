@@ -449,8 +449,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  acceleration: 10
-  maxSpeed: 2
+  acceleration: 50
+  maxSpeed: 5
   playerKnockback: 400
   start: {fileID: 0}
   end: {fileID: 0}
@@ -472,7 +472,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 31aa8a980af9209438fa3cf66fd8b82f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -528,7 +528,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 3.0726128, y: 2.4520383}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.01
 --- !u!1 &5506568943515118991
 GameObject:
   m_ObjectHideFlags: 0

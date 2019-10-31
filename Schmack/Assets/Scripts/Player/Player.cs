@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
             gameObject.GetComponent<PlayerMovement>().AddKnockback(knockback, false);
             TakeDamage(25);
         }
+
+        Debug.Log(collision.gameObject);
     }
 
     private void TakeDamage(float damage)

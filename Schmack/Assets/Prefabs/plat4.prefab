@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 643804553771555712}
   - component: {fileID: 6522132814603257535}
   - component: {fileID: 5351270868918338387}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: target_chain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 42fe24e7cc0502f438998bcdbfeb29f1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.4811321, b: 0.4811321, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -147,7 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5858152256988119480}
   - component: {fileID: 1832423103984202901}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: plat3_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

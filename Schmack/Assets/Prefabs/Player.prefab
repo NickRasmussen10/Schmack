@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38505beb92038384887c6f76316ca6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToVibe: 1
+  timeToVibe: 3
   acceleration_fast: 30
   maxSpeed_fast: 10
   jumpForce_fast: 400
@@ -101,6 +101,7 @@ MonoBehaviour:
   shootPoint: {fileID: 8532634141500619840}
   timeScaleMin: 0.1
   timeScaleMax: 1
+  timeScaleTime: 3
   timeScale: 0
 --- !u!50 &1713254931261033139
 Rigidbody2D:
@@ -156,11 +157,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7253483687951526987}
     m_Modifications:
-    - target: {fileID: 7944556125056427149, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Name
-      value: Player 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1422552407521381734, guid: a4ec8b8b7b700944bbe0944509fff90e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -215,6 +211,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7944556125056427149, guid: a4ec8b8b7b700944bbe0944509fff90e,
+        type: 3}
+      propertyPath: m_Name
+      value: Player 2
       objectReference: {fileID: 0}
     - target: {fileID: 555284230763336981, guid: a4ec8b8b7b700944bbe0944509fff90e,
         type: 3}

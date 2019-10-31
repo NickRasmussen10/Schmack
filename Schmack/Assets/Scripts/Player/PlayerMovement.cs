@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
     void VibeCheck()
     {
-        if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold / 2))
+        if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold / 4))
         {
             vibeTimer -= Time.deltaTime;
         }
@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if (rb.velocity.x > 0 && CheckRayCollision(0))
+            if (rb.velocity.x > 0 && isGrounded)
             {
                 //apply friction to the left
                 rb.AddForce(new Vector2(-acceleration, 0.0f));
@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
                     rb.velocity = new Vector2(0, rb.velocity.y);
                 }
             }
-            else if (rb.velocity.x < 0 && CheckRayCollision(0))
+            else if (rb.velocity.x < 0 && isGrounded)
             {
                 //apply friciton to the right
                 rb.AddForce(new Vector2(acceleration, 0.0f));
@@ -146,7 +146,12 @@ public class PlayerMovement : MonoBehaviour
     void UpdatePlayerDirection()
     {
         float x = 0;
-        if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
+        if (isOnWall)
+        {
+            direction.x = CheckRayCollision(1) ? 1 : -1;
+
+        }
+        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
         {
             x = Input.GetAxis("RightHorizontal");
             direction.x = x > 0 ? 1 : -1;
@@ -155,15 +160,6 @@ public class PlayerMovement : MonoBehaviour
         {
             x = Input.GetAxis("LeftHorizontal");
             direction.x = x > 0 ? 1 : -1;
-        }
-        else if (isOnWall)
-        {
-            direction.x = CheckRayCollision(1) ? 1 : -1;
-        }
-        else
-        {
-            //direction.x = rb.velocity.normalized.x;
-            //bow.direction.x = direction.x;
         }
 
         gameObject.transform.localScale = direction;
@@ -223,14 +219,14 @@ public class PlayerMovement : MonoBehaviour
         int layer_enemies = 1 << 11;
         int finalLayerMask = layer_environment | layer_enemies;
         //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
-        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<BoxCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
+        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
             isGrounded = true;
         else
             isGrounded = false;
 
         //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
-        if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null ||
-            (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<BoxCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null) &&
+        if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<CapsuleCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null ||
+            (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<CapsuleCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null) &&
             !isGrounded)
             isOnWall = true;
         else
