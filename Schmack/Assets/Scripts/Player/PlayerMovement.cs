@@ -73,6 +73,9 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         WallStick();
         Animations();
+
+        if (Input.GetKey(KeyCode.Escape))
+            Application.Quit();
     }
 
     void VibeCheck()
