@@ -35,10 +35,15 @@ public class Bow : MonoBehaviour
 
     float lerpVal = 0.0f;
     float dilationTime = 0.0f;
-
+    AudioManager audioMan;
     // Start is called before the first frame update
     void Start()
     {
+        audioMan = AudioManager.instance;
+        if (audioMan == null)
+        {
+            Debug.LogError("No audiomanager found");
+        }
         indicator = Instantiate(pref_indicator);
         timeScale = timeScaleMax;
         lerpVal = 1.0f;
@@ -47,8 +52,19 @@ public class Bow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isDrawnBack)
+        {
+            audioMan.PlaySound("BowDraw");
+            Debug.Log("bowdraw play");
+        }
         if (fire)
+        {
             fire = false;
+            audioMan.PlaySound("BowFire");
+            Debug.Log("bowfire play");
+            //newaudio.PlaySound("ArrowFly");
+        }
+
         direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
         powerInput = Input.GetAxis("Fire1");
 

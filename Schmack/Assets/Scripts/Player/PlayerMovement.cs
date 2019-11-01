@@ -36,15 +36,23 @@ public class PlayerMovement : MonoBehaviour
 
     bool isFalling = false;
     bool isGrounded = false;
+    bool isWalking = false;
     bool isOnWall = false;
     public bool vibing = false;
 
     private Animator anim;
     float vibeTimer = 0.0f;
 
+    AudioManager audioMan;
+
     // Start is called before the first frame update
     void Start()
     {
+        audioMan = AudioManager.instance;
+        if(audioMan==null)
+        {
+            Debug.LogError("No audiomanager found");
+        }
         anim = GetComponentInChildren<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponent<Bow>();
@@ -60,6 +68,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isWalking)
+        {
+            audioMan.PlaySound("Walk");
+            Debug.Log("walk play");
+        }
         VibeCheck();
         if (vibeTimer <= 0)
         {
@@ -124,6 +137,9 @@ public class PlayerMovement : MonoBehaviour
         
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
+            if(isGrounded)
+                isWalking = true;
+
             if (rb.velocity.x > 0 && isGrounded)
             {
                 //apply friction to the left
@@ -132,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
                 }
+               
             }
             else if (rb.velocity.x < 0 && isGrounded)
             {
