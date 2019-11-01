@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField] float maxHealth;
     float health;
 
+    public SpriteRenderer bowSprite;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(health<=50)
+        {
+            bowSprite.color = Color.red;
+        }
+
         if(health <= 0)
         {
             Die();
