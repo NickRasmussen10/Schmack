@@ -37,14 +37,17 @@ public class Sound
         source.volume = volume * (1 + Random.Range(-volRand / 2f, volRand / 2f));
         source.pitch = pitch * (1 + Random.Range(-pitchRand / 2f, pitchRand / 2f));
         source.Play();
-        Debug.Log("play");
+    }
+
+    public void Stop()
+    {
+        source.Stop();
     }
 }
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-
     [SerializeField]
     Sound[] sounds;
 
@@ -52,9 +55,13 @@ public class AudioManager : MonoBehaviour
     {
         if(instance!=null)
         {
-            Debug.LogError("More than one AudioManager in scene");
+            Destroy(this.gameObject);
         }
-        instance = this;
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
     }
 
     // Start is called before the first frame update
@@ -66,7 +73,7 @@ public class AudioManager : MonoBehaviour
             _go.transform.SetParent(this.transform);
             sounds[i].SetSource(_go.AddComponent<AudioSource>());
         }
-        PlaySound("BGMusic");
+        PlaySound("BG");
     }
 
     public void PlaySound(string name)
@@ -80,6 +87,19 @@ public class AudioManager : MonoBehaviour
             }
         }
         Debug.LogWarning("AudioManager: Sound not found in list: " + name);
+        
+    }
+
+    public void StopSounds(string name)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == name)
+            {
+                sounds[i].Stop();
+                return;
+            }
+        }
     }
 
 

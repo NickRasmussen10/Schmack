@@ -16,9 +16,16 @@ public class Walker : Enemy
     RaycastHit2D raycastHit;
     bool seesPlayer = false;
 
+    AudioManager audioMan;
+
     // Start is called before the first frame update
     new void Start()
     {
+        audioMan = AudioManager.instance;
+        if (audioMan == null)
+        {
+            Debug.LogError("No audiomanager found");
+        }
         base.Start();
         target = start;
         timer = waitTime;
@@ -42,6 +49,7 @@ public class Walker : Enemy
         }
         Debug.DrawLine(transform.position, (Vector2)transform.position + (direction * visionRange));
         Move();
+        audioMan.PlaySound("Enemy");
     }
 
 
