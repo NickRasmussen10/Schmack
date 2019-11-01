@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  bowSprite: {fileID: 8532634141500619844}
 --- !u!114 &2757633320128017949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,10 +65,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToVibe: 1.6
   vibeFailTime: 0.5
-  acceleration_fast: 30
+  acceleration_fast: 40
   maxSpeed_fast: 10
   jumpForce_fast: 600
-  acceleration_slow: 20
+  acceleration_slow: 40
   maxSpeed_slow: 7
   jumpForce_slow: 600
   stickiness: 1
@@ -99,7 +100,7 @@ MonoBehaviour:
     type: 3}
   shotPower: 1500
   shotCooldown: 1
-  knockbackForce: 500
+  knockbackForce: 700
   shootPoint: {fileID: 8532634141500619840}
   timeScaleMin: 0.1
   timeScaleMax: 1
@@ -124,7 +125,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &1808700627706242724
 BoxCollider2D:
@@ -346,6 +347,16 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5136036927891425846, guid: a4ec8b8b7b700944bbe0944509fff90e,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -901993325
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136036927891425846, guid: a4ec8b8b7b700944bbe0944509fff90e,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ec8b8b7b700944bbe0944509fff90e, type: 3}
 --- !u!4 &7089561345472177202 stripped
@@ -369,6 +380,12 @@ GameObject:
 --- !u!1 &8532634141500619840 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 555284230763336980, guid: a4ec8b8b7b700944bbe0944509fff90e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8205212844493760852}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &8532634141500619844 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 555284230763336976, guid: a4ec8b8b7b700944bbe0944509fff90e,
     type: 3}
   m_PrefabInstance: {fileID: 8205212844493760852}
   m_PrefabAsset: {fileID: 0}
