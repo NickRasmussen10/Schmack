@@ -11,26 +11,25 @@ public class Bow : MonoBehaviour
 
     List<GameObject> arrows = new List<GameObject>();
 
-    [SerializeField] GameObject pref_indicator;
+    [SerializeField] GameObject pref_indicator = null;
     GameObject indicator;
     float indicatorDistance = 5.0f;
 
     [SerializeField] GameObject[] arms;
 
     [Header("Firing")]
-    [SerializeField] GameObject pref_arrow;
+    [SerializeField] GameObject pref_arrow = null;
     [SerializeField] float shotPower = 1.0f;
     [SerializeField] float shotCooldown = 1.0f;
     [SerializeField] float knockbackForce = 1.0f;
 
-    [SerializeField] GameObject shootPoint;
+    [SerializeField] GameObject shootPoint = null;
     float coolDownTimer = 0.0f;
     int frameDelay = 0;
 
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.5f; //the slowest the game will go on bow drawback
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
-    [SerializeField] float timeScaleTime = 3.0f;
     public float timeScale;
 
     float lerpVal = 0.0f;

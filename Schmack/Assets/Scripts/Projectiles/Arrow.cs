@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Arrow : Projectile
 {
-    bool hasHit = false;
 
     // Start is called before the first frame update
     new void Start()
@@ -36,7 +35,7 @@ public class Arrow : Projectile
             if (collision.gameObject.tag == "Enemy")
                 transform.parent = collision.gameObject.transform;
             Destroy(rb);
-            Destroy(collider);
+            Destroy(boxCollider);
         }
     }
 

@@ -7,7 +7,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] float maxHealth = 100.0f;
     [SerializeField] protected float acceleration = 1.0f;
     [SerializeField] protected float maxSpeed = 0.5f;
-    [SerializeField] float playerKnockback;
+    [SerializeField] float playerKnockback = 1000;
     public float GetKnockback() { return playerKnockback; }
     protected Rigidbody2D rb;
 

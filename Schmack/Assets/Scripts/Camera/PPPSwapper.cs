@@ -5,8 +5,8 @@ using UnityEngine.PostProcessing;
 
 public class PPPSwapper : MonoBehaviour
 {
-    [SerializeField] PostProcessingProfile flow;
-    [SerializeField] PostProcessingProfile noFlow;
+    [SerializeField] PostProcessingProfile flow = null;
+    [SerializeField] PostProcessingProfile noFlow = null;
 
     bool vibing;
     PlayerMovement playerMovement;

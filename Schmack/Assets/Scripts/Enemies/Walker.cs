@@ -4,36 +4,34 @@ using UnityEngine;
 
 public class Walker : Enemy
 {
-    [SerializeField] GameObject start;
-    [SerializeField] GameObject end;
+    [SerializeField] float speed = 0.05f;
     [SerializeField] float waitTime = 1.0f; //how long does he stay at each end of the range before turning around?
     [SerializeField] float visionRange = 1.0f;
+
+    EndDetection endDetector = null;
+    bool isReversed = true;
+    
     float timer = 0.0f;
     float detectionRange = 0.5f; //how close does he need to get before he arrives at either end of the range
-    GameObject target;
     Vector2 scale;
 
     RaycastHit2D raycastHit;
     bool seesPlayer = false;
 
-    AudioManager audioMan;
+    //AudioManager audioMan;
 
     // Start is called before the first frame update
     new void Start()
     {
-        audioMan = AudioManager.instance;
-        if (audioMan == null)
-        {
-            Debug.LogError("No audiomanager found");
-        }
+        //audioMan = AudioManager.instance;
+        //if (audioMan == null)
+        //{
+        //    Debug.LogError("No audiomanager found");
+        //}
         base.Start();
-        target = start;
+        endDetector = gameObject.GetComponentInChildren<EndDetection>();
+        direction = new Vector2(-1.0f, 0.0f);
         timer = waitTime;
-        direction = (target.transform.position - gameObject.transform.position).normalized;
-        direction.y = 0;
-        scale = transform.localScale;
-        scale.x = target == start ? scale.x : -scale.x;
-        transform.localScale = scale;
     }
 
     // Update is called once per frame
@@ -44,58 +42,36 @@ public class Walker : Enemy
         raycastHit = Physics2D.Raycast(transform.position, direction, visionRange, LayerMask.GetMask("player"));
         if(raycastHit.collider != null)
         {
-            target = raycastHit.collider.gameObject;
+            //target = raycastHit.collider.gameObject;
             seesPlayer = true;
         }
         Debug.DrawLine(transform.position, (Vector2)transform.position + (direction * visionRange));
         Move();
-        audioMan.PlaySound("Enemy");
+        Vector3 scale = transform.localScale;
+        scale.x = isReversed ? 1 : -1;
+        transform.localScale = scale;
+        //audioMan.PlaySound("Enemy");
     }
 
 
     protected override void Move()
     {
-        if (!seesPlayer)
+        if (endDetector.isColliding)
         {
-            if (Mathf.Pow(target.transform.position.x - gameObject.transform.position.x, 2) < detectionRange * detectionRange)
-            {
-                //wait and swap direction
-                timer -= Time.deltaTime;
-                rb.velocity = Vector2.zero;
-                if (timer <= 0)
-                {
-                    //swap targets
-                    target = target == start ? end : start;
-
-                    direction = (target.transform.position - gameObject.transform.position).normalized;
-                    direction.y = 0;
-                    scale.x *= -1;
-                    transform.localScale = scale;
-
-                    timer = waitTime;
-                }
-            }
-            else
-            {
-                //seek target
-                rb.AddForce(direction * acceleration * (Mathf.Abs(target.transform.position.x - gameObject.transform.position.x)));
-                rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-            }
+            //Debug.Log("moving");
+            rb.AddForce(direction * speed);
         }
         else
         {
-            Debug.Log("whaddup, son?");
-            //seek player
-            direction = (target.transform.position - transform.position).normalized;
-            direction.y = 0;
-            if((direction.x > 0 && scale.x > 0) || (direction.x < 0 && scale.x < 0))
+            rb.velocity = Vector2.zero;
+            timer -= Time.deltaTime;
+            if(timer <= 0)
             {
-                scale.x *= -1;
-                transform.localScale = scale;
+                Debug.Log("timer's up");
+                direction *= -1;
+                isReversed = !isReversed;
+                timer = waitTime;
             }
-            transform.localScale = scale;
-            rb.AddForce(direction * acceleration * (Mathf.Abs(target.transform.position.x - gameObject.transform.position.x)));
-            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
         }
     }
 }

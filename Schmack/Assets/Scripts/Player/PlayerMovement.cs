@@ -25,14 +25,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
 
-    float acceleration;
+    float acc;
     float maxSpeed;
     float jumpForce;
     float vibeThreshold = 0.0f;
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
-    RaycastHit2D[] raycastHits = new RaycastHit2D[3];
+    RaycastHit2D[] raycastHits = new RaycastHit2D[5];
+    Bounds playerBounds;
 
     bool isFalling = false;
     bool isGrounded = false;
@@ -57,12 +58,13 @@ public class PlayerMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponent<Bow>();
         vibing = false;
-        acceleration = acceleration_slow;
+        acc = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
         vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.7f;
         vibeTimer = timeToVibe;
         direction = new Vector2(1.0f, 1.0f);
+        playerBounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
     }
 
     // Update is called once per frame
@@ -81,6 +83,18 @@ public class PlayerMovement : MonoBehaviour
         JoystickMovement();
         UpdatePlayerDirection();
         CastRays();
+
+        //run up hill
+        if (!isFalling)
+        {
+            if ((raycastHits[3].collider != null && raycastHits[1].collider == null) || //left
+                (raycastHits[4].collider != null && raycastHits[2].collider == null))   //right
+            {
+                transform.Translate(0.0f, 1.0f, 0.0f);
+            }
+        }
+
+
         //if player is going downward, flag them as falling
         isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
@@ -118,13 +132,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (vibing)
         {
-            acceleration = acceleration_fast;
+            acc = acceleration_fast;
             maxSpeed = maxSpeed_fast;
             jumpForce = jumpForce_fast;
         }
         else
         {
-            acceleration = acceleration_slow;
+            acc = acceleration_slow;
             maxSpeed = maxSpeed_slow;
             jumpForce = jumpForce_slow;
         }
@@ -133,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     void JoystickMovement()
     {
         float hInput = Input.GetAxis("LeftHorizontal"); ;
-        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
+        rb.AddForce(new Vector2(hInput * acc, 0.0f));
         
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
@@ -143,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
             if (rb.velocity.x > 0 && isGrounded)
             {
                 //apply friction to the left
-                rb.AddForce(new Vector2(-acceleration, 0.0f));
+                rb.AddForce(new Vector2(-acc, 0.0f));
                 if (rb.velocity.x < 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
@@ -153,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
             else if (rb.velocity.x < 0 && isGrounded)
             {
                 //apply friciton to the right
-                rb.AddForce(new Vector2(acceleration, 0.0f));
+                rb.AddForce(new Vector2(acc, 0.0f));
                 if (rb.velocity.x > 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
@@ -244,18 +258,21 @@ public class PlayerMovement : MonoBehaviour
         int layer_enemies = 1 << 11;
         int finalLayerMask = layer_environment | layer_enemies;
         //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
-        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
+        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
             isGrounded = true;
         else
             isGrounded = false;
 
         //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
-        if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (gameObject.GetComponent<CapsuleCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null ||
-            (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (gameObject.GetComponent<CapsuleCollider2D>().bounds.size.x / 2) + 0.1f, finalLayerMask)).collider != null) &&
+        if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+            (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
             !isGrounded)
             isOnWall = true;
         else
             isOnWall = false;
+
+        raycastHits[3] = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - playerBounds.size.y / 2), Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask);
+        raycastHits[4] = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - playerBounds.size.y / 2), Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask);
     }
 
     /// <summary>
@@ -275,6 +292,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="groundRequired">does the player need to be on the ground?</param>
     public void AddKnockback(Vector2 knockback, bool groundRequired)
     {
+        rb.velocity = Vector2.zero;
         if (groundRequired)
         {
             if (!CheckRayCollision(0))

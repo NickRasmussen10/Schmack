@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float maxHealth;
+    [SerializeField] float maxHealth = 100;
     float health;
 
     public SpriteRenderer bowSprite;
