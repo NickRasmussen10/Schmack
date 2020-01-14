@@ -501,7 +501,7 @@ Transform:
   m_GameObject: {fileID: 5261646117990476425}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 122.83, y: -2.38, z: -2.6746342}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4543, y: 0.4543, z: 0.4543}
   m_Children:
   - {fileID: 5224177330586270136}
   - {fileID: 8597574112710866859}
@@ -524,7 +524,7 @@ MonoBehaviour:
   acceleration: 50
   maxSpeed: 5
   playerKnockback: 1000
-  speed: 0.05
+  speed: 5
   waitTime: 1
   visionRange: 5
 --- !u!50 &907325013

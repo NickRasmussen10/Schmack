@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Walker : Enemy
 {
-    [SerializeField] float speed = 0.05f;
+    [SerializeField] float speed = 5;
     [SerializeField] float waitTime = 1.0f; //how long does he stay at each end of the range before turning around?
     [SerializeField] float visionRange = 1.0f;
 
@@ -13,11 +13,11 @@ public class Walker : Enemy
     
     float timer = 0.0f;
     float detectionRange = 0.5f; //how close does he need to get before he arrives at either end of the range
+
     Vector2 scale;
+    float xScale;
 
     RaycastHit2D raycastHit;
-    bool seesPlayer = false;
-
     //AudioManager audioMan;
 
     // Start is called before the first frame update
@@ -32,6 +32,7 @@ public class Walker : Enemy
         endDetector = gameObject.GetComponentInChildren<EndDetection>();
         direction = new Vector2(-1.0f, 0.0f);
         timer = waitTime;
+        xScale = transform.localScale.x;
     }
 
     // Update is called once per frame
@@ -39,16 +40,11 @@ public class Walker : Enemy
     {
         base.Update();
 
-        raycastHit = Physics2D.Raycast(transform.position, direction, visionRange, LayerMask.GetMask("player"));
-        if(raycastHit.collider != null)
-        {
-            //target = raycastHit.collider.gameObject;
-            seesPlayer = true;
-        }
+        raycastHit = Physics2D.Raycast(transform.position, direction, visionRange, LayerMask.GetMask("environment"));
         Debug.DrawLine(transform.position, (Vector2)transform.position + (direction * visionRange));
         Move();
-        Vector3 scale = transform.localScale;
-        scale.x = isReversed ? 1 : -1;
+        scale = transform.localScale;
+        scale.x = isReversed ? xScale : -xScale;
         transform.localScale = scale;
         //audioMan.PlaySound("Enemy");
     }
@@ -56,22 +52,20 @@ public class Walker : Enemy
 
     protected override void Move()
     {
-        if (endDetector.isColliding)
-        {
-            //Debug.Log("moving");
-            rb.AddForce(direction * speed);
-        }
-        else
+        if (!endDetector.isColliding || raycastHit.collider != null)
         {
             rb.velocity = Vector2.zero;
             timer -= Time.deltaTime;
-            if(timer <= 0)
+            if (timer <= 0)
             {
-                Debug.Log("timer's up");
                 direction *= -1;
                 isReversed = !isReversed;
                 timer = waitTime;
             }
+        }
+        else
+        {
+            rb.AddForce(direction * speed);
         }
     }
 }
