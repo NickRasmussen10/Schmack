@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     float health;
 
     [SerializeField] GameObject[] bows = null;
-    public Bow currentBow;
+    public GameObject currentBow;
 
     public SpriteRenderer bowSprite;
 
@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     {
         health = maxHealth;
 
-        currentBow = bows[0].GetComponent<Bow>();
+        currentBow = bows[0];
     }
 
     // Update is called once per frame
@@ -58,10 +58,11 @@ public class Player : MonoBehaviour
         }
         bowIndex++;
         if (bowIndex == bows.Length) bowIndex = 0;
-        currentBow.Deactivate();
-        currentBow = bows[bowIndex].GetComponent<Bow>();
-        currentBow.Activate();
+        currentBow.GetComponent<Bow>().Deactivate();
+        currentBow = bows[bowIndex];
+        currentBow.GetComponent<Bow>().Activate();
     }
+
 
     private void TakeDamage(float damage)
     {
