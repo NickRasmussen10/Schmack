@@ -7,17 +7,27 @@ public class Player : MonoBehaviour
     [SerializeField] float maxHealth = 100;
     float health;
 
+    [SerializeField] GameObject[] bows = null;
+    public Bow currentBow;
+
     public SpriteRenderer bowSprite;
 
     // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
+
+        currentBow = bows[0].GetComponent<Bow>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("SwapWeapon"))
+        {
+            GoToNextBow();
+        }
+
         if(health<=50)
         {
             bowSprite.color = Color.red;
@@ -37,6 +47,20 @@ public class Player : MonoBehaviour
             gameObject.GetComponent<PlayerMovement>().AddKnockback(knockback, false);
             TakeDamage(25);
         }
+    }
+
+    void GoToNextBow()
+    {
+        int bowIndex = -1;
+        for(int i = 0; i < bows.Length; i++)
+        {
+            if (currentBow == bows[i].GetComponent<Bow>()) bowIndex = i;
+        }
+        bowIndex++;
+        if (bowIndex == bows.Length) bowIndex = 0;
+        currentBow.Deactivate();
+        currentBow = bows[bowIndex].GetComponent<Bow>();
+        currentBow.Activate();
     }
 
     private void TakeDamage(float damage)

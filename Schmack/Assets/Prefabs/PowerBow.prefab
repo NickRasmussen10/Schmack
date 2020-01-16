@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5661835991304875035}
-  - component: {fileID: 4437007615008707509}
+  - component: {fileID: 1564850432}
   m_Layer: 8
   m_Name: PowerBow
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4437007615008707509
+--- !u!114 &1564850432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,19 +40,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 420573977771852709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4ae8e11a68d84041b6b66eae0953a25, type: 3}
+  m_Script: {fileID: 11500000, guid: 3382119ba58b76842afe88bd75af4a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 0, y: 0}
   isDrawnBack: 0
   fire: 0
   pref_indicator: {fileID: 435901467579359303, guid: aba549ca634a2944a815e6f2d1300be2,
     type: 3}
   pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
     type: 3}
-  shotPower: 700
+  shotPower: 1500
   shotCooldown: 1
-  knockbackForce: 500
-  timeScaleMin: 0.5
+  knockbackForce: 700
+  timeScaleMin: 0.1
   timeScaleMax: 1
   timeScale: 0
+  inaccuracy: 0.01
