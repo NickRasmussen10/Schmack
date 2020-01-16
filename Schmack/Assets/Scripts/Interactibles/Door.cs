@@ -7,18 +7,15 @@ public class Door : Controllable
     [SerializeField] float openingSize = 5.0f;
     [SerializeField] float openingSpeed = 1.0f;
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
-        
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
-        if (Input.GetButtonDown("SwapWeapon") && !isActivated)
-        {
-            StartCoroutine("Activate");
-        }
+        base.Update();
     }
 
     protected override IEnumerator Activate()
