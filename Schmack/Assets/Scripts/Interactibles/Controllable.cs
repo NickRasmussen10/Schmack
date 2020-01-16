@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Controllable : MonoBehaviour
 {
-    [SerializeField] GameObject GO_Controller;
+    [SerializeField] GameObject GO_Controller = null;
     Controller controller;
 
     protected bool isActivated;
@@ -17,8 +17,17 @@ public abstract class Controllable : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (controller.isActivated && !isActivated) StartCoroutine("Activate");
+        if (controller.isActivated && !isActivated) {
+            StopCoroutine("Deactivate");
+            StartCoroutine("Activate");
+        }
+        if (!controller.isActivated && isActivated) {
+            StopCoroutine("Activate");
+            StartCoroutine("Deactivate");
+        }
     }
 
     protected abstract IEnumerator Activate();
+
+    protected abstract IEnumerator Deactivate();
 }

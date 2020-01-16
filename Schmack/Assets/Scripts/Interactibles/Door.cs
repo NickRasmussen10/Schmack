@@ -25,13 +25,29 @@ public class Door : Controllable
         Vector3 originalPosition = transform.position;
         while(lerpVal < 1.0f)
         {
+            lerpVal += openingSpeed * Time.deltaTime;
+            if (lerpVal > 1.0f) lerpVal = 1.0f;
             transform.position = new Vector3(originalPosition.x,
                                             Mathf.Lerp(originalPosition.y, originalPosition.y + openingSize, lerpVal),
                                             originalPosition.z);
-            lerpVal += openingSpeed * Time.deltaTime;
-            if (lerpVal > 1.0f) lerpVal = 1.0f;
             yield return null;
         }
         
+    }
+
+    protected override IEnumerator Deactivate()
+    {
+        isActivated = false;
+        float lerpVal = 1.0f;
+        Vector3 originalPosition = transform.position;
+        while (lerpVal > 0.0f)
+        {
+            lerpVal -= openingSpeed * Time.deltaTime;
+            if (lerpVal < 0.0f) lerpVal = 0.0f;
+            transform.position = new Vector3(originalPosition.x,
+                                            Mathf.Lerp(originalPosition.y - openingSize, originalPosition.y, lerpVal),
+                                            originalPosition.z);
+            yield return null;
+        }
     }
 }

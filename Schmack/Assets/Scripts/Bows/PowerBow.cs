@@ -16,7 +16,6 @@ public class PowerBow : Bow
     new void Update()
     {
         HandleInput();
-        SetIndicatorPosition();
         if (powerInput == 0 && isDrawnBack)
         {
             direction.x += Random.Range(direction.x - inaccuracy, direction.x + inaccuracy);

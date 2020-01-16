@@ -9,6 +9,11 @@ public class Player : MonoBehaviour
 
     [SerializeField] GameObject[] bows = null;
     public GameObject currentBow;
+    Bow bowScript;
+
+    [SerializeField] GameObject pref_indicator;
+    [SerializeField] float indicatorDistance = 5.0f;
+    GameObject indicator;
 
     public SpriteRenderer bowSprite;
 
@@ -18,6 +23,8 @@ public class Player : MonoBehaviour
         health = maxHealth;
 
         currentBow = bows[0];
+        bowScript = currentBow.GetComponent<Bow>();
+        indicator = Instantiate(pref_indicator);
     }
 
     // Update is called once per frame
@@ -27,6 +34,8 @@ public class Player : MonoBehaviour
         {
             GoToNextBow();
         }
+
+        SetIndicatorPosition();
 
         if(health<=50)
         {
@@ -54,13 +63,19 @@ public class Player : MonoBehaviour
         int bowIndex = -1;
         for(int i = 0; i < bows.Length; i++)
         {
-            if (currentBow == bows[i].GetComponent<Bow>()) bowIndex = i;
+            if (currentBow == bows[i]) bowIndex = i;
         }
         bowIndex++;
         if (bowIndex == bows.Length) bowIndex = 0;
-        currentBow.GetComponent<Bow>().Deactivate();
+        currentBow.SetActive(false);
         currentBow = bows[bowIndex];
-        currentBow.GetComponent<Bow>().Activate();
+        bowScript = currentBow.GetComponent<Bow>();
+        currentBow.SetActive(true);
+    }
+
+    protected void SetIndicatorPosition()
+    {
+        indicator.transform.position = (Vector2)transform.position + (bowScript.direction * indicatorDistance);
     }
 
 

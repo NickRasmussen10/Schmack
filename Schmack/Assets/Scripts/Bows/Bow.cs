@@ -11,11 +11,6 @@ public class Bow : MonoBehaviour
 
     List<GameObject> arrows = new List<GameObject>();
 
-    [SerializeField] GameObject pref_indicator = null;
-    [SerializeField] float indicatorDistance = 5.0f;
-    GameObject indicator;
-
-
 
     [Header("Firing")]
     [SerializeField] GameObject pref_arrow = null;
@@ -48,7 +43,6 @@ public class Bow : MonoBehaviour
     protected void Update()
     {
         HandleInput();
-        SetIndicatorPosition();
         HandleFiring();
         PlaySounds();
     }
@@ -137,23 +131,13 @@ public class Bow : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// note: this implementation of indicator will become obsolete when player arm/bow rotation is implemented
-    /// </summary>
-    protected void SetIndicatorPosition()
-    {
-        indicator.transform.position = (Vector2)transform.position + (direction * indicatorDistance);
-    }
-
     public void Activate()
     {
-        indicator = Instantiate(pref_indicator);
         gameObject.SetActive(true);
     }
 
     public void Deactivate()
     {
-        Destroy(indicator);
         gameObject.SetActive(false);
     }
 }
