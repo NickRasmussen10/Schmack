@@ -25,14 +25,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
 
-    float acc;
+    float acceleration;
     float maxSpeed;
     float jumpForce;
     float vibeThreshold = 0.0f;
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
-    RaycastHit2D[] raycastHits = new RaycastHit2D[5];
+    RaycastHit2D[] raycastHits = new RaycastHit2D[3];
     Bounds playerBounds;
 
     bool isFalling = false;
@@ -56,9 +56,9 @@ public class PlayerMovement : MonoBehaviour
         }
         anim = GetComponentInChildren<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        bow = gameObject.GetComponent<Bow>();
+        bow = gameObject.GetComponentInChildren<Bow>();
         vibing = false;
-        acc = acceleration_slow;
+        acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
         vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.7f;
@@ -73,7 +73,6 @@ public class PlayerMovement : MonoBehaviour
         if (isWalking)
         {
             audioMan.PlaySound("Walk");
-            Debug.Log("walk play");
         }
         VibeCheck();
         if (vibeTimer <= 0)
@@ -83,16 +82,6 @@ public class PlayerMovement : MonoBehaviour
         JoystickMovement();
         UpdatePlayerDirection();
         CastRays();
-
-        //run up hill
-        if (!isFalling)
-        {
-            if ((raycastHits[3].collider != null && raycastHits[1].collider == null) || //left
-                (raycastHits[4].collider != null && raycastHits[2].collider == null))   //right
-            {
-                transform.Translate(0.0f, 1.0f, 0.0f);
-            }
-        }
 
 
         //if player is going downward, flag them as falling
@@ -132,13 +121,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (vibing)
         {
-            acc = acceleration_fast;
+            acceleration = acceleration_fast;
             maxSpeed = maxSpeed_fast;
             jumpForce = jumpForce_fast;
         }
         else
         {
-            acc = acceleration_slow;
+            acceleration = acceleration_slow;
             maxSpeed = maxSpeed_slow;
             jumpForce = jumpForce_slow;
         }
@@ -147,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
     void JoystickMovement()
     {
         float hInput = Input.GetAxis("LeftHorizontal"); ;
-        rb.AddForce(new Vector2(hInput * acc, 0.0f));
+        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
         
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
@@ -157,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
             if (rb.velocity.x > 0 && isGrounded)
             {
                 //apply friction to the left
-                rb.AddForce(new Vector2(-acc, 0.0f));
+                rb.AddForce(new Vector2(-acceleration, 0.0f));
                 if (rb.velocity.x < 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
@@ -167,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
             else if (rb.velocity.x < 0 && isGrounded)
             {
                 //apply friciton to the right
-                rb.AddForce(new Vector2(acc, 0.0f));
+                rb.AddForce(new Vector2(acceleration, 0.0f));
                 if (rb.velocity.x > 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
@@ -270,9 +259,6 @@ public class PlayerMovement : MonoBehaviour
             isOnWall = true;
         else
             isOnWall = false;
-
-        raycastHits[3] = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - playerBounds.size.y / 2), Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask);
-        raycastHits[4] = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - playerBounds.size.y / 2), Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask);
     }
 
     /// <summary>

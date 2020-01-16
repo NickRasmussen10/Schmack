@@ -12,7 +12,6 @@ public class Walker : Enemy
     bool isReversed = true;
     
     float timer = 0.0f;
-    float detectionRange = 0.5f; //how close does he need to get before he arrives at either end of the range
 
     Vector2 scale;
     float xScale;
@@ -65,7 +64,7 @@ public class Walker : Enemy
         }
         else
         {
-            rb.AddForce(direction * speed);
+            transform.Translate(direction * speed);
         }
     }
 }

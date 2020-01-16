@@ -15,25 +15,22 @@ public class Bow : MonoBehaviour
     GameObject indicator;
     float indicatorDistance = 5.0f;
 
-    [SerializeField] GameObject[] arms;
-
     [Header("Firing")]
     [SerializeField] GameObject pref_arrow = null;
-    [SerializeField] float shotPower = 1.0f;
+    [SerializeField] float shotPower = 1500.0f;
     [SerializeField] float shotCooldown = 1.0f;
-    [SerializeField] float knockbackForce = 1.0f;
+    [SerializeField] float knockbackForce = 700.0f;
 
-    [SerializeField] GameObject shootPoint = null;
+    //[SerializeField] GameObject shootPoint = null;
     float coolDownTimer = 0.0f;
     int frameDelay = 0;
 
     [Header("Timescaling")]
-    [SerializeField] float timeScaleMin = 0.5f; //the slowest the game will go on bow drawback
+    [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
     public float timeScale;
 
-    float lerpVal = 0.0f;
-    float dilationTime = 0.0f;
+    //float lerpVal = 0.0f;
     AudioManager audioMan;
     // Start is called before the first frame update
     void Start()
@@ -43,9 +40,9 @@ public class Bow : MonoBehaviour
         {
             Debug.LogError("No audiomanager found");
         }
+        Debug.Log(gameObject);
         indicator = Instantiate(pref_indicator);
         timeScale = timeScaleMax;
-        lerpVal = 1.0f;
     }
 
     // Update is called once per frame
@@ -54,21 +51,21 @@ public class Bow : MonoBehaviour
         if(isDrawnBack)
         {
             audioMan.PlaySound("BowDraw");
-            Debug.Log("bowdraw play");
         }
         if (fire)
         {
             fire = false;
             audioMan.PlaySound("BowFire");
-            Debug.Log("bowfire play");
             //newaudio.PlaySound("ArrowFly");
         }
 
-        direction = new Vector2(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical")).normalized;
+        direction.x = Input.GetAxis("RightHorizontal");
+        direction.y = Input.GetAxis("RightVertical");
+        //direction.Normalize();
         powerInput = Input.GetAxis("Fire1");
 
-        if(direction.sqrMagnitude == 0)
-            direction.x = gameObject.GetComponent<PlayerMovement>().direction.x;
+        if (direction.sqrMagnitude == 0)
+            direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
         SetIndicatorPosition();
 
         if(coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
@@ -78,7 +75,8 @@ public class Bow : MonoBehaviour
             if (!isDrawnBack) isDrawnBack = true;
             if (frameDelay == 10)
             {
-                TimeDilation(true);
+                StartCoroutine("TimeDilationDown");
+                //TimeDilation(true);
             }
             else
             {
@@ -89,14 +87,15 @@ public class Bow : MonoBehaviour
         {
             fire = true;
             frameDelay = 0;
+            StopCoroutine("TimeDilationDown");
             Time.timeScale = timeScaleMax;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             coolDownTimer = shotCooldown;
             isDrawnBack = false;
-            GameObject newArrow = Instantiate(pref_arrow, shootPoint.transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
+            GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
             newArrow.GetComponent<Arrow>().AddForce(direction * shotPower);
             arrows.Add(newArrow);
-            gameObject.GetComponent<PlayerMovement>().AddKnockback(-direction * knockbackForce, true);
+            gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * knockbackForce, true);
         }
         else
         {
@@ -104,31 +103,59 @@ public class Bow : MonoBehaviour
         }
     }
 
-    void TimeDilation(bool slowingDown)
+    //void TimeDilation(bool slowingDown)
+    //{
+    //    if (slowingDown) StartCoroutine("TimeDilationDown");
+    //    else StartCoroutine("TimeDilationUp");
+    //    //if (slowingDown)
+    //    //{
+    //    //    if (lerpVal > 0)
+    //    //        lerpVal -= Time.deltaTime * 3f;
+    //    //    if (lerpVal < 0)
+    //    //        lerpVal = 0;
+    //    //    Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+    //    //    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    //    //}
+    //    //else
+    //    //{
+    //    //    if(dilationTime <= 0)
+    //    //    {
+    //    //        if (lerpVal < 1.0f)
+    //    //            lerpVal += Time.deltaTime;
+    //    //        if (lerpVal > 1.0f)
+    //    //            lerpVal = 1.0f;
+    //    //        lerpVal += Time.deltaTime;
+    //    //        Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+    //    //        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    //    //    }
+    //    //}
+    //}
+
+    IEnumerator TimeDilationDown()
     {
-        if (slowingDown)
+        float lerpVal = 1.0f;
+        while (lerpVal > 0)
         {
-            if (lerpVal > 0)
-                lerpVal -= Time.deltaTime * 3f;
-            if (lerpVal < 0)
-                lerpVal = 0;
+            lerpVal -= Time.deltaTime * 3f;
+            if (lerpVal < 0) lerpVal = 0;
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        }
-        else
-        {
-            if(dilationTime <= 0)
-            {
-                if (lerpVal < 1.0f)
-                    lerpVal += Time.deltaTime;
-                if (lerpVal > 1.0f)
-                    lerpVal = 1.0f;
-                lerpVal += Time.deltaTime;
-                Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            }
+            yield return null;
         }
     }
+
+    //IEnumerator TimeDilationUp()
+    //{
+    //    float lerpVal = 0.0f;
+    //    while(lerpVal < 1.0f)
+    //    {
+    //        lerpVal += Time.deltaTime;
+    //        if (lerpVal > 1.0f) lerpVal = 1.0f;
+    //        Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+    //        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    //        yield return null;
+    //    }
+    //}
 
     /// <summary>
     /// note: this implementation of indicator will become obsolete when player arm/bow rotation is implemented
