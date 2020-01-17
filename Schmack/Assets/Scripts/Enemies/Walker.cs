@@ -8,7 +8,7 @@ public class Walker : Enemy
     [SerializeField] float waitTime = 1.0f; //how long does he stay at each end of the range before turning around?
     [SerializeField] float visionRange = 1.0f;
 
-    EndDetection endDetector = null;
+    bool isAtEnd = false;
     bool isReversed = true;
     
     float timer = 0.0f;
@@ -28,7 +28,6 @@ public class Walker : Enemy
         //    Debug.LogError("No audiomanager found");
         //}
         base.Start();
-        endDetector = gameObject.GetComponentInChildren<EndDetection>();
         direction = new Vector2(-1.0f, 0.0f);
         timer = waitTime;
         xScale = transform.localScale.x;
@@ -51,7 +50,7 @@ public class Walker : Enemy
 
     protected override void Move()
     {
-        if (!endDetector.isColliding || raycastHit.collider != null)
+        if (isAtEnd || raycastHit.collider != null)
         {
             rb.velocity = Vector2.zero;
             timer -= Time.deltaTime;
@@ -66,5 +65,15 @@ public class Walker : Enemy
         {
             transform.Translate(direction * speed);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        isAtEnd = false;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isAtEnd = true;
     }
 }
