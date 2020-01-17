@@ -8,6 +8,7 @@ TagManager:
   - Arrow
   - Start
   - AudioMan
+  - Interactable
   layers:
   - Default
   - TransparentFX
