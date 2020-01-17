@@ -406,7 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GO_Controller: {fileID: 84929878}
   openingSize: 5
-  openingSpeed: 1
+  openingSpeed: 0.1
 --- !u!61 &90778673
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1201,7 +1201,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8.502602
+  orthographic size: 8.488935
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

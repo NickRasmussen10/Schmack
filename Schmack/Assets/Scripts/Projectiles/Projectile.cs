@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    protected Vector2 direction;
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollider;
-    protected Quaternion rotation;
 
     protected void Awake()
     {

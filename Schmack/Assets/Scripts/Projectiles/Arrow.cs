@@ -7,15 +7,17 @@ public class Arrow : Projectile
     protected bool hasHit = false;
 
     // Start is called before the first frame update
-    new void Start()
+    protected new virtual void Start()
     {
+        Debug.Log("base.Start()");
         base.Start();
         transform.right = -rb.velocity;
     }
 
     // Update is called once per frame
-    new void Update()
+    protected new virtual void Update()
     {
+        Debug.Log("base.Update()");
         base.Update();
 
         //if (hasHit && rb != null)
