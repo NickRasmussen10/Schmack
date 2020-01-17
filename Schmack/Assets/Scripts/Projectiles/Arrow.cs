@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Arrow : Projectile
 {
+    protected bool hasHit = false;
 
     // Start is called before the first frame update
     new void Start()
@@ -32,12 +33,25 @@ public class Arrow : Projectile
     {
         if (collision.gameObject.tag != "Player")
         {
+            hasHit = true;
             if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Interactable")
                 transform.parent = collision.gameObject.transform;
             Destroy(rb);
             Destroy(boxCollider);
         }
     }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag != "Player")
+    //    {
+    //        hasHit = true;
+    //        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Interactable")
+    //            transform.parent = collision.gameObject.transform;
+    //        Destroy(rb);
+    //        Destroy(boxCollider);
+    //    }
+    //}
 
     public void AddForce(Vector2 force)
     {

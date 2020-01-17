@@ -20,4 +20,9 @@ public class Button : Controller
     {
         if (collision.gameObject.tag == "Arrow") isActivated = !isActivated;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Arrow") isActivated = !isActivated;
+    }
 }
