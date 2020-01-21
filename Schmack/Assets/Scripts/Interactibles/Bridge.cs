@@ -5,19 +5,19 @@ using UnityEngine;
 public class Bridge : Controllable
 {
     [SerializeField] float openingSpeed = 5.0f;
-    [SerializeField] float openingSize = 0.9f;
 
-    Vector3 minPosition;
-    Vector3 maxPosition;
-    float lerpVal = 0.0f;
+    SpriteRenderer spriteRenderer;
+    BoxCollider2D boxCollider;
+    EdgeCollider2D edgeCollider;
+    RaycastHit2D raycast;
 
     // Start is called before the first frame update
     new void Start()
     {
         base.Start();
-        openingSize = gameObject.GetComponent<BoxCollider2D>().bounds.size.x * 0.8f;
-        minPosition = transform.position;
-        maxPosition = new Vector3(minPosition.x + openingSize, minPosition.y, minPosition.z);
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        boxCollider = gameObject.GetComponent<BoxCollider2D>();
+        edgeCollider = gameObject.GetComponent<EdgeCollider2D>();
     }
 
     // Update is called once per frame
@@ -29,13 +29,39 @@ public class Bridge : Controllable
     protected override IEnumerator Activate()
     {
         isActivated = true;
-        while(lerpVal < 1.0f)
+        while(isActivated)
         {
-            lerpVal += openingSpeed * Time.deltaTime;
-            if (lerpVal > 1.0f) lerpVal = 1.0f;
-            transform.position = new Vector3(Mathf.Lerp(minPosition.x, maxPosition.x, lerpVal),
-                                            minPosition.y,
-                                            minPosition.z);
+            Vector3 temp = spriteRenderer.size;
+            temp.x -= Time.deltaTime * openingSpeed;
+            spriteRenderer.size = temp;
+
+            temp = boxCollider.offset;
+            temp.x = spriteRenderer.size.x / 2;
+            boxCollider.offset = temp;
+
+            temp = boxCollider.size;
+            temp.x = -spriteRenderer.size.x;
+            boxCollider.size = temp;
+
+            //this raycast isn't detecting collisions what the frick?
+            raycast = Physics2D.Raycast(new Vector3(transform.position.x - spriteRenderer.size.x, transform.position.y, transform.position.z), Vector2.right, 0.05f);
+            Debug.DrawLine(new Vector3(transform.position.x - spriteRenderer.size.x, transform.position.y, transform.position.z), new Vector3(transform.position.x - spriteRenderer.size.x, transform.position.y, transform.position.z) + new Vector3(0.05f, 0.0f, 0.0f));
+            if (raycast.collider != null)
+            {
+                isActivated = false;
+            }
+
+            //edgeCollider.points.SetValue(new Vector2(spriteRenderer.size.x, 0.5f), 0);
+            //edgeCollider.points.SetValue(new Vector2(spriteRenderer.size.x, -0.5f), 1);
+            //temp = edgeCollider.points[0];
+            //Debug.Log(temp);
+            //temp.x = spriteRenderer.size.x;
+            //edgeCollider.points[0] = temp;
+
+            //temp = edgeCollider.points[1];
+            //temp.x = spriteRenderer.size.x;
+            //edgeCollider.points[1] = temp;
+
             yield return null;
         }
     }
@@ -43,14 +69,13 @@ public class Bridge : Controllable
     protected override IEnumerator Deactivate()
     {
         isActivated = false;
-        while (lerpVal > 0.0f)
-        {
-            lerpVal -= openingSpeed * Time.deltaTime;
-            if (lerpVal < 0.0f) lerpVal = 0.0f;
-            transform.position = new Vector3(Mathf.Lerp(minPosition.x, maxPosition.x, lerpVal),
-                                            minPosition.y,
-                                            minPosition.z);
-            yield return null;
-        }
+        yield return null;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("E D G Y");
+        isActivated = false;
     }
 }
