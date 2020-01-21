@@ -1,9 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    /// <summary>
+    /// Temp UI stuff
+    /// </summary>
+    /// 
+    [SerializeField] Text bowText;
+
+
     [SerializeField] float maxHealth = 100;
     float health;
 
@@ -24,6 +32,7 @@ public class Player : MonoBehaviour
 
         currentBow = bows[0];
         bowScript = currentBow.GetComponent<Bow>();
+        bowText.text = currentBow.name;
         indicator = Instantiate(pref_indicator);
     }
 
@@ -70,6 +79,7 @@ public class Player : MonoBehaviour
         currentBow.SetActive(false);
         currentBow = bows[bowIndex];
         bowScript = currentBow.GetComponent<Bow>();
+        bowText.text = currentBow.name;
         currentBow.SetActive(true);
     }
 

@@ -15,16 +15,16 @@ public class PPPSwapper : MonoBehaviour
     void Start()
     {
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        vibing = playerMovement.vibing;
+        vibing = playerMovement.inFlow;
     }
 
     // Update is called once per frame
     void Update()
     {
         //if the vibe has changed
-        if (vibing != playerMovement.vibing)
+        if (vibing != playerMovement.inFlow)
         {
-            vibing = playerMovement.vibing;
+            vibing = playerMovement.inFlow;
             if (vibing)
             {
                 GetComponent<PostProcessingBehaviour>().profile = flow;

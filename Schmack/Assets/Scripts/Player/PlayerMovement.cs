@@ -1,21 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    /// <summary>
+    /// Temp UI Stuff
+    /// </summary>
+    [SerializeField] Slider flowSlider;
+
     Rigidbody2D rb;
 
-    [Header("Vibe")]
-    [SerializeField] float timeToVibe = 3;
-    [SerializeField] float vibeFailTime = 1;
-
-    [Header("Movement - Vibing")]
+    [Header("Movement - Flow")]
     [SerializeField] float acceleration_fast = 8;
     [SerializeField] float maxSpeed_fast = 10;
     [SerializeField] float jumpForce_fast = 250;
 
-    [Header("Movement - Not Vibing")]
+    [Header("Movement - No Flow")]
     [SerializeField] float acceleration_slow = 4;
     [SerializeField] float maxSpeed_slow = 5;
     [SerializeField] float jumpForce_slow = 200;
@@ -28,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     float acceleration;
     float maxSpeed;
     float jumpForce;
-    float vibeThreshold = 0.0f;
+    float flowThreshold = 0.0f;
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
@@ -39,10 +41,10 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded = false;
     bool isWalking = false;
     bool isOnWall = false;
-    public bool vibing = false;
+    public bool inFlow = false;
 
     private Animator anim;
-    float vibeTimer = 0.0f;
+    float flowTimer = 0.0f;
 
     AudioManager audioMan;
 
@@ -50,19 +52,18 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         audioMan = AudioManager.instance;
-        if(audioMan==null)
+        if (audioMan == null)
         {
             Debug.LogError("No audiomanager found");
         }
         anim = GetComponentInChildren<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponentInChildren<Bow>();
-        vibing = false;
+        inFlow = false;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
-        vibeThreshold = maxSpeed_slow * maxSpeed_slow * 0.7f;
-        vibeTimer = timeToVibe;
+        flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.7f;
         direction = new Vector2(1.0f, 1.0f);
         playerBounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
     }
@@ -74,11 +75,7 @@ public class PlayerMovement : MonoBehaviour
         {
             audioMan.PlaySound("Walk");
         }
-        VibeCheck();
-        if (vibeTimer <= 0)
-        {
-            VibeChange();
-        }
+        HandleFlow();
         JoystickMovement();
         UpdatePlayerDirection();
         CastRays();
@@ -94,32 +91,23 @@ public class PlayerMovement : MonoBehaviour
             Application.Quit();
     }
 
-    void VibeCheck()
+    void HandleFlow()
     {
-        if((!vibing && rb.velocity.sqrMagnitude > vibeThreshold) || (vibing && rb.velocity.sqrMagnitude < vibeThreshold))
+        if (Input.GetButtonDown("Flow") && !inFlow)
         {
-            vibeTimer -= Time.deltaTime;
-        }
-        else if(!vibing)
-        {
-            vibeTimer = timeToVibe;
-        }
-        else
-        {
-            vibeTimer = vibeFailTime;
+            FlowChange();
         }
     }
-
 
 
     /// <summary>
     /// handles swapping between vibe state and yuck state
     /// </summary>
-    void VibeChange()
+    void FlowChange()
     {
-        vibing = !vibing;
+        inFlow = !inFlow;
 
-        if (vibing)
+        if (inFlow)
         {
             acceleration = acceleration_fast;
             maxSpeed = maxSpeed_fast;
@@ -137,10 +125,10 @@ public class PlayerMovement : MonoBehaviour
     {
         float hInput = Input.GetAxis("LeftHorizontal"); ;
         rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-        
+
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if(isGrounded)
+            if (isGrounded)
                 isWalking = true;
 
             if (rb.velocity.x > 0 && isGrounded)
@@ -151,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
                 }
-               
+
             }
             else if (rb.velocity.x < 0 && isGrounded)
             {
@@ -164,10 +152,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         else
-        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
         if (rb.velocity.x > 0)
             gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if(rb.velocity.x < 0)
+        else if (rb.velocity.x < 0)
             gameObject.transform.localScale = new Vector3(-1, 1, 1);
     }
 
@@ -184,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
             x = Input.GetAxis("RightHorizontal");
             direction.x = x > 0 ? 1 : -1;
         }
-        else if(Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0)
+        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0)
         {
             x = Input.GetAxis("LeftHorizontal");
             direction.x = x > 0 ? 1 : -1;
@@ -218,10 +206,10 @@ public class PlayerMovement : MonoBehaviour
         anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         anim.SetBool("OnWall", isOnWall);
         anim.SetBool("IsJumping", !isGrounded && !isOnWall);
-        anim.SetBool("IsVibing", vibing);
+        anim.SetBool("IsVibing", inFlow);
         anim.SetBool("Drawn", bow.isDrawnBack);
         anim.SetBool("Fire", bow.fire);
-        if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime  >= 1.0f && anim.GetCurrentAnimatorStateInfo(0).IsName("standing_fire"))
+        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && anim.GetCurrentAnimatorStateInfo(0).IsName("standing_fire"))
         {
             anim.Play("standing_load");
         }
@@ -290,7 +278,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(knockback);
         }
-        
+
     }
 
     /// <summary>

@@ -22,11 +22,11 @@ public class PPPLerp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(pMovement.vibing && lerpVal < 1)
+        if(pMovement.inFlow && lerpVal < 1)
         {
             //lerp up to flow PPP
         }
-        else if(!pMovement.vibing && lerpVal > 0)
+        else if(!pMovement.inFlow && lerpVal > 0)
         {
             //lerp down to noFlow PPP
         }
