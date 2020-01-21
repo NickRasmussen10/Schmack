@@ -12,6 +12,16 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody2D rb;
 
+    [Header("Flow")]
+    [SerializeField] float flowForgivenessTime = 1.0f;
+    [SerializeField] float flowDepreciationRate = 1.0f;
+    [SerializeField] float flowAppreciationRate = 1.0f;
+    float flowJuice = 0.0f;
+    public bool inFlow = false;
+    float flowTimer = 0.0f;
+    float flowThreshold = 0.0f;
+
+
     [Header("Movement - Flow")]
     [SerializeField] float acceleration_fast = 8;
     [SerializeField] float maxSpeed_fast = 10;
@@ -30,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     float acceleration;
     float maxSpeed;
     float jumpForce;
-    float flowThreshold = 0.0f;
+
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
@@ -41,10 +51,10 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded = false;
     bool isWalking = false;
     bool isOnWall = false;
-    public bool inFlow = false;
+
 
     private Animator anim;
-    float flowTimer = 0.0f;
+
 
     AudioManager audioMan;
 
@@ -63,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
-        flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.7f;
+        flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.5f;
         direction = new Vector2(1.0f, 1.0f);
         playerBounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
     }
@@ -93,11 +103,54 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleFlow()
     {
-        if (Input.GetButtonDown("Flow") && !inFlow)
+        //if flow button is pressed and player is not in flow and player has a full flow bar
+        if (Input.GetButtonDown("Flow") && !inFlow && flowJuice == 1.0f)
         {
             FlowChange();
         }
+
+        //if player is in flow and it not moving fast enough
+        if (inFlow && rb.velocity.sqrMagnitude < flowThreshold)
+        {
+            StartCoroutine("TurtleTime");
+        }
+
+        //if player is in flow and moving fast enough
+        if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
+        {
+            StopCoroutine("TurtleTime");
+            flowTimer = flowForgivenessTime;
+            flowJuice += Time.deltaTime * flowAppreciationRate;
+            if (flowJuice > 1.0f) flowJuice = 1.0f;
+        }
+        //if flow forgiveness timer is up
+        else if (flowTimer == 0 && flowJuice > 0.0f && inFlow)
+        {
+            flowJuice -= Time.deltaTime * flowDepreciationRate;
+            if (flowJuice < 0.0f) flowJuice = 0.0f;
+        }
+
+
+
+        if (inFlow && flowJuice == 0)
+        {
+            FlowChange();
+        }
+
+        flowSlider.value = flowJuice;
     }
+
+    IEnumerator TurtleTime()
+    {
+        while (flowTimer > 0)
+        {
+            Debug.Log("Flow timer: " + flowTimer);
+            flowTimer -= Time.deltaTime;
+            if (flowTimer < 0) flowTimer = 0;
+            yield return null;
+        }
+    }
+
 
 
     /// <summary>

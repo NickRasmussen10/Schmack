@@ -323,9 +323,9 @@ MonoBehaviour:
       mode: 0
       color: {r: 0.01922391, g: 0.09231263, b: 0.509434, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.637
-      smoothness: 0.404
-      roundness: 0.927
+      intensity: 0.482
+      smoothness: 0.417
+      roundness: 0.906
       mask: {fileID: 0}
       opacity: 1
       rounded: 0
