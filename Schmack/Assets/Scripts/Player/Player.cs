@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     /// Temp UI stuff
     /// </summary>
     /// 
-    [SerializeField] Text bowText;
+    [SerializeField] Text bowText = null;
 
 
     [SerializeField] float maxHealth = 100;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public GameObject currentBow;
     Bow bowScript;
 
-    [SerializeField] GameObject pref_indicator;
+    [SerializeField] GameObject pref_indicator = null;
     [SerializeField] float indicatorDistance = 5.0f;
     GameObject indicator;
 

@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Temp UI Stuff
     /// </summary>
-    [SerializeField] Slider flowSlider;
+    [SerializeField] Slider flowSlider = null;
 
     Rigidbody2D rb;
 
@@ -144,7 +144,6 @@ public class PlayerMovement : MonoBehaviour
     {
         while (flowTimer > 0)
         {
-            Debug.Log("Flow timer: " + flowTimer);
             flowTimer -= Time.deltaTime;
             if (flowTimer < 0) flowTimer = 0;
             yield return null;
@@ -286,7 +285,8 @@ public class PlayerMovement : MonoBehaviour
     {
         int layer_environment = 1 << 9;
         int layer_enemies = 1 << 11;
-        int finalLayerMask = layer_environment | layer_enemies;
+        int layer_interactables = 1 << 12;
+        int finalLayerMask = layer_environment | layer_enemies | layer_interactables;
         //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
         if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
             isGrounded = true;

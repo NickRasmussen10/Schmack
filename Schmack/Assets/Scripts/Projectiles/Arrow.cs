@@ -9,7 +9,6 @@ public class Arrow : Projectile
     // Start is called before the first frame update
     protected new virtual void Start()
     {
-        Debug.Log("base.Start()");
         base.Start();
         transform.right = -rb.velocity;
     }
@@ -17,7 +16,6 @@ public class Arrow : Projectile
     // Update is called once per frame
     protected new virtual void Update()
     {
-        Debug.Log("base.Update()");
         base.Update();
 
         //if (hasHit && rb != null)
@@ -42,18 +40,6 @@ public class Arrow : Projectile
             Destroy(boxCollider);
         }
     }
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.tag != "Player")
-    //    {
-    //        hasHit = true;
-    //        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Interactable")
-    //            transform.parent = collision.gameObject.transform;
-    //        Destroy(rb);
-    //        Destroy(boxCollider);
-    //    }
-    //}
 
     public void AddForce(Vector2 force)
     {
