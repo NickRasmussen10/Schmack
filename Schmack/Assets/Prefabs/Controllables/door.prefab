@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GO_Controller: {fileID: 0}
   openingSize: 5
-  openingSpeed: 0.1
+  openingSpeed: 1
 --- !u!61 &415503737966761602
 BoxCollider2D:
   m_ObjectHideFlags: 0

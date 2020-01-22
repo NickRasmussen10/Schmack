@@ -144,3 +144,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosiveForce: 5
   radius: 10
+  affectsPlayer: 0
