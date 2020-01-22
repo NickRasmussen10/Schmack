@@ -43,13 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3382119ba58b76842afe88bd75af4a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: {x: 0, y: 0}
   isDrawnBack: 0
   fire: 0
-  pref_indicator: {fileID: 435901467579359303, guid: aba549ca634a2944a815e6f2d1300be2,
-    type: 3}
   pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
     type: 3}
-  shotPower: 1500
+  shotPower: 1000
   shotCooldown: 1
   knockbackForce: 700
   timeScaleMin: 0.1

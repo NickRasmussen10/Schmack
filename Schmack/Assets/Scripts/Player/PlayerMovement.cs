@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     bool isWalking = false;
     bool isOnWall = false;
 
+    bool limitHorizontalMovement = true;
+
 
     private Animator anim;
 
@@ -175,45 +177,62 @@ public class PlayerMovement : MonoBehaviour
 
     void JoystickMovement()
     {
-        float hInput = Input.GetAxis("LeftHorizontal"); ;
-        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-
-        if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
+        if (limitHorizontalMovement)
         {
-            if (isGrounded)
-                isWalking = true;
-
-            if (rb.velocity.x > 0 && isGrounded)
-            {
-                //apply friction to the left
-                rb.AddForce(new Vector2(-acceleration, 0.0f));
-                if (rb.velocity.x < 0)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-                }
-
-            }
-            else if (rb.velocity.x < 0 && isGrounded)
-            {
-                //apply friciton to the right
-                rb.AddForce(new Vector2(acceleration, 0.0f));
-                if (rb.velocity.x > 0)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-                }
-            }
+            float hInput = Input.GetAxis("LeftHorizontal");
+            rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
         }
         else
-            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-        if (rb.velocity.x > 0)
-            gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if (rb.velocity.x < 0)
-            gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        {
+            float hInput = Input.GetAxis("LeftHorizontal");
+            rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
+        }
+
+            if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
+            {
+                if (isGrounded)
+                    isWalking = true;
+
+                if (rb.velocity.x > 0 && isGrounded)
+                {
+                    //apply friction to the left
+                    rb.AddForce(new Vector2(-acceleration, 0.0f));
+                    if (rb.velocity.x < 0)
+                    {
+                        rb.velocity = new Vector2(0, rb.velocity.y);
+                    }
+
+                }
+                else if (rb.velocity.x < 0 && isGrounded)
+                {
+                    //apply friciton to the right
+                    rb.AddForce(new Vector2(acceleration, 0.0f));
+                    if (rb.velocity.x > 0)
+                    {
+                        rb.velocity = new Vector2(0, rb.velocity.y);
+                    }
+                }
+            }
+            else
+                rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+            if (rb.velocity.x > 0)
+                gameObject.transform.localScale = new Vector3(1, 1, 1);
+            else if (rb.velocity.x < 0)
+                gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        
+    }
+
+    IEnumerator DisableHorizontalMovement()
+    {
+        limitHorizontalMovement = false;
+        yield return new WaitForSeconds(0.75f);
+        limitHorizontalMovement = true;
+        
     }
 
     void UpdatePlayerDirection()
     {
-        float x = 0;
+        float x;
         if (isOnWall)
         {
             direction.x = CheckRayCollision(1) ? 1 : -1;
@@ -244,10 +263,12 @@ public class PlayerMovement : MonoBehaviour
             else if (CheckRayCollision(1))
             {
                 rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
+                StartCoroutine(DisableHorizontalMovement());
             }
             else if (CheckRayCollision(2))
             {
                 rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
+                StartCoroutine(DisableHorizontalMovement());
             }
         }
     }
@@ -319,6 +340,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="groundRequired">does the player need to be on the ground?</param>
     public void AddKnockback(Vector2 knockback, bool groundRequired)
     {
+        Debug.Log(knockback);
         rb.velocity = Vector2.zero;
         if (groundRequired)
         {
