@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Bridge : Controllable
 {
-    [SerializeField] float openingSpeed = 5.0f;
+    [SerializeField] public float openingSpeed = 5.0f;
+    public float direction = 0.0f;
 
     SpriteRenderer spriteRenderer;
     BoxCollider2D boxCollider;
@@ -23,16 +24,17 @@ public class Bridge : Controllable
     // Update is called once per frame
     new void Update()
     {
-        base.Update();
-        if (raycastHit.collider != null)
+        if (raycastHit.collider != null && direction != -1.0f)
         {
-            Debug.Log("collision detected");
             StopCoroutine("Activate");
+            direction = 0.0f;
         }
+        base.Update();
     }
 
     protected override IEnumerator Activate()
     {
+        direction = 1.0f;
         isActivated = true;
         while (isActivated)
         {
@@ -60,6 +62,7 @@ public class Bridge : Controllable
 
     protected override IEnumerator Deactivate()
     {
+        direction = -1.0f;
         isActivated = false;
         while(spriteRenderer.size.x < -1.0f)
         {

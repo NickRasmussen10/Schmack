@@ -81,6 +81,16 @@ public class Player : MonoBehaviour
         bowScript = currentBow.GetComponent<Bow>();
         bowText.text = currentBow.name;
         currentBow.SetActive(true);
+
+        //change this to a better method when you're not 2 hours from a meeting
+        if(currentBow.name == "Power Bow")
+        {
+            indicatorDistance = 3;
+        }
+        else
+        {
+            indicatorDistance = 5;
+        }
     }
 
     protected void SetIndicatorPosition()

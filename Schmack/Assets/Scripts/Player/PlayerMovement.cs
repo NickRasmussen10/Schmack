@@ -97,6 +97,20 @@ public class PlayerMovement : MonoBehaviour
         isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
         WallStick();
+
+        if (CheckRayCollision(0))
+        {
+            Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
+            if (raycastHits[0].collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
+            {
+                transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
+            }
+            else
+            {
+                transform.parent = null;
+            }
+        }
+
         Animations();
 
         if (Input.GetKey(KeyCode.Escape))
@@ -188,38 +202,38 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
         }
 
-            if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
+        if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
+        {
+            if (isGrounded)
+                isWalking = true;
+
+            if (rb.velocity.x > 0 && isGrounded)
             {
-                if (isGrounded)
-                    isWalking = true;
-
-                if (rb.velocity.x > 0 && isGrounded)
+                //apply friction to the left
+                rb.AddForce(new Vector2(-acceleration, 0.0f));
+                if (rb.velocity.x < 0)
                 {
-                    //apply friction to the left
-                    rb.AddForce(new Vector2(-acceleration, 0.0f));
-                    if (rb.velocity.x < 0)
-                    {
-                        rb.velocity = new Vector2(0, rb.velocity.y);
-                    }
-
+                    rb.velocity = new Vector2(0, rb.velocity.y);
                 }
-                else if (rb.velocity.x < 0 && isGrounded)
+
+            }
+            else if (rb.velocity.x < 0 && isGrounded)
+            {
+                //apply friciton to the right
+                rb.AddForce(new Vector2(acceleration, 0.0f));
+                if (rb.velocity.x > 0)
                 {
-                    //apply friciton to the right
-                    rb.AddForce(new Vector2(acceleration, 0.0f));
-                    if (rb.velocity.x > 0)
-                    {
-                        rb.velocity = new Vector2(0, rb.velocity.y);
-                    }
+                    rb.velocity = new Vector2(0, rb.velocity.y);
                 }
             }
-            else
-                rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-            if (rb.velocity.x > 0)
-                gameObject.transform.localScale = new Vector3(1, 1, 1);
-            else if (rb.velocity.x < 0)
-                gameObject.transform.localScale = new Vector3(-1, 1, 1);
-        
+        }
+        else
+            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
+        if (rb.velocity.x > 0)
+            gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else if (rb.velocity.x < 0)
+            gameObject.transform.localScale = new Vector3(-1, 1, 1);
+
     }
 
     IEnumerator DisableHorizontalMovement()
@@ -227,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
         limitHorizontalMovement = false;
         yield return new WaitForSeconds(0.75f);
         limitHorizontalMovement = true;
-        
+
     }
 
     void UpdatePlayerDirection()
@@ -315,8 +329,10 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
 
         //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
-        if (((raycastHits[1] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[2] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
+        Vector3 raycastStart = transform.position;
+        raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
+        if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+            (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
             !isGrounded)
             isOnWall = true;
         else
@@ -340,7 +356,6 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="groundRequired">does the player need to be on the ground?</param>
     public void AddKnockback(Vector2 knockback, bool groundRequired)
     {
-        Debug.Log(knockback);
         rb.velocity = Vector2.zero;
         if (groundRequired)
         {

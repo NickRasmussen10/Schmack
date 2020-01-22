@@ -9,6 +9,7 @@ TagManager:
   - Start
   - AudioMan
   - Interactable
+  - BombArrow
   layers:
   - Default
   - TransparentFX

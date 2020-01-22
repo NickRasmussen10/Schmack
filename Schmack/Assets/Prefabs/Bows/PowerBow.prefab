@@ -54,4 +54,4 @@ MonoBehaviour:
   timeScaleMin: 0.1
   timeScaleMax: 1
   timeScale: 0
-  inaccuracy: 0.01
+  inaccuracy: 0.2

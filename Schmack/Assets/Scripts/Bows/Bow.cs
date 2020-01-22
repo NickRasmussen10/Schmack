@@ -66,6 +66,7 @@ public class Bow : MonoBehaviour
         direction.x = Input.GetAxis("RightHorizontal");
         direction.y = Input.GetAxis("RightVertical");
         powerInput = Input.GetAxis("Fire1");
+        if (powerInput == 0) powerInput = Input.GetAxis("FireAlt");
 
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;

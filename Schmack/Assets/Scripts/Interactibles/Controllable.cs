@@ -4,28 +4,35 @@ using UnityEngine;
 
 public abstract class Controllable : MonoBehaviour
 {
-    [SerializeField] GameObject GO_Controller = null;
     Controller controller;
 
-    protected bool isActivated;
+    public bool isActivated;
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        controller = GO_Controller.GetComponent<Controller>();
+
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (controller.isActivated && !isActivated) {
-            StopCoroutine("Deactivate");
-            StartCoroutine("Activate");
-        }
-        if (!controller.isActivated && isActivated) {
-            StopCoroutine("Activate");
-            StartCoroutine("Deactivate");
-        }
+
     }
+
+    public void Begin()
+    {
+        isActivated = true;
+        StopCoroutine("Deactivate");
+        StartCoroutine("Activate");
+    }
+
+    public void End()
+    {
+        isActivated = false;
+        StopCoroutine("Activate");
+        StartCoroutine("Deactivate");
+    }
+
 
     protected abstract IEnumerator Activate();
 

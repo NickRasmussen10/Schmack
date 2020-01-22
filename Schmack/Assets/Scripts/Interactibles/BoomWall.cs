@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Button : Controller
+public class BoomWall : MonoBehaviour
 {
+    [SerializeField] GameObject pref_boomwall_blown = null;
     // Start is called before the first frame update
-    new void Start()
+    void Start()
     {
-        base.Start();
+        
     }
 
     // Update is called once per frame
@@ -16,16 +17,12 @@ public class Button : Controller
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Arrow")
+        if (collision.gameObject.tag == "BombArrow")
         {
-            Activate();
+            Instantiate(pref_boomwall_blown, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 }

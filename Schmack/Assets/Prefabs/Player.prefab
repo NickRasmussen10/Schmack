@@ -75,18 +75,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flowSlider: {fileID: 0}
-  flowForgivenessTime: 1
-  flowDepreciationRate: 1
-  flowAppreciationRate: 1
+  flowForgivenessTime: 20
+  flowDepreciationRate: 0.25
+  flowAppreciationRate: 0.1
   inFlow: 0
   acceleration_fast: 50
   maxSpeed_fast: 15
   jumpForce_fast: 700
   acceleration_slow: 40
   maxSpeed_slow: 10
-  jumpForce_slow: 600
+  jumpForce_slow: 1000
   stickiness: 1
-  horizontalForce: 550
+  horizontalForce: 1000
   wallJumpLimiter: 1
   direction: {x: 0, y: 0}
 --- !u!50 &1713254931261033139
@@ -164,17 +164,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Default Bow
       objectReference: {fileID: 0}
-    - target: {fileID: 95423770044771546, guid: 91751f1444ec0644280a3a1b77fe8d03,
+    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: shotPower
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
         type: 3}
-      propertyPath: pref_indicator
-      value: 
-      objectReference: {fileID: 435901467579359303, guid: aba549ca634a2944a815e6f2d1300be2,
-        type: 3}
+      propertyPath: knockbackForce
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 5338963972345774948, guid: 91751f1444ec0644280a3a1b77fe8d03,
         type: 3}
       propertyPath: m_LocalPosition.x
