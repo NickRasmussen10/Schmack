@@ -15,7 +15,6 @@ public class Controller : MonoBehaviour
         {
             controllables[c] = GO_controllables[c].GetComponent<Controllable>();
         }
-        Debug.Log(controllables);
     }
 
     // Update is called once per frame

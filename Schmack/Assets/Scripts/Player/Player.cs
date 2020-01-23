@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     /// </summary>
     /// 
     [SerializeField] Text bowText = null;
+    //[SerializeField] Canvas canvas = null;
+    //[SerializeField] Sprite displayArrow = null;
+    [SerializeField] List<Image> displayArrows = new List<Image>();
 
 
     [SerializeField] float maxHealth = 100;
@@ -55,6 +58,44 @@ public class Player : MonoBehaviour
         {
             Die();
         }
+
+        DisplayArrowCount();
+    }
+
+    void DisplayArrowCount()
+    {
+        for(int i = 1; i <= displayArrows.Count; i++)
+        {
+            if(i > bowScript.numArrows)
+            {
+                displayArrows[i-1].enabled = false;
+            }
+            else
+            {
+                displayArrows[i-1].enabled = true;
+            }
+        }
+        //for(int i = displayArrows.Count - 1; i >= 0; i--)
+        //{
+        //    if (i < bowScript.numArrows)
+        //    {
+        //        Destroy(displayArrows[i]);
+        //        displayArrows.RemoveAt(i);
+        //    }
+        //}
+        //for(int i = 0; i < bowScript.numArrows; i++)
+        //{
+        //    if(i > displayArrows.Count - 1)
+        //    {
+        //        GameObject dispArrow = new GameObject();
+        //        dispArrow.AddComponent<Image>();
+        //        dispArrow.GetComponent<Image>().sprite = displayArrow;
+        //        Vector2 position = new Vector2(-700, 300);
+        //        position.x += i * displayArrow.rect.width;
+        //        dispArrow.transform.position = position;
+        //        dispArrow.transform.SetParent(canvas.transform);
+        //    }
+        //}
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

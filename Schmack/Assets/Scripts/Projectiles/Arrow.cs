@@ -31,7 +31,7 @@ public class Arrow : Projectile
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "Player")
+        if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Arrow")
         {
             hasHit = true;
             if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Interactable")
