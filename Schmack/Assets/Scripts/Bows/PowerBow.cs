@@ -15,11 +15,13 @@ public class PowerBow : Bow
     // Update is called once per frame
     new void Update()
     {
+        Debug.Log("powerbow update");
         HandleInput();
         if (powerInput == 0 && isDrawnBack)
         {
             direction.x += Random.Range(direction.x - inaccuracy, direction.x + inaccuracy);
             direction.y += Random.Range(direction.y - inaccuracy, direction.y + inaccuracy);
+            direction.Normalize();
         }
         HandleFiring();
         PlaySounds();

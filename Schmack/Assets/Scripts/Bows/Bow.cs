@@ -8,19 +8,24 @@ public class Bow : MonoBehaviour
     public Vector2 direction;
     public bool isDrawnBack = false;
     public bool fire = false;
+    public bool inFlow;
     protected float powerInput = 0.0f;
 
+    public int numArrows;
     List<GameObject> arrows = new List<GameObject>();
 
-
-    [Header("Firing")]
     [SerializeField] GameObject pref_arrow = null;
     [SerializeField] int maxArrows = 3;
-    [SerializeField] float shotPower = 1500.0f;
     [SerializeField] float rechargeTime = 1.0f;
-    [SerializeField] float knockbackForce = 700.0f;
 
-    public int numArrows;
+
+    [Header("Firing - Flow")]
+    [SerializeField] float flow_shotPower = 1500.0f;
+    [SerializeField] float flow_knockbackForce = 700.0f;
+
+    [Header("Firing - Slow Flow")]
+    [SerializeField] float noFlow_shotPower = 1500.0f;
+    [SerializeField] float noFlow_knockbackForce = 700.0f;
 
     float coolDownTimer = 0.0f;
     int frameDelay = 0;
@@ -50,6 +55,7 @@ public class Bow : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        Debug.Log("base bow update");
         HandleInput();
         HandleFiring();
         PlaySounds();
@@ -75,7 +81,6 @@ public class Bow : MonoBehaviour
         direction.x = Input.GetAxis("RightHorizontal");
         direction.y = Input.GetAxis("RightVertical");
         powerInput = Input.GetAxis("Fire1");
-        if (powerInput == 0) powerInput = Input.GetAxis("FireAlt");
 
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
@@ -122,13 +127,20 @@ public class Bow : MonoBehaviour
         fire = true;
         frameDelay = 0;
         StopCoroutine("TimeDilationDown");
+
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
         isDrawnBack = false;
         GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
-        newArrow.GetComponent<Arrow>().AddForce(direction * shotPower);
+
+        if(inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
+        else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
+
         arrows.Add(newArrow);
-        gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * knockbackForce, true);
+
+        if(inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
+        else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
     }
 
     IEnumerator TimeDilationDown()

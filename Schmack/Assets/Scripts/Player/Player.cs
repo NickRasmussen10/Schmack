@@ -10,10 +10,9 @@ public class Player : MonoBehaviour
     /// </summary>
     /// 
     [SerializeField] Text bowText = null;
-    //[SerializeField] Canvas canvas = null;
-    //[SerializeField] Sprite displayArrow = null;
     [SerializeField] List<Image> displayArrows = new List<Image>();
 
+    PlayerMovement playerMovement = null;
 
     [SerializeField] float maxHealth = 100;
     float health;
@@ -31,6 +30,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
         health = maxHealth;
 
         currentBow = bows[0];
@@ -59,6 +59,11 @@ public class Player : MonoBehaviour
             Die();
         }
 
+        if(bowScript.inFlow != playerMovement.inFlow)
+        {
+            bowScript.inFlow = playerMovement.inFlow;
+        }
+
         DisplayArrowCount();
     }
 
@@ -75,27 +80,6 @@ public class Player : MonoBehaviour
                 displayArrows[i-1].enabled = true;
             }
         }
-        //for(int i = displayArrows.Count - 1; i >= 0; i--)
-        //{
-        //    if (i < bowScript.numArrows)
-        //    {
-        //        Destroy(displayArrows[i]);
-        //        displayArrows.RemoveAt(i);
-        //    }
-        //}
-        //for(int i = 0; i < bowScript.numArrows; i++)
-        //{
-        //    if(i > displayArrows.Count - 1)
-        //    {
-        //        GameObject dispArrow = new GameObject();
-        //        dispArrow.AddComponent<Image>();
-        //        dispArrow.GetComponent<Image>().sprite = displayArrow;
-        //        Vector2 position = new Vector2(-700, 300);
-        //        position.x += i * displayArrow.rect.width;
-        //        dispArrow.transform.position = position;
-        //        dispArrow.transform.SetParent(canvas.transform);
-        //    }
-        //}
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
