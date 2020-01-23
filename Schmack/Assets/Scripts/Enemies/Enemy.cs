@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    [Header("Base enemy info")]
     [SerializeField] float maxHealth = 100.0f;
     [SerializeField] protected float acceleration = 1.0f;
     [SerializeField] protected float maxSpeed = 0.5f;
@@ -24,6 +25,7 @@ public abstract class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        Move();
         if(health <= 0)
         {
             Destroy(gameObject);

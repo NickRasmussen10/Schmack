@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Walker : Enemy
 {
+    [Header("Walking Enemy Info")]
     [SerializeField] float speed = 5;
     [SerializeField] float waitTime = 1.0f; //how long does he stay at each end of the range before turning around?
     [SerializeField] float visionRange = 1.0f;
@@ -36,15 +37,14 @@ public class Walker : Enemy
     // Update is called once per frame
     new void Update()
     {
-        base.Update();
-
         raycastHit = Physics2D.Raycast(transform.position, direction, visionRange, LayerMask.GetMask("environment"));
-        Debug.DrawLine(transform.position, (Vector2)transform.position + (direction * visionRange));
-        Move();
+        //Move();
         scale = transform.localScale;
         scale.x = isReversed ? xScale : -xScale;
         transform.localScale = scale;
         //audioMan.PlaySound("Enemy");
+
+        base.Update();
     }
 
 

@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     [SerializeField] Slider flowSlider = null;
 
+    [Header("Flow Testing Mode")]
+    [SerializeField] bool flowTestMode = false;
+
     Rigidbody2D rb;
 
     [Header("Flow")]
@@ -115,12 +118,19 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Escape))
             Application.Quit();
+
+        //flow testing mode
+        if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
     }
 
     void HandleFlow()
     {
         //if flow button is pressed and player is not in flow and player has a full flow bar
         if (Input.GetButtonDown("Flow") && !inFlow && flowJuice == 1.0f)
+        {
+            FlowChange();
+        }
+        else if(Input.GetButtonDown("Flow")  && inFlow)
         {
             FlowChange();
         }
@@ -154,6 +164,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         flowSlider.value = flowJuice;
+
+
+        //flow testing mode
+        if(flowTestMode && !inFlow)
+        {
+            FlowChange();
+        }
     }
 
     IEnumerator TurtleTime()

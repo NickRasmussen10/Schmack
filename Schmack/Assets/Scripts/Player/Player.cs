@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     /// </summary>
     /// 
     [SerializeField] Text bowText = null;
+    [SerializeField] List<Image> displayArrows = new List<Image>();
 
+    PlayerMovement playerMovement = null;
 
     [SerializeField] float maxHealth = 100;
     float health;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
         health = maxHealth;
 
         currentBow = bows[0];
@@ -54,6 +57,28 @@ public class Player : MonoBehaviour
         if(health <= 0)
         {
             Die();
+        }
+
+        if(bowScript.inFlow != playerMovement.inFlow)
+        {
+            bowScript.inFlow = playerMovement.inFlow;
+        }
+
+        DisplayArrowCount();
+    }
+
+    void DisplayArrowCount()
+    {
+        for(int i = 1; i <= displayArrows.Count; i++)
+        {
+            if(i > bowScript.numArrows)
+            {
+                displayArrows[i-1].enabled = false;
+            }
+            else
+            {
+                displayArrows[i-1].enabled = true;
+            }
         }
     }
 
