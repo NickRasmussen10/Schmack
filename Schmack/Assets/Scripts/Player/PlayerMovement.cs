@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float flowForgivenessTime = 1.0f;
     [SerializeField] float flowDepreciationRate = 1.0f;
     [SerializeField] float flowAppreciationRate = 1.0f;
-    float flowJuice = 0.0f;
+    float flowJuice = 1.0f;
     public bool inFlow = false;
     float flowTimer = 0.0f;
     float flowThreshold = 0.0f;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
-    RaycastHit2D[] raycastHits = new RaycastHit2D[3];
+    RaycastHit2D[] raycastHits = new RaycastHit2D[5];
     Bounds playerBounds;
 
     bool isFalling = false;
@@ -202,16 +202,41 @@ public class PlayerMovement : MonoBehaviour
 
         if (inFlow)
         {
-            acceleration = acceleration_fast;
-            maxSpeed = maxSpeed_fast;
-            jumpForce = jumpForce_fast;
+            StartCoroutine(Flerp(true));
         }
         else
         {
-            acceleration = acceleration_slow;
-            maxSpeed = maxSpeed_slow;
-            jumpForce = jumpForce_slow;
+            StartCoroutine(Flerp(false));
         }
+    }
+
+    IEnumerator Flerp(bool lerpUp)
+    {
+        float lerpVal;
+        if (lerpUp) lerpVal = 0.0f;
+        else lerpVal = 1.0f;
+
+        while((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
+        {
+            if (lerpUp)
+            {
+                lerpVal += Time.deltaTime;
+                if (lerpVal > 1.0f) lerpVal = 1.0f;
+            }
+            else
+            {
+                lerpVal -= Time.deltaTime * 4.0f;
+                if (lerpVal < 0.0f) lerpVal = 0.0f;
+            }
+
+            acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
+            maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
+            jumpForce = Mathf.Lerp(jumpForce_fast, jumpForce_fast, lerpVal);
+
+            Camera.main.orthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
+            yield return null;
+        }
+        
     }
 
     void JoystickMovement()
@@ -232,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded)
                 isWalking = true;
 
-            if (rb.velocity.x > 0 && isGrounded)
+            if (rb.velocity.x > 0 && (isGrounded || inFlow))
             {
                 //apply friction to the left
                 rb.AddForce(new Vector2(-acceleration, 0.0f));
@@ -242,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
                 }
 
             }
-            else if (rb.velocity.x < 0 && isGrounded)
+            else if (rb.velocity.x < 0 && (isGrounded || inFlow))
             {
                 //apply friciton to the right
                 rb.AddForce(new Vector2(acceleration, 0.0f));
@@ -342,7 +367,9 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
+        acceleration /= 4;
         yield return new WaitForSeconds(stickTime);
+        acceleration *= 4;
         while(rb.gravityScale < 1.0f)
         {
             rb.gravityScale += Time.deltaTime * stickiness;
@@ -377,7 +404,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 raycastStart = transform.position;
         raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
         if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
+            (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+            (raycastHits[3] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+            (raycastHits[4] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
             !isGrounded)
         {
             if (isOnWall) firstFrameOnWall = false;

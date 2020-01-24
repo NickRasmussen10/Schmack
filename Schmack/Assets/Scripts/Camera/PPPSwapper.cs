@@ -8,24 +8,24 @@ public class PPPSwapper : MonoBehaviour
     [SerializeField] PostProcessingProfile flow = null;
     [SerializeField] PostProcessingProfile noFlow = null;
 
-    bool vibing;
+    bool inFlow;
     PlayerMovement playerMovement;
     
     // Start is called before the first frame update
     void Start()
     {
         playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        vibing = playerMovement.inFlow;
+        inFlow = playerMovement.inFlow;
     }
 
     // Update is called once per frame
     void Update()
     {
         //if the vibe has changed
-        if (vibing != playerMovement.inFlow)
+        if (inFlow != playerMovement.inFlow)
         {
-            vibing = playerMovement.inFlow;
-            if (vibing)
+            inFlow = playerMovement.inFlow;
+            if (inFlow)
             {
                 GetComponent<PostProcessingBehaviour>().profile = flow;
 
@@ -35,5 +35,10 @@ public class PPPSwapper : MonoBehaviour
                 GetComponent<PostProcessingBehaviour>().profile = noFlow;
             }
         }
+    }
+
+    IEnumerator Flerp()
+    {
+        yield return null;
     }
 }

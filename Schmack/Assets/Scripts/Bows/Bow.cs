@@ -132,6 +132,7 @@ public class Bow : MonoBehaviour
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
         isDrawnBack = false;
+
         GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
 
         if(inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);

@@ -65,7 +65,8 @@ public class Player : MonoBehaviour
             bowScript.inFlow = playerMovement.inFlow;
         }
 
-        rotator.transform.LookAt(transform.position + (Vector3)bowScript.direction, Vector2.up);
+        rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
+        if (bowScript.direction.x < 0.0f) rotator.transform.right *= -1;
 
         DisplayArrowCount();
     }
