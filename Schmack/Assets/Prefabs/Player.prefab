@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bowText: {fileID: 0}
+  displayArrows: []
   maxHealth: 100
   bows:
   - {fileID: 95423769950672742}
@@ -75,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flowSlider: {fileID: 0}
+  flowTestMode: 0
   flowForgivenessTime: 20
   flowDepreciationRate: 0.25
   flowAppreciationRate: 0.1
@@ -85,6 +87,7 @@ MonoBehaviour:
   acceleration_slow: 40
   maxSpeed_slow: 10
   jumpForce_slow: 1000
+  stickTime: 1
   stickiness: 1
   horizontalForce: 1000
   wallJumpLimiter: 1

@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] List<Image> displayArrows = new List<Image>();
 
     PlayerMovement playerMovement = null;
+    [SerializeField] GameObject rotator = null;
 
     [SerializeField] float maxHealth = 100;
     float health;
@@ -63,6 +64,8 @@ public class Player : MonoBehaviour
         {
             bowScript.inFlow = playerMovement.inFlow;
         }
+
+        rotator.transform.LookAt(transform.position + (Vector3)bowScript.direction, Vector2.up);
 
         DisplayArrowCount();
     }

@@ -36,7 +36,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce_slow = 200;
 
     [Header("Wall sticking")]
-    [SerializeField] float stickiness = 1.0f;
+    [SerializeField] float stickTime = 1.0f; //how long the player stays in place for
+    [SerializeField] float stickiness = 1.0f; //how slowly the player regains speed on wall stick
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
 
@@ -56,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
     bool isOnWall = false;
 
     bool limitHorizontalMovement = true;
+    bool firstFrameOnWall = false;
 
 
     private Animator anim;
@@ -99,7 +101,13 @@ public class PlayerMovement : MonoBehaviour
         //if player is going downward, flag them as falling
         isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
-        WallStick();
+
+        HandleWallStick();
+
+        if (!isOnWall)
+        {
+            CancelWallStick();
+        }
 
         if (CheckRayCollision(0))
         {
@@ -322,12 +330,32 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// handles detection and application of wall stick
     /// </summary>
-    void WallStick()
+    void HandleWallStick()
     {
-        if (isOnWall && isFalling)
+        if (firstFrameOnWall)
         {
-            rb.AddForce(-Physics2D.gravity / stickiness);
+            StartCoroutine(WallStick());
         }
+    }
+
+    IEnumerator WallStick()
+    {
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = 0;
+        yield return new WaitForSeconds(stickTime);
+        while(rb.gravityScale < 1.0f)
+        {
+            rb.gravityScale += Time.deltaTime * stickiness;
+            if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
+            Debug.Log(rb.gravityScale);
+            yield return null;
+        }
+    }
+
+    void CancelWallStick()
+    {
+        StopCoroutine(WallStick());
+        rb.gravityScale = 1.0f;
     }
 
     /// <summary>
@@ -351,7 +379,11 @@ public class PlayerMovement : MonoBehaviour
         if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
             (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
             !isGrounded)
+        {
+            if (isOnWall) firstFrameOnWall = false;
+            else firstFrameOnWall = true;
             isOnWall = true;
+        }
         else
             isOnWall = false;
     }
