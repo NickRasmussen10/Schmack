@@ -55,7 +55,6 @@ public class Bow : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        Debug.Log("base bow update");
         HandleInput();
         HandleFiring();
         PlaySounds();

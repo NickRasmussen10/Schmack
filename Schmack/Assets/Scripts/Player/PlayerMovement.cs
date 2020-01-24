@@ -231,7 +231,7 @@ public class PlayerMovement : MonoBehaviour
 
             acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
             maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
-            jumpForce = Mathf.Lerp(jumpForce_fast, jumpForce_fast, lerpVal);
+            jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
 
             Camera.main.orthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
             yield return null;
