@@ -143,3 +143,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PS_Hit: {fileID: 4789986928939029822, guid: a25525987e40e5b48967dcf38db52166, type: 3}
+  trail: {fileID: 2427087281539736826, guid: d4beb3a5597981a4fa4606a88b2580b2, type: 3}

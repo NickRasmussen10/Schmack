@@ -36,6 +36,7 @@ public class Bow : MonoBehaviour
     public float timeScale;
 
     AudioManager audioMan;
+    Animator anim;
 
     // Start is called before the first frame update
     protected void Start()
@@ -50,6 +51,8 @@ public class Bow : MonoBehaviour
 
 
         numArrows = maxArrows;
+
+        anim = transform.parent.gameObject.GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -109,6 +112,8 @@ public class Bow : MonoBehaviour
     void DrawBack()
     {
         if (!isDrawnBack) isDrawnBack = true;
+        anim.SetBool("BowDrawn", isDrawnBack);
+
         if (frameDelay == 10)
         {
             StartCoroutine("TimeDilationDown");
@@ -124,6 +129,7 @@ public class Bow : MonoBehaviour
     {
         numArrows--;
         fire = true;
+        anim.SetBool("isFired", fire);
         frameDelay = 0;
         StopCoroutine("TimeDilationDown");
 
@@ -134,12 +140,12 @@ public class Bow : MonoBehaviour
 
         GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
 
-        if(inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
+        if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
         else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
 
         arrows.Add(newArrow);
 
-        if(inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
+        if (inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
         else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
     }
 

@@ -44,7 +44,6 @@ public class PPPSwapper : MonoBehaviour
 
     IEnumerator Flerp(bool lerpUp)
     {
-        Debug.Log("oh boi be flerppin");
         float lerpVal;
         if (lerpUp) lerpVal = 0.0f;
         else lerpVal = 1.0f;

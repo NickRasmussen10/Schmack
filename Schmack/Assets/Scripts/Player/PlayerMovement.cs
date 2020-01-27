@@ -59,11 +59,8 @@ public class PlayerMovement : MonoBehaviour
     bool limitHorizontalMovement = true;
     bool firstFrameOnWall = false;
 
-
-    private Animator anim;
-
-
     AudioManager audioMan;
+    Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -340,16 +337,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Animations()
     {
-        anim.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
-        anim.SetBool("OnWall", isOnWall);
-        anim.SetBool("IsJumping", !isGrounded && !isOnWall);
-        anim.SetBool("IsVibing", inFlow);
-        anim.SetBool("Drawn", bow.isDrawnBack);
-        anim.SetBool("Fire", bow.fire);
-        if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && anim.GetCurrentAnimatorStateInfo(0).IsName("standing_fire"))
-        {
-            anim.Play("standing_load");
-        }
+        //anim.SetBool("BowDrawn", bow.isDrawnBack);
+        //anim.SetBool("isFired", !bow.isDrawnBack && Input.GetAxis("Fire1") > 0);
     }
 
     /// <summary>
