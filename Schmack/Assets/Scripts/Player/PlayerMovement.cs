@@ -374,7 +374,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.gravityScale += Time.deltaTime * stickiness;
             if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
-            Debug.Log(rb.gravityScale);
             yield return null;
         }
     }

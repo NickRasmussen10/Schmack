@@ -23,13 +23,13 @@ public class Arrow : Projectile
         //    Destroy(rb);
         //    Destroy(collider);
         //}
-        if(rb != null)
+        if (rb != null)
         {
             transform.right = -rb.velocity;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void TriggerHit(Collider2D collision)
     {
         if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Arrow")
         {
