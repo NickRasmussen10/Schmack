@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     bool firstFrameOnWall = false;
 
     AudioManager audioMan;
-    Animator anim;
+    Animator anim_legs;
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("No audiomanager found");
         }
-        anim = GetComponentInChildren<Animator>();
+        anim_legs = GameObject.Find("legs").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponentInChildren<Bow>();
         inFlow = false;
@@ -337,8 +337,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Animations()
     {
-        //anim.SetBool("BowDrawn", bow.isDrawnBack);
-        //anim.SetBool("isFired", !bow.isDrawnBack && Input.GetAxis("Fire1") > 0);
+        if (isGrounded && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
+        else if (!isGrounded && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+
+        anim_legs.SetFloat("speed", rb.velocity.x);
+        Debug.Log(anim_legs);
     }
 
     /// <summary>

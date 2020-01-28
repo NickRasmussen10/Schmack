@@ -35,6 +35,9 @@ public class Bow : MonoBehaviour
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
     public float timeScale;
 
+    [Header("Firing Point")]
+    [SerializeField] GameObject GO_referencePoint;
+
     AudioManager audioMan;
     Animator anim;
 
@@ -58,6 +61,7 @@ public class Bow : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        anim.SetBool("holdBow", false);
         HandleInput();
         HandleFiring();
         PlaySounds();
@@ -112,7 +116,14 @@ public class Bow : MonoBehaviour
     void DrawBack()
     {
         if (!isDrawnBack) isDrawnBack = true;
-        anim.SetBool("BowDrawn", isDrawnBack);
+
+        if (!anim.GetBool("isDrawn"))
+        {
+            anim.SetBool("isDrawn", true);
+            anim.SetBool("holdBow", true);
+            anim.SetBool("isFired", false);
+        }
+        
 
         if (frameDelay == 10)
         {
@@ -129,7 +140,9 @@ public class Bow : MonoBehaviour
     {
         numArrows--;
         fire = true;
-        anim.SetBool("isFired", fire);
+        anim.SetBool("isFired", true);
+        anim.SetBool("holdBow", false);
+        anim.SetBool("isDrawn", false);
         frameDelay = 0;
         StopCoroutine("TimeDilationDown");
 
@@ -138,7 +151,7 @@ public class Bow : MonoBehaviour
 
         isDrawnBack = false;
 
-        GameObject newArrow = Instantiate(pref_arrow, transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
+        GameObject newArrow = Instantiate(pref_arrow, GO_referencePoint.transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
 
         if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
         else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
