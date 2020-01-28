@@ -46,11 +46,17 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   isDrawnBack: 0
   fire: 0
+  inFlow: 0
+  numArrows: 0
   pref_arrow: {fileID: 5250650912012543613, guid: e4d6bfed2e14afd4eb0ba8349829aab8,
     type: 3}
-  shotPower: 700
-  shotCooldown: 1
-  knockbackForce: 500
-  timeScaleMin: 0.5
+  maxArrows: 3
+  rechargeTime: 1
+  flow_shotPower: 1500
+  flow_knockbackForce: 700
+  noFlow_shotPower: 1500
+  noFlow_knockbackForce: 700
+  timeScaleMin: 0.1
   timeScaleMax: 1
   timeScale: 0
+  GO_referencePoint: {fileID: 0}
