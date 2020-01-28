@@ -61,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     AudioManager audioMan;
     Animator anim_legs;
+    Animator anim_arms;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("No audiomanager found");
         }
         anim_legs = GameObject.Find("legs").GetComponent<Animator>();
+        anim_arms = GameObject.Find("arms").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponentInChildren<Bow>();
         inFlow = false;
@@ -339,9 +341,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
         else if (!isGrounded && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+        if (isGrounded && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
+        else if (!isGrounded && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
 
-        anim_legs.SetFloat("speed", rb.velocity.x);
-        Debug.Log(anim_legs);
+        anim_legs.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+        anim_arms.SetFloat("speed", Mathf.Abs(rb.velocity.x));
     }
 
     /// <summary>
