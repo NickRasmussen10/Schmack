@@ -62,6 +62,7 @@ public class Bow : MonoBehaviour
     protected void Update()
     {
         anim.SetBool("holdBow", false);
+        anim.SetBool("holdFire", false);
         HandleInput();
         HandleFiring();
         PlaySounds();
@@ -141,6 +142,7 @@ public class Bow : MonoBehaviour
         numArrows--;
         fire = true;
         anim.SetBool("isFired", true);
+        anim.SetBool("holdFire", true);
         anim.SetBool("holdBow", false);
         anim.SetBool("isDrawn", false);
         frameDelay = 0;
@@ -174,19 +176,6 @@ public class Bow : MonoBehaviour
             yield return null;
         }
     }
-
-    //IEnumerator BowRecharge()
-    //{
-    //    rechargeRunning = true;
-    //    while (true)
-    //    {
-    //        if (numArrows < maxArrows)
-    //        {
-    //            numArrows++;
-    //        }
-    //        yield return new WaitForSeconds(rechargeTime);
-    //    }
-    //}
 
     void BowRecharge()
     {

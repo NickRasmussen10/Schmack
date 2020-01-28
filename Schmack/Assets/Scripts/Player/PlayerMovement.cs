@@ -346,6 +346,11 @@ public class PlayerMovement : MonoBehaviour
 
         anim_legs.SetFloat("speed", Mathf.Abs(rb.velocity.x));
         anim_arms.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+
+        if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
+        else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
+        if (isOnWall && !anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", true);
+        else if (!isOnWall && anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", false);
     }
 
     /// <summary>
