@@ -36,7 +36,7 @@ public class Bow : MonoBehaviour
     public float timeScale;
 
     [Header("Firing Point")]
-    [SerializeField] GameObject GO_referencePoint;
+    [SerializeField] GameObject GO_referencePoint = null;
 
     AudioManager audioMan;
     Animator anim;
@@ -61,8 +61,6 @@ public class Bow : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        anim.SetBool("holdBow", false);
-        anim.SetBool("holdFire", false);
         HandleInput();
         HandleFiring();
         PlaySounds();
@@ -121,7 +119,6 @@ public class Bow : MonoBehaviour
         if (!anim.GetBool("isDrawn"))
         {
             anim.SetBool("isDrawn", true);
-            anim.SetBool("holdBow", true);
             anim.SetBool("isFired", false);
         }
         
@@ -142,8 +139,6 @@ public class Bow : MonoBehaviour
         numArrows--;
         fire = true;
         anim.SetBool("isFired", true);
-        anim.SetBool("holdFire", true);
-        anim.SetBool("holdBow", false);
         anim.SetBool("isDrawn", false);
         frameDelay = 0;
         StopCoroutine("TimeDilationDown");
@@ -167,9 +162,10 @@ public class Bow : MonoBehaviour
     IEnumerator TimeDilationDown()
     {
         float lerpVal = 1.0f;
+
         while (lerpVal > 0)
         {
-            lerpVal -= Time.deltaTime * 3f;
+            lerpVal -= Time.deltaTime * 20f;
             if (lerpVal < 0) lerpVal = 0;
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
             Time.fixedDeltaTime = 0.02f * Time.timeScale;

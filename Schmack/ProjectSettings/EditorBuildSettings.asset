@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GameOver.unity
     guid: c09c87fac5e8d3748a71cdd38351f919
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/CityTest - Copy.unity
-    guid: 84d8fd578f1a71446a1646891a2935cb
+    path: Assets/Scenes/CityTest.unity
+    guid: d6dbc4cf5d5c299438615c5460ca81c6
   m_configObjects: {}
