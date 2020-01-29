@@ -59,8 +59,6 @@ MonoBehaviour:
   maxHealth: 100
   bows:
   - {fileID: 95423769950672742}
-  - {fileID: 7801540921328262436}
-  - {fileID: 95423770083338617}
   currentBow: {fileID: 0}
   pref_indicator: {fileID: 435901467579359303, guid: aba549ca634a2944a815e6f2d1300be2,
     type: 3}
@@ -323,12 +321,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8f2aec487c686342bd20da960310d1b, type: 3}
---- !u!1 &95423770083338617 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2467748064409518720, guid: a8f2aec487c686342bd20da960310d1b,
-    type: 3}
-  m_PrefabInstance: {fileID: 2552468569623079929}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5338963972375758535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7600950072899759422, guid: a8f2aec487c686342bd20da960310d1b,
@@ -424,12 +416,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22e83def537a8314ab548a091c319c44, type: 3}
---- !u!1 &7801540921328262436 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 420573977771852709, guid: 22e83def537a8314ab548a091c319c44,
-    type: 3}
-  m_PrefabInstance: {fileID: 7607294383505579649}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2810360765135139482 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5661835991304875035, guid: 22e83def537a8314ab548a091c319c44,
