@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -215,6 +216,8 @@ public class PlayerMovement : MonoBehaviour
         if (lerpUp) lerpVal = 0.0f;
         else lerpVal = 1.0f;
 
+        CinemachineVirtualCamera vc = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
+
         while((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
         {
             if (lerpUp)
@@ -232,7 +235,10 @@ public class PlayerMovement : MonoBehaviour
             maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
             jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
 
-            Camera.main.orthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
+
+            //Camera.main.orthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
+            vc.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
+            
             yield return null;
         }
         
