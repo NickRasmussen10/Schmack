@@ -42,6 +42,15 @@ public class PPPSwapper : MonoBehaviour
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        ppp.bloom = noFlow.bloom;
+        ppp.colorGrading = noFlow.colorGrading;
+        ppp.chromaticAberration = noFlow.chromaticAberration;
+        ppp.grain = noFlow.grain;
+        ppp.vignette = noFlow.vignette;
+    }
+
     IEnumerator Flerp(bool lerpUp)
     {
         float lerpVal;

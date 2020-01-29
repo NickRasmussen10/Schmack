@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Bow : MonoBehaviour
 {
+    bool fireOnRightTrigger = true;
+
     public Vector2 direction;
     public bool isDrawnBack = false;
     public bool fire = false;
@@ -83,9 +85,12 @@ public class Bow : MonoBehaviour
 
     protected void HandleInput()
     {
+        if (Input.GetButtonDown("SwapFire")) fireOnRightTrigger = !fireOnRightTrigger;
+
         direction.x = Input.GetAxis("RightHorizontal");
         direction.y = Input.GetAxis("RightVertical");
-        powerInput = Input.GetAxis("Fire1");
+        if (fireOnRightTrigger) powerInput = Input.GetAxis("Fire1");
+        else powerInput = Input.GetAxis("Fire2");
 
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
