@@ -65,8 +65,15 @@ public class Player : MonoBehaviour
             bowScript.inFlow = playerMovement.inFlow;
         }
 
-        rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
-        if (bowScript.direction.x < 0.0f) rotator.transform.right *= -1;
+        if (GetComponent<Rigidbody2D>().velocity.x > 2.0f)
+        {
+            rotator.transform.right = Vector2.right;
+        }
+        else
+        {
+            rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
+            if (bowScript.direction.x < 0.0f) rotator.transform.right *= -1;
+        }
 
         DisplayArrowCount();
     }
