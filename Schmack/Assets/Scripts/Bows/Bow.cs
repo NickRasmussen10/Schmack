@@ -126,7 +126,11 @@ public class Bow : MonoBehaviour
 
     void DrawBack()
     {
-        if (!isDrawnBack) isDrawnBack = true;
+        if (!isDrawnBack)
+        {
+            StartCoroutine(DisplayBigArrow());
+            isDrawnBack = true;
+        }
 
         if (!anim.GetBool("isDrawn"))
         {
@@ -134,8 +138,6 @@ public class Bow : MonoBehaviour
             anim.SetBool("isFired", false);
         }
 
-        Camera.main.GetComponent<CameraShake>().StartNoiseShake(0.5f, 1);
-        StartCoroutine(DisplayBigArrow());
         
 
         if (frameDelay == 10)
@@ -158,8 +160,6 @@ public class Bow : MonoBehaviour
         frameDelay = 0;
         StopCoroutine("TimeDilationDown");
 
-        Camera.main.GetComponent<CameraShake>().EndNoiseShake();
-
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
@@ -178,6 +178,7 @@ public class Bow : MonoBehaviour
 
     IEnumerator DisplayBigArrow()
     {
+        Debug.Log("ooooooo we shootin'!");
         SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
         Vector2 size = sr.size;
         while(size.x < 2.5)
