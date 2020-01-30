@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1125362963064096062}
   - component: {fileID: 1119677601682593624}
   - component: {fileID: 5808673994075048416}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: building_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.00017368793, y: -0.042948246}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -114,7 +114,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.12, y: 9.31}
+  m_Size: {x: 4.0207663, y: 9.224103}
   m_EdgeRadius: 0
 --- !u!1 &1192072917800367902
 GameObject:
@@ -126,7 +126,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1117740516882784394}
   - component: {fileID: 3737825967445598155}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6054665217676045363}
   - component: {fileID: 3937518667984537678}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7134332306153222175}
   - component: {fileID: 4319524878794531122}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7302783927145936343}
   - component: {fileID: 8465812601132250394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3379068852824826600}
   - component: {fileID: 89674020086155273}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1760190121195817559}
   - component: {fileID: 8020811717506710230}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8563227047313239602}
   - component: {fileID: 6152514962132293910}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5262761200336278259}
   - component: {fileID: 8659974977013175303}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -766,7 +766,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5264720535897143846}
   - component: {fileID: 6248823443438768859}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: window (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
