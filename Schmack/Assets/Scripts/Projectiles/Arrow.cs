@@ -39,6 +39,7 @@ public class Arrow : Projectile
             Destroy(rb);
             Destroy(boxCollider);
 
+            collisionPoint.z = 1;
             transform.position = collisionPoint;
             GetComponent<Animator>().Play("wiggle");
         }

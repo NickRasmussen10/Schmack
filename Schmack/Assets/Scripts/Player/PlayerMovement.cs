@@ -244,16 +244,16 @@ public class PlayerMovement : MonoBehaviour
 
     void JoystickMovement()
     {
-        if (limitHorizontalMovement)
-        {
+        //if (limitHorizontalMovement)
+        //{
             float hInput = Input.GetAxis("LeftHorizontal");
             rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-        }
-        else
-        {
-            float hInput = Input.GetAxis("LeftHorizontal");
-            rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
-        }
+       // }
+        //else
+        //{
+           // float hInput = Input.GetAxis("LeftHorizontal");
+           // rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
+       // }
 
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Bow : MonoBehaviour
 {
+    [SerializeField] GameObject bigArrow = null;
+    SpriteRenderer bigArrowSprite;
     bool fireOnRightTrigger = true;
 
     public Vector2 direction;
@@ -66,6 +68,11 @@ public class Bow : MonoBehaviour
         HandleInput();
         HandleFiring();
         PlaySounds();
+
+        if(!isDrawnBack && bigArrowSprite.size.x > 0)
+        {
+            bigArrowSprite.size = new Vector2(0, 0.75f);
+        }
     }
 
 
@@ -126,6 +133,9 @@ public class Bow : MonoBehaviour
             anim.SetBool("isDrawn", true);
             anim.SetBool("isFired", false);
         }
+
+        Camera.main.GetComponent<CameraShake>().StartNoiseShake(0.5f, 1);
+        StartCoroutine(DisplayBigArrow());
         
 
         if (frameDelay == 10)
@@ -148,12 +158,14 @@ public class Bow : MonoBehaviour
         frameDelay = 0;
         StopCoroutine("TimeDilationDown");
 
+        Camera.main.GetComponent<CameraShake>().EndNoiseShake();
+
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
         isDrawnBack = false;
 
-        GameObject newArrow = Instantiate(pref_arrow, GO_referencePoint.transform.position, new Quaternion(direction.x, direction.y, 0.0f, 0.0f));
+        GameObject newArrow = Instantiate(pref_arrow, GO_referencePoint.transform.position, GO_referencePoint.transform.rotation);
 
         if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
         else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
@@ -162,6 +174,19 @@ public class Bow : MonoBehaviour
 
         if (inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
         else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
+    }
+
+    IEnumerator DisplayBigArrow()
+    {
+        SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
+        Vector2 size = sr.size;
+        while(size.x < 2.5)
+        {
+            size.x += 0.1f;
+            if (size.x > 2.5f) size.x = 2.5f;
+            sr.size = size;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     IEnumerator TimeDilationDown()
@@ -190,6 +215,7 @@ public class Bow : MonoBehaviour
     {
         gameObject.SetActive(true);
         InvokeRepeating("BowRecharge", rechargeTime, rechargeTime);
+        bigArrowSprite = bigArrow.GetComponent<SpriteRenderer>();
     }
 
     public void Deactivate()

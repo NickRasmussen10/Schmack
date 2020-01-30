@@ -22,9 +22,9 @@ public class Player : MonoBehaviour
     public GameObject currentBow;
     Bow bowScript;
 
-    [SerializeField] GameObject pref_indicator = null;
-    [SerializeField] float indicatorDistance = 5.0f;
-    GameObject indicator;
+    //[SerializeField] GameObject pref_indicator = null;
+    //[SerializeField] float indicatorDistance = 5.0f;
+    //GameObject indicator;
 
     public SpriteRenderer bowSprite;
 
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         currentBow = bows[0];
         bowScript = currentBow.GetComponent<Bow>();
         bowText.text = currentBow.name;
-        indicator = Instantiate(pref_indicator);
+        //indicator = Instantiate(pref_indicator);
     }
 
     // Update is called once per frame
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
             bowScript.inFlow = playerMovement.inFlow;
         }
 
-        if (GetComponent<Rigidbody2D>().velocity.x > 2.0f)
+        if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && !bowScript.isDrawnBack)
         {
             rotator.transform.right = Vector2.right;
         }
@@ -117,21 +117,11 @@ public class Player : MonoBehaviour
         bowScript = currentBow.GetComponent<Bow>();
         bowText.text = currentBow.name;
         currentBow.SetActive(true);
-
-        //change this to a better method when you're not 2 hours from a meeting
-        if(currentBow.name == "Power Bow")
-        {
-            indicatorDistance = 3;
-        }
-        else
-        {
-            indicatorDistance = 5;
-        }
     }
 
     protected void SetIndicatorPosition()
     {
-        indicator.transform.position = (Vector2)transform.position + (bowScript.direction * indicatorDistance);
+        //indicator.transform.position = (Vector2)transform.position + (bowScript.direction * indicatorDistance);
     }
 
 

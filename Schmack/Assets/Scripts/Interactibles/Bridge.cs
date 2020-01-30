@@ -53,7 +53,6 @@ public class Bridge : Controllable
             raycastStart = transform.position;
             raycastStart.x -= spriteRenderer.size.x;
             raycastHit = Physics2D.Raycast(raycastStart, Vector2.right, 0.01f, LayerMask.GetMask("environment"));
-            Debug.DrawLine(raycastStart, raycastStart + (Vector3.right * 0.1f));
 
 
             yield return null;
