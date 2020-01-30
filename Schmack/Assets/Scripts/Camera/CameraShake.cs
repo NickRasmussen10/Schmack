@@ -5,8 +5,8 @@ using Cinemachine;
 
 public class CameraShake : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera virtualCam;
-    CinemachineBasicMultiChannelPerlin noise;
+    [SerializeField] CinemachineVirtualCamera virtualCam = null;
+    CinemachineBasicMultiChannelPerlin noise = null;
 
     // Start is called before the first frame update
     void Start()

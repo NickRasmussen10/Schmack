@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour
 {
-    [SerializeField] ParticleSystem PS_Hit = null;
+    //[SerializeField] ParticleSystem PS_Hit = null;
     [SerializeField] TrailRenderer trail = null;
 
     protected Rigidbody2D rb;

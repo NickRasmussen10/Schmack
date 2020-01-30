@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: 29ee9c957c2794d44be9f0eef6a04d5a, type: 2}
 --- !u!114 &1248185076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1847,6 +1847,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605261429}
   m_CullTransparentMesh: 0
+--- !u!1 &1622292168 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4060677390956789377, guid: 52545a174b539a84dbc02cc73308018a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1886640561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1705586692
 GameObject:
   m_ObjectHideFlags: 0
@@ -30056,6 +30062,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 16.128
       objectReference: {fileID: 0}
+    - target: {fileID: 3634441176623929446, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3900238624163758877, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
       propertyPath: m_Color.r
@@ -30095,8 +30106,7 @@ PrefabInstance:
         type: 3}
       propertyPath: bigArrow
       value: 
-      objectReference: {fileID: 6288822889347545017, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
+      objectReference: {fileID: 1622292168}
     - target: {fileID: 5086874104953470826, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
       propertyPath: m_SortingOrder

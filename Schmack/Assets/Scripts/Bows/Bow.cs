@@ -178,12 +178,11 @@ public class Bow : MonoBehaviour
 
     IEnumerator DisplayBigArrow()
     {
-        Debug.Log("ooooooo we shootin'!");
         SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
         Vector2 size = sr.size;
         while(size.x < 2.5)
         {
-            size.x += 0.1f;
+            size.x += 0.15f;
             if (size.x > 2.5f) size.x = 2.5f;
             sr.size = size;
             yield return new WaitForEndOfFrame();

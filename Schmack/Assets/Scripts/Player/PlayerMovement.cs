@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     bool isWalking = false;
     bool isOnWall = false;
 
-    bool limitHorizontalMovement = true;
+    //bool limitHorizontalMovement = true;
     bool firstFrameOnWall = false;
 
     AudioManager audioMan;
@@ -291,9 +291,9 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator DisableHorizontalMovement()
     {
-        limitHorizontalMovement = false;
+        //limitHorizontalMovement = false;
         yield return new WaitForSeconds(0.75f);
-        limitHorizontalMovement = true;
+        //limitHorizontalMovement = true;
 
     }
 
