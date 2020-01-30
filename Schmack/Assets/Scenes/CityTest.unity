@@ -506,7 +506,7 @@ PrefabInstance:
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
       propertyPath: m_RootOrder
-      value: 22
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
@@ -779,7 +779,7 @@ PrefabInstance:
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
       propertyPath: m_RootOrder
-      value: 24
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
@@ -863,7 +863,7 @@ PrefabInstance:
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
@@ -987,8 +987,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 703315017
-  m_SortingLayer: 2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -6238,7 +6238,7 @@ Transform:
   m_Children:
   - {fileID: 954819617}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &600652301
 GameObject:
@@ -6345,7 +6345,7 @@ Transform:
   m_LocalScale: {x: 2.525, y: 0.7734375, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &662881369
 PrefabInstance:
@@ -6392,7 +6392,7 @@ PrefabInstance:
     - target: {fileID: 499229568098972858, guid: 933d9ac4cd5e8c744ba3533170f4d130,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 499229568098972858, guid: 933d9ac4cd5e8c744ba3533170f4d130,
         type: 3}
@@ -6947,7 +6947,7 @@ PrefabInstance:
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
@@ -7662,7 +7662,7 @@ Transform:
   m_LocalScale: {x: 2.574461, y: 4.5531516, z: 1.7751076}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1809196484
 GameObject:
@@ -7676,6 +7676,8 @@ GameObject:
   - component: {fileID: 1809196487}
   - component: {fileID: 1809196486}
   - component: {fileID: 1809196488}
+  - component: {fileID: 1809196490}
+  - component: {fileID: 1809196489}
   m_Layer: 9
   m_Name: Tilemap
   m_TagString: Untagged
@@ -20330,10 +20332,67 @@ TilemapCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!66 &1809196489
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809196484}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 1809196488}
+    m_ColliderPaths:
+    - - X: -210000000
+        Y: -50000000
+      - X: 2569999872
+        Y: -50000000
+      - X: 2569999872
+        Y: -40000000
+      - X: -210000000
+        Y: -40000000
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 256.99997, y: -5}
+      - {x: 256.99997, y: -4}
+      - {x: -21, y: -4.000029}
+      - {x: -20.999971, y: -5}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+--- !u!50 &1809196490
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1809196484}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1823707866
 GameObject:
   m_ObjectHideFlags: 0
@@ -20541,6 +20600,11 @@ PrefabInstance:
         type: 3}
       propertyPath: timeScaleMin
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113550414997653366, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: noFlow_shotPower
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 5269213883287715879, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
@@ -21170,7 +21234,7 @@ Transform:
   m_LocalScale: {x: 2.574461, y: 4.4155803, z: 1.7751076}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1899565382 stripped
 GameObject:
@@ -21223,7 +21287,7 @@ PrefabInstance:
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4504289727499470569, guid: 27114c38b77793e44896ecd8b20d0357,
         type: 3}
@@ -21460,7 +21524,7 @@ Transform:
   m_LocalScale: {x: 3.1798198, y: 1.7384597, z: 1.8984}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1995555820
 GameObject:
@@ -21505,7 +21569,7 @@ Transform:
   - {fileID: 1809196485}
   - {fileID: 291777375}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2046583456
 PrefabInstance:

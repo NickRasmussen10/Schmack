@@ -10,6 +10,9 @@ public abstract class Projectile : MonoBehaviour
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollider;
 
+    protected RaycastHit2D raycastHit;
+    int layermask = 1 << 9 | 1 << 11 | 1 << 12;
+
     protected void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -20,21 +23,27 @@ public abstract class Projectile : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
-
+        //layermask = LayerMask.GetMask("environment");
     }
 
     // Update is called once per frame
     protected void Update()
     {
-        
+        if (rb)
+            raycastHit = Physics2D.Raycast(transform.position, rb.velocity.normalized, rb.velocity.sqrMagnitude * 0.001f, layermask);
+
+        if(raycastHit.collider != null)
+        {
+            TriggerHit(raycastHit.collider, raycastHit.point);
+        }
     }
 
-    protected abstract void TriggerHit(Collider2D collision);
+    protected abstract void TriggerHit(Collider2D collision, Vector3 collisionPoint);
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Instantiate(PS_Hit, transform.position, Quaternion.identity);
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    Instantiate(PS_Hit, transform.position, Quaternion.identity);
 
-        TriggerHit(collision);
-    }
+    //    TriggerHit(collision);
+    //}
 }

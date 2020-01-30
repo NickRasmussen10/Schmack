@@ -29,7 +29,7 @@ public class Arrow : Projectile
         }
     }
 
-    protected override void TriggerHit(Collider2D collision)
+    protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
         if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Arrow")
         {
@@ -39,6 +39,7 @@ public class Arrow : Projectile
             Destroy(rb);
             Destroy(boxCollider);
 
+            transform.position = collisionPoint;
             GetComponent<Animator>().Play("wiggle");
         }
     }
