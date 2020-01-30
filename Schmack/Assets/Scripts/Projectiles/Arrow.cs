@@ -38,6 +38,8 @@ public class Arrow : Projectile
                 transform.parent = collision.gameObject.transform;
             Destroy(rb);
             Destroy(boxCollider);
+
+            GetComponent<Animator>().Play("wiggle");
         }
     }
 
