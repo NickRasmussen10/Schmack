@@ -632,6 +632,7 @@ Transform:
   - {fileID: 1863591124}
   - {fileID: 341526444988058836}
   - {fileID: 1741069677}
+  - {fileID: 679822594}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1363,6 +1364,87 @@ Transform:
   m_Father: {fileID: 1551618736}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &679822593
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 244083949}
+    m_Modifications:
+    - target: {fileID: 4515042191711998219, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.550003
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.3799996
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762802305038736752, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+        type: 3}
+      propertyPath: m_Name
+      value: lampPost
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3995324763785430659, guid: e6ac6f32c33517b4dbe92345013e0b8b, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: e6ac6f32c33517b4dbe92345013e0b8b, type: 3}
+--- !u!4 &679822594 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4714435799634651321, guid: e6ac6f32c33517b4dbe92345013e0b8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 679822593}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &749078166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,6 +1598,76 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_PointLightInnerAngle: 16.800001
+  m_PointLightOuterAngle: 28.45
+  m_PointLightInnerRadius: 9.492802
+  m_PointLightOuterRadius: 11.139437
+  m_PointLightDistance: 3
+  m_PointLightQuality: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &813740443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 813740444}
+  - component: {fileID: 813740445}
+  m_Layer: 0
+  m_Name: Point Light 2D (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &813740444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813740443}
+  m_LocalRotation: {x: -0, y: -0, z: 0.9999994, w: 0.0010946289}
+  m_LocalPosition: {x: 43.95, y: -0.56, z: 704.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 970764265}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &813740445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813740443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 0.7101281, g: 0.88797885, b: 0.9528302, a: 1}
+  m_Intensity: 1
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -2011,6 +2163,7 @@ Transform:
   - {fileID: 803552893}
   - {fileID: 1977061521}
   - {fileID: 1018115942}
+  - {fileID: 813740444}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2206,7 +2359,7 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 0.5613208, g: 0.79586977, b: 1, a: 1}
+  m_Color: {r: 0.4009434, g: 0.70301884, b: 1, a: 1}
   m_Intensity: 0.5
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
