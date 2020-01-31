@@ -46,11 +46,12 @@ public class PlayerMovement : MonoBehaviour
     {
         idle,
         running,
+        jumping,
         wallSticking,
         ledgeGrabbing
     }
 
-    PlayerState playerState;
+    PlayerState state;
 
     float acceleration;
     float maxSpeed;
@@ -93,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponentInChildren<Bow>();
         inFlow = false;
-        playerState = PlayerState.idle;
+        state = PlayerState.idle;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
@@ -114,6 +115,9 @@ public class PlayerMovement : MonoBehaviour
         Jump();
 
         HandleWallStick();
+
+        SetPlayerState();
+        Debug.Log(state);
 
         if (!isOnWall)
         {
@@ -141,6 +145,33 @@ public class PlayerMovement : MonoBehaviour
 
         //flow testing mode
         if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
+    }
+
+    void SetPlayerState()
+    {
+        if (collPacket_ground.isColliding)
+        {
+            if (rb.velocity.sqrMagnitude > 0)
+            {
+                state = PlayerState.running;
+            }
+            else
+            {
+                state = PlayerState.idle;
+            }
+        }
+        else
+        {
+            if (collPacket_backLegs.isColliding)
+            {
+                state = PlayerState.wallSticking;
+            }
+            else
+            {
+                state = PlayerState.jumping;
+            }
+        }
+        
     }
 
     void HandleFlow()
@@ -261,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if (collPacket_ground.isColliding || inFlow)
+            if (state == PlayerState.running || inFlow)
             {
                 //apply friction to the left
                 if (acceleration != 0)
@@ -271,17 +302,17 @@ public class PlayerMovement : MonoBehaviour
                     rb.velocity = velocity;
                 }
 
-                if (rb.velocity.x < 0)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-                }
+                //if (rb.velocity.x < 0)
+                //{
+                //    rb.velocity = new Vector2(0, rb.velocity.y);
+                //}
             }
         }
         //else
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-        if (rb.velocity.x > 0)
+        if (rb.velocity.x > 0 && transform.localScale.x != 1)
             gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if (rb.velocity.x < 0)
+        else if (rb.velocity.x < 0&& transform.localScale.x != -1)
             gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
     }
@@ -329,32 +360,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (collPacket_ground.isColliding)
+            if (state == PlayerState.idle || state == PlayerState.running)
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
             }
-            else if (collPacket_backLegs.isColliding)
+            else if (state == PlayerState.wallSticking)
             {
                 rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
                 CancelWallStick();
             }
-
-
-
-
-            //else if (CheckRayCollision(1))
-            //{
-            //    rb.velocity = Vector2.zero;
-            //    rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
-            //    StartCoroutine(DisableHorizontalMovement());
-            //}
-            //else if (CheckRayCollision(2))
-            //{
-            //    rb.velocity = Vector2.zero;
-            //    rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
-            //    StartCoroutine(DisableHorizontalMovement());
-            //}
         }
     }
 
@@ -385,14 +400,12 @@ public class PlayerMovement : MonoBehaviour
         if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
         if (isOnWall && !wallStickIsRunning)
         {
-            Debug.Log("ooooo howdy cowboy it's the first frame we stickin' to this here wall");
             StartCoroutine(WallStick());
         }
     }
 
     IEnumerator WallStick()
     {
-        Debug.Log("wall stick");
         wallStickIsRunning = true;
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
