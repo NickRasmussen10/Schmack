@@ -49,12 +49,15 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
-    RaycastHit2D[] raycastHits = new RaycastHit2D[5];
-    Bounds playerBounds;
+    //RaycastHit2D[] raycastHits = new RaycastHit2D[5];
+    //Bounds playerBounds;
+    CollisionPacket collPacket_ground;
+    CollisionPacket collPacket_front;
+    CollisionPacket collPacket_back;
 
     bool isFalling = false;
-    bool isGrounded = false;
-    bool isWalking = false;
+    //bool isGrounded = false;
+    //bool isWalking = false;
     bool isOnWall = false;
 
     //bool limitHorizontalMovement = true;
@@ -82,20 +85,14 @@ public class PlayerMovement : MonoBehaviour
         jumpForce = jumpForce_slow;
         flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.5f;
         direction = new Vector2(1.0f, 1.0f);
-        playerBounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isWalking)
-        {
-            audioMan.PlaySound("Walk");
-        }
         HandleFlow();
         JoystickMovement();
         UpdatePlayerDirection();
-        CastRays();
 
 
         //if player is going downward, flag them as falling
@@ -109,18 +106,19 @@ public class PlayerMovement : MonoBehaviour
             CancelWallStick();
         }
 
-        if (CheckRayCollision(0))
-        {
-            Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
-            if (raycastHits[0].collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
-            {
-                transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
-            }
-            else
-            {
-                transform.parent = null;
-            }
-        }
+        ///TODO: make this a seperate script
+        //if (collPacket_ground.isColliding)
+        //{
+        //    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
+        //    if (collPacket_ground.collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
+        //    {
+        //        transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
+        //    }
+        //    else
+        //    {
+        //        transform.parent = null;
+        //    }
+        //}
 
         Animations();
 
@@ -138,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
         {
             FlowChange();
         }
-        else if(Input.GetButtonDown("Flow")  && inFlow)
+        else if (Input.GetButtonDown("Flow") && inFlow)
         {
             FlowChange();
         }
@@ -175,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //flow testing mode
-        if(flowTestMode && !inFlow)
+        if (flowTestMode && !inFlow)
         {
             FlowChange();
         }
@@ -218,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
 
         CinemachineVirtualCamera vc = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
 
-        while((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
+        while ((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
         {
             if (lerpUp)
             {
@@ -236,31 +234,28 @@ public class PlayerMovement : MonoBehaviour
             jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
 
             vc.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
-            
+
             yield return null;
         }
-        
+
     }
 
     void JoystickMovement()
     {
         //if (limitHorizontalMovement)
         //{
-            float hInput = Input.GetAxis("LeftHorizontal");
-            rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-       // }
+        float hInput = Input.GetAxis("LeftHorizontal");
+        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
+        // }
         //else
         //{
-           // float hInput = Input.GetAxis("LeftHorizontal");
-           // rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
-       // }
+        // float hInput = Input.GetAxis("LeftHorizontal");
+        // rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
+        // }
 
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if (isGrounded)
-                isWalking = true;
-
-            if (rb.velocity.x > 0 && (isGrounded || inFlow))
+            if (rb.velocity.x > 0 && (collPacket_ground.isColliding || inFlow))
             {
                 //apply friction to the left
                 rb.AddForce(new Vector2(-acceleration, 0.0f), ForceMode2D.Impulse);
@@ -270,7 +265,7 @@ public class PlayerMovement : MonoBehaviour
                 }
 
             }
-            else if (rb.velocity.x < 0 && (isGrounded || inFlow))
+            else if (rb.velocity.x < 0 && (collPacket_ground.isColliding || inFlow))
             {
                 //apply friciton to the right
                 rb.AddForce(new Vector2(acceleration, 0.0f), ForceMode2D.Impulse);
@@ -300,10 +295,10 @@ public class PlayerMovement : MonoBehaviour
     void UpdatePlayerDirection()
     {
         float x;
-        if (isOnWall)
-        {
-            direction.x = CheckRayCollision(1) ? 1 : -1;
 
+        if (collPacket_front.isColliding)
+        {
+            direction.x *= -1;
         }
         else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
         {
@@ -316,6 +311,15 @@ public class PlayerMovement : MonoBehaviour
             direction.x = x > 0 ? 1 : -1;
         }
 
+        if (collPacket_back.isColliding && !collPacket_ground.isColliding)
+        {
+            isOnWall = true;
+        }
+        else if(isOnWall)
+        {
+            isOnWall = false;
+        }
+
         gameObject.transform.localScale = direction;
     }
 
@@ -323,30 +327,41 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded)
+            if (collPacket_ground.isColliding)
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
             }
-            else if (CheckRayCollision(1))
+            else if (collPacket_back.isColliding)
             {
-                rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
-                StartCoroutine(DisableHorizontalMovement());
+                rb.velocity = Vector2.zero;
+                rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
             }
-            else if (CheckRayCollision(2))
-            {
-                rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
-                StartCoroutine(DisableHorizontalMovement());
-            }
+
+
+
+
+            //else if (CheckRayCollision(1))
+            //{
+            //    rb.velocity = Vector2.zero;
+            //    rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
+            //    StartCoroutine(DisableHorizontalMovement());
+            //}
+            //else if (CheckRayCollision(2))
+            //{
+            //    rb.velocity = Vector2.zero;
+            //    rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
+            //    StartCoroutine(DisableHorizontalMovement());
+            //}
         }
     }
 
 
     void Animations()
     {
-        if (isGrounded && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
-        else if (!isGrounded && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
-        if (isGrounded && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
-        else if (!isGrounded && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
+        if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
+        else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+        if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
+        else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
 
         anim_legs.SetFloat("speed", Mathf.Abs(rb.velocity.x));
         anim_arms.SetFloat("speed", Mathf.Abs(rb.velocity.x));
@@ -370,17 +385,27 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator WallStick()
     {
-        rb.velocity = Vector2.zero;
-        rb.gravityScale = 0;
-        acceleration /= 4;
-        yield return new WaitForSeconds(stickTime);
-        acceleration *= 4;
-        while(rb.gravityScale < 1.0f)
+        while (!collPacket_ground.isColliding)
         {
-            rb.gravityScale += Time.deltaTime * stickiness;
-            if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
+            if (isFalling)
+            {
+                rb.gravityScale = 0.25f;
+            }
             yield return null;
         }
+        acceleration = 0;
+
+        yield return new WaitForSeconds(stickTime);
+
+        if (inFlow) acceleration = acceleration_fast;
+        else acceleration = acceleration_slow;
+        yield return null;
+        //while(rb.gravityScale < 1.0f)
+        //{
+        //    rb.gravityScale += Time.deltaTime * stickiness;
+        //    if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
+        //    yield return null;
+        //}
     }
 
     void CancelWallStick()
@@ -392,44 +417,66 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// casts rays from player's center
     /// </summary>
-    void CastRays()
-    {
-        int layer_environment = 1 << 9;
-        int layer_enemies = 1 << 11;
-        int layer_interactables = 1 << 12;
-        int finalLayerMask = layer_environment | layer_enemies | layer_interactables;
-        //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
-        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
-            isGrounded = true;
-        else
-            isGrounded = false;
+    //void CastRays()
+    //{
+    //    int layer_environment = 1 << 9;
+    //    int layer_enemies = 1 << 11;
+    //    int layer_interactables = 1 << 12;
+    //    int finalLayerMask = layer_environment | layer_enemies | layer_interactables;
+    //    //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
+    //    if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
+    //        isGrounded = true;
+    //    else
+    //        isGrounded = false;
 
-        //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
-        Vector3 raycastStart = transform.position;
-        raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
-        if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[3] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[4] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
-            !isGrounded)
-        {
-            if (isOnWall) firstFrameOnWall = false;
-            else firstFrameOnWall = true;
-            isOnWall = true;
-        }
-        else
-            isOnWall = false;
-    }
+    //    //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
+    //    Vector3 raycastStart = transform.position;
+    //    raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
+    //    if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+    //        (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+    //        (raycastHits[3] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+    //        (raycastHits[4] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
+    //        !isGrounded)
+    //    {
+    //        if (isOnWall) firstFrameOnWall = false;
+    //        else firstFrameOnWall = true;
+    //        isOnWall = true;
+    //    }
+    //    else
+    //        isOnWall = false;
+    //}
 
     /// <summary>
     /// returns true if the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
     /// </summary>
     /// <param name="index">index of the raycastHit to test from raycastHits array</param>
     /// <returns></returns>
-    bool CheckRayCollision(int index)
+    //bool CheckRayCollision(int index)
+    //{
+    //    return raycastHits[index].collider != null;
+    //}
+
+
+
+
+    void GetCollisionReportFront(CollisionPacket packet)
     {
-        return raycastHits[index].collider != null;
+        collPacket_front = packet;
     }
+
+    void GetCollisionReportBack(CollisionPacket packet)
+    {
+        collPacket_back = packet;
+    }
+
+    void GetCollisionReportGround(CollisionPacket packet)
+    {
+        collPacket_ground = packet;
+        Debug.Log(packet);
+    }
+
+
+
 
     /// <summary>
     /// applies the given force to the player
@@ -441,7 +488,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector2.zero;
         if (groundRequired)
         {
-            if (!CheckRayCollision(0))
+            if (!collPacket_ground.isColliding)
             {
                 rb.AddForce(knockback);
             }
