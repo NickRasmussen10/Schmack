@@ -340,8 +340,8 @@ MonoBehaviour:
   acceleration_slow: 80
   maxSpeed_slow: 10
   jumpForce_slow: 1000
-  stickTime: 0.5
-  horizontalForce: 1000
+  stickTime: 0.15
+  horizontalForce: 2000
   wallJumpLimiter: 1
   direction: {x: 0, y: 0}
 --- !u!50 &1713254931261033139
@@ -823,43 +823,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
         type: 3}
-      propertyPath: m_DrawMode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a2f985a80c555c84a903c6ffadb390ba,
         type: 3}
     - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
         type: 3}
+      propertyPath: m_DrawMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
+        type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
-        type: 3}
-      propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1088,8 +1063,7 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.9882353
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8205212843625282594, guid: a4ec8b8b7b700944bbe0944509fff90e, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ec8b8b7b700944bbe0944509fff90e, type: 3}
 --- !u!4 &7089561345472177202 stripped
 Transform:
