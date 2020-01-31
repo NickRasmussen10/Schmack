@@ -60,7 +60,7 @@ public class Bow : MonoBehaviour
 
         numArrows = maxArrows;
 
-        anim = transform.parent.gameObject.GetComponentInChildren<Animator>();
+        anim = GameObject.Find("arms").GetComponent<Animator>();
     }
 
     // Update is called once per frame

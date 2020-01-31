@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
         SetPlayerState();
         Debug.Log(state);
 
-        if (!isOnWall)
+        if (state != PlayerState.wallSticking && state != PlayerState.ledgeGrabbing)
         {
             CancelWallStick();
         }
@@ -162,7 +162,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (collPacket_backLegs.isColliding)
+            if(collPacket_frontLegs.isColliding && !collPacket_frontTorso.isColliding)
+            {
+                state = PlayerState.ledgeGrabbing;
+            }
+            else if (collPacket_backLegs.isColliding)
             {
                 state = PlayerState.wallSticking;
             }
@@ -329,7 +333,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float x;
 
-        if (collPacket_frontLegs.isColliding)
+        if (collPacket_frontLegs.isColliding && collPacket_frontTorso.isColliding)
         {
             direction.x *= -1;
         }
@@ -398,6 +402,11 @@ public class PlayerMovement : MonoBehaviour
     void HandleWallStick()
     {
         if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
+        if(state == PlayerState.ledgeGrabbing)
+        {
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0.0f;
+        }
         if (isOnWall && !wallStickIsRunning)
         {
             StartCoroutine(WallStick());
@@ -438,48 +447,6 @@ public class PlayerMovement : MonoBehaviour
         movementLimiter = 1.0f;
         wallStickIsRunning = false;
     }
-
-    /// <summary>
-    /// casts rays from player's center
-    /// </summary>
-    //void CastRays()
-    //{
-    //    int layer_environment = 1 << 9;
-    //    int layer_enemies = 1 << 11;
-    //    int layer_interactables = 1 << 12;
-    //    int finalLayerMask = layer_environment | layer_enemies | layer_interactables;
-    //    //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
-    //    if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
-    //        isGrounded = true;
-    //    else
-    //        isGrounded = false;
-
-    //    //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
-    //    Vector3 raycastStart = transform.position;
-    //    raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
-    //    if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-    //        (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-    //        (raycastHits[3] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-    //        (raycastHits[4] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
-    //        !isGrounded)
-    //    {
-    //        if (isOnWall) firstFrameOnWall = false;
-    //        else firstFrameOnWall = true;
-    //        isOnWall = true;
-    //    }
-    //    else
-    //        isOnWall = false;
-    //}
-
-    /// <summary>
-    /// returns true if the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
-    /// </summary>
-    /// <param name="index">index of the raycastHit to test from raycastHits array</param>
-    /// <returns></returns>
-    //bool CheckRayCollision(int index)
-    //{
-    //    return raycastHits[index].collider != null;
-    //}
 
 
 
