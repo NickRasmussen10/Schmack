@@ -11,6 +11,7 @@ public class Bow : MonoBehaviour
 
     public Vector2 direction;
     public bool isDrawnBack = false;
+    public bool drawHeld = false;
     public bool fire = false;
     public bool inFlow;
     protected float powerInput = 0.0f;
@@ -134,6 +135,7 @@ public class Bow : MonoBehaviour
 
         if (!anim.GetBool("isDrawn"))
         {
+            anim.SetTrigger("draw");
             anim.SetBool("isDrawn", true);
             anim.SetBool("isFired", false);
         }

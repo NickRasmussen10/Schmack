@@ -38,9 +38,20 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Wall sticking")]
     [SerializeField] float stickTime = 1.0f; //how long the player stays in place for
-    [SerializeField] float stickiness = 1.0f; //how slowly the player regains speed on wall stick
+    //[SerializeField] float stickiness = 1.0f; //how slowly the player regains speed on wall stick
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
+
+    enum PlayerState
+    {
+        idle,
+        running,
+        jumping,
+        wallSticking,
+        ledgeGrabbing
+    }
+
+    PlayerState state;
 
     float acceleration;
     float maxSpeed;
@@ -49,20 +60,25 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
-    RaycastHit2D[] raycastHits = new RaycastHit2D[5];
-    Bounds playerBounds;
+    //RaycastHit2D[] raycastHits = new RaycastHit2D[5];
+    //Bounds playerBounds;
+    CollisionPacket collPacket_ground;
+    CollisionPacket collPacket_frontLegs;
+    CollisionPacket collPacket_backLegs;
+    CollisionPacket collPacket_frontTorso;
 
     bool isFalling = false;
-    bool isGrounded = false;
-    bool isWalking = false;
+    //bool isGrounded = false;
+    //bool isWalking = false;
     bool isOnWall = false;
 
-    //bool limitHorizontalMovement = true;
-    bool firstFrameOnWall = false;
+    float movementLimiter = 1.0f;
+    bool wallStickIsRunning = false;
 
     AudioManager audioMan;
     Animator anim_legs;
     Animator anim_arms;
+    Animator anim_spine;
 
     // Start is called before the first frame update
     void Start()
@@ -74,28 +90,24 @@ public class PlayerMovement : MonoBehaviour
         }
         anim_legs = GameObject.Find("legs").GetComponent<Animator>();
         anim_arms = GameObject.Find("arms").GetComponent<Animator>();
+        anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponentInChildren<Bow>();
         inFlow = false;
+        state = PlayerState.idle;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
         flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.5f;
         direction = new Vector2(1.0f, 1.0f);
-        playerBounds = gameObject.GetComponent<CapsuleCollider2D>().bounds;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isWalking)
-        {
-            audioMan.PlaySound("Walk");
-        }
         HandleFlow();
         JoystickMovement();
         UpdatePlayerDirection();
-        CastRays();
 
 
         //if player is going downward, flag them as falling
@@ -104,23 +116,27 @@ public class PlayerMovement : MonoBehaviour
 
         HandleWallStick();
 
+        SetPlayerState();
+        Debug.Log(state);
+
         if (!isOnWall)
         {
             CancelWallStick();
         }
 
-        if (CheckRayCollision(0))
-        {
-            Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
-            if (raycastHits[0].collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
-            {
-                transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
-            }
-            else
-            {
-                transform.parent = null;
-            }
-        }
+        ///TODO: this moves the player with the bridge, make it a seperate script preferably on bridge
+        //if (collPacket_ground.isColliding)
+        //{
+        //    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
+        //    if (collPacket_ground.collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
+        //    {
+        //        transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
+        //    }
+        //    else
+        //    {
+        //        transform.parent = null;
+        //    }
+        //}
 
         Animations();
 
@@ -131,6 +147,33 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
     }
 
+    void SetPlayerState()
+    {
+        if (collPacket_ground.isColliding)
+        {
+            if (rb.velocity.sqrMagnitude > 0)
+            {
+                state = PlayerState.running;
+            }
+            else
+            {
+                state = PlayerState.idle;
+            }
+        }
+        else
+        {
+            if (collPacket_backLegs.isColliding)
+            {
+                state = PlayerState.wallSticking;
+            }
+            else
+            {
+                state = PlayerState.jumping;
+            }
+        }
+        
+    }
+
     void HandleFlow()
     {
         //if flow button is pressed and player is not in flow and player has a full flow bar
@@ -138,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
         {
             FlowChange();
         }
-        else if(Input.GetButtonDown("Flow")  && inFlow)
+        else if (Input.GetButtonDown("Flow") && inFlow)
         {
             FlowChange();
         }
@@ -175,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //flow testing mode
-        if(flowTestMode && !inFlow)
+        if (flowTestMode && !inFlow)
         {
             FlowChange();
         }
@@ -218,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
 
         CinemachineVirtualCamera vc = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
 
-        while((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
+        while ((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
         {
             if (lerpUp)
             {
@@ -236,55 +279,40 @@ public class PlayerMovement : MonoBehaviour
             jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
 
             vc.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
-            
+
             yield return null;
         }
-        
+
     }
 
     void JoystickMovement()
     {
-        //if (limitHorizontalMovement)
-        //{
-            float hInput = Input.GetAxis("LeftHorizontal");
-            rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-       // }
-        //else
-        //{
-           // float hInput = Input.GetAxis("LeftHorizontal");
-           // rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
-       // }
+        float hInput = Input.GetAxis("LeftHorizontal");
+        rb.AddForce(new Vector2(hInput * acceleration * movementLimiter, 0.0f));
 
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if (isGrounded)
-                isWalking = true;
-
-            if (rb.velocity.x > 0 && (isGrounded || inFlow))
+            if (state == PlayerState.running || inFlow)
             {
                 //apply friction to the left
-                rb.AddForce(new Vector2(-acceleration, 0.0f), ForceMode2D.Impulse);
-                if (rb.velocity.x < 0)
+                if (acceleration != 0)
                 {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    Vector2 velocity = rb.velocity;
+                    velocity.x *= 1 / acceleration;
+                    rb.velocity = velocity;
                 }
 
-            }
-            else if (rb.velocity.x < 0 && (isGrounded || inFlow))
-            {
-                //apply friciton to the right
-                rb.AddForce(new Vector2(acceleration, 0.0f), ForceMode2D.Impulse);
-                if (rb.velocity.x > 0)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-                }
+                //if (rb.velocity.x < 0)
+                //{
+                //    rb.velocity = new Vector2(0, rb.velocity.y);
+                //}
             }
         }
         //else
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-        if (rb.velocity.x > 0)
+        if (rb.velocity.x > 0 && transform.localScale.x != 1)
             gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if (rb.velocity.x < 0)
+        else if (rb.velocity.x < 0&& transform.localScale.x != -1)
             gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
     }
@@ -300,20 +328,29 @@ public class PlayerMovement : MonoBehaviour
     void UpdatePlayerDirection()
     {
         float x;
-        if (isOnWall)
-        {
-            direction.x = CheckRayCollision(1) ? 1 : -1;
 
+        if (collPacket_frontLegs.isColliding)
+        {
+            direction.x *= -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
+        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0 && !collPacket_backLegs.isColliding)
         {
             x = Input.GetAxis("RightHorizontal");
             direction.x = x > 0 ? 1 : -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0)
+        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0 && !collPacket_backLegs.isColliding)
         {
             x = Input.GetAxis("LeftHorizontal");
             direction.x = x > 0 ? 1 : -1;
+        }
+
+        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding)
+        {
+            isOnWall = true;
+        }
+        else if (isOnWall)
+        {
+            isOnWall = false;
         }
 
         gameObject.transform.localScale = direction;
@@ -323,19 +360,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (isGrounded)
+            if (state == PlayerState.idle || state == PlayerState.running)
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
             }
-            else if (CheckRayCollision(1))
+            else if (state == PlayerState.wallSticking)
             {
-                rb.AddForce(new Vector2(horizontalForce, jumpForce / wallJumpLimiter));
-                StartCoroutine(DisableHorizontalMovement());
-            }
-            else if (CheckRayCollision(2))
-            {
-                rb.AddForce(new Vector2(-horizontalForce, jumpForce / wallJumpLimiter));
-                StartCoroutine(DisableHorizontalMovement());
+                rb.velocity = Vector2.zero;
+                rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
+                CancelWallStick();
             }
         }
     }
@@ -343,13 +376,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Animations()
     {
-        if (isGrounded && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
-        else if (!isGrounded && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
-        if (isGrounded && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
-        else if (!isGrounded && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
+        if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
+        else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+        if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
+        else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
 
-        anim_legs.SetFloat("speed", Mathf.Abs(rb.velocity.x));
-        anim_arms.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+        float speed = Mathf.Abs(rb.velocity.x);
+        anim_legs.SetFloat("speed", speed);
+        anim_arms.SetFloat("speed", speed);
+        anim_spine.SetFloat("speed", speed);
 
         if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
         else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
@@ -362,7 +397,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleWallStick()
     {
-        if (firstFrameOnWall)
+        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
+        if (isOnWall && !wallStickIsRunning)
         {
             StartCoroutine(WallStick());
         }
@@ -370,66 +406,107 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator WallStick()
     {
-        rb.velocity = Vector2.zero;
-        rb.gravityScale = 0;
-        acceleration /= 4;
-        yield return new WaitForSeconds(stickTime);
-        acceleration *= 4;
-        while(rb.gravityScale < 1.0f)
+        wallStickIsRunning = true;
+        while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
-            rb.gravityScale += Time.deltaTime * stickiness;
-            if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
+            if (isFalling)
+            {
+                rb.gravityScale = 0.25f;
+                acceleration = 0;
+                movementLimiter = 0.0f;
+                yield return new WaitForSeconds(stickTime);
+                if (inFlow) acceleration = acceleration_fast;
+                else acceleration = acceleration_slow;
+                movementLimiter = 1.0f;
+            }
             yield return null;
         }
+        wallStickIsRunning = false;
+        yield return null;
+        //while(rb.gravityScale < 1.0f)
+        //{
+        //    rb.gravityScale += Time.deltaTime * stickiness;
+        //    if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
+        //    yield return null;
+        //}
     }
 
     void CancelWallStick()
     {
         StopCoroutine(WallStick());
         rb.gravityScale = 1.0f;
+        movementLimiter = 1.0f;
+        wallStickIsRunning = false;
     }
 
     /// <summary>
     /// casts rays from player's center
     /// </summary>
-    void CastRays()
-    {
-        int layer_environment = 1 << 9;
-        int layer_enemies = 1 << 11;
-        int layer_interactables = 1 << 12;
-        int finalLayerMask = layer_environment | layer_enemies | layer_interactables;
-        //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
-        if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
-            isGrounded = true;
-        else
-            isGrounded = false;
+    //void CastRays()
+    //{
+    //    int layer_environment = 1 << 9;
+    //    int layer_enemies = 1 << 11;
+    //    int layer_interactables = 1 << 12;
+    //    int finalLayerMask = layer_environment | layer_enemies | layer_interactables;
+    //    //cast a ray downward, and if it hits the environment or an enemy set isGrounded = true
+    //    if ((raycastHits[0] = Physics2D.Raycast(transform.position, Vector2.down, (playerBounds.size.y / 2) + 0.1f, finalLayerMask)).collider != null)
+    //        isGrounded = true;
+    //    else
+    //        isGrounded = false;
 
-        //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
-        Vector3 raycastStart = transform.position;
-        raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
-        if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[3] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
-            (raycastHits[4] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
-            !isGrounded)
-        {
-            if (isOnWall) firstFrameOnWall = false;
-            else firstFrameOnWall = true;
-            isOnWall = true;
-        }
-        else
-            isOnWall = false;
-    }
+    //    //cast a ray left and right, if either hits and player is not on ground, set isOnWall = true
+    //    Vector3 raycastStart = transform.position;
+    //    raycastStart.y -= gameObject.GetComponent<CapsuleCollider2D>().bounds.size.y / 2;
+    //    if (((raycastHits[1] = Physics2D.Raycast(raycastStart, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+    //        (raycastHits[2] = Physics2D.Raycast(raycastStart, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+    //        (raycastHits[3] = Physics2D.Raycast(transform.position, Vector2.left, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null ||
+    //        (raycastHits[4] = Physics2D.Raycast(transform.position, Vector2.right, (playerBounds.size.x / 2) + 0.2f, finalLayerMask)).collider != null) &&
+    //        !isGrounded)
+    //    {
+    //        if (isOnWall) firstFrameOnWall = false;
+    //        else firstFrameOnWall = true;
+    //        isOnWall = true;
+    //    }
+    //    else
+    //        isOnWall = false;
+    //}
 
     /// <summary>
     /// returns true if the ray at the specified index has a collider that is not the player (i.e. player is colliding on that side)
     /// </summary>
     /// <param name="index">index of the raycastHit to test from raycastHits array</param>
     /// <returns></returns>
-    bool CheckRayCollision(int index)
+    //bool CheckRayCollision(int index)
+    //{
+    //    return raycastHits[index].collider != null;
+    //}
+
+
+
+
+    void GetCollisionReportFrontLegs(CollisionPacket packet)
     {
-        return raycastHits[index].collider != null;
+        collPacket_frontLegs = packet;
     }
+
+    void GetCollisionReportBackLegs(CollisionPacket packet)
+    {
+        collPacket_backLegs = packet;
+    }
+
+    void GetCollisionReportFrontTorso(CollisionPacket packet)
+    {
+        collPacket_frontTorso = packet;
+    }
+
+
+    void GetCollisionReportGround(CollisionPacket packet)
+    {
+        collPacket_ground = packet;
+    }
+
+
+
 
     /// <summary>
     /// applies the given force to the player
@@ -441,7 +518,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector2.zero;
         if (groundRequired)
         {
-            if (!CheckRayCollision(0))
+            if (!collPacket_ground.isColliding)
             {
                 rb.AddForce(knockback);
             }
