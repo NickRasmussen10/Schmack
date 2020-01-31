@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
             CancelWallStick();
         }
 
-        ///TODO: make this a seperate script
+        ///TODO: this moves the player with the bridge, make is a seperate script
         //if (collPacket_ground.isColliding)
         //{
         //    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
@@ -298,14 +298,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (collPacket_front.isColliding)
         {
+            Debug.Log(direction);
             direction.x *= -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0)
+        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0 && !collPacket_back.isColliding)
         {
             x = Input.GetAxis("RightHorizontal");
             direction.x = x > 0 ? 1 : -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0)
+        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0 && !collPacket_back.isColliding)
         {
             x = Input.GetAxis("LeftHorizontal");
             direction.x = x > 0 ? 1 : -1;
