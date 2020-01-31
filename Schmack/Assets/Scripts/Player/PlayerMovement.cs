@@ -38,9 +38,19 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Wall sticking")]
     [SerializeField] float stickTime = 1.0f; //how long the player stays in place for
-    [SerializeField] float stickiness = 1.0f; //how slowly the player regains speed on wall stick
+    //[SerializeField] float stickiness = 1.0f; //how slowly the player regains speed on wall stick
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
+
+    enum PlayerState
+    {
+        idle,
+        running,
+        wallSticking,
+        ledgeGrabbing
+    }
+
+    PlayerState playerState;
 
     float acceleration;
     float maxSpeed;
@@ -52,20 +62,22 @@ public class PlayerMovement : MonoBehaviour
     //RaycastHit2D[] raycastHits = new RaycastHit2D[5];
     //Bounds playerBounds;
     CollisionPacket collPacket_ground;
-    CollisionPacket collPacket_front;
-    CollisionPacket collPacket_back;
+    CollisionPacket collPacket_frontLegs;
+    CollisionPacket collPacket_backLegs;
+    CollisionPacket collPacket_frontTorso;
 
     bool isFalling = false;
     //bool isGrounded = false;
     //bool isWalking = false;
     bool isOnWall = false;
 
-    //bool limitHorizontalMovement = true;
-    bool firstFrameOnWall = false;
+    float movementLimiter = 1.0f;
+    bool wallStickIsRunning = false;
 
     AudioManager audioMan;
     Animator anim_legs;
     Animator anim_arms;
+    Animator anim_spine;
 
     // Start is called before the first frame update
     void Start()
@@ -77,9 +89,11 @@ public class PlayerMovement : MonoBehaviour
         }
         anim_legs = GameObject.Find("legs").GetComponent<Animator>();
         anim_arms = GameObject.Find("arms").GetComponent<Animator>();
+        anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         bow = gameObject.GetComponentInChildren<Bow>();
         inFlow = false;
+        playerState = PlayerState.idle;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
@@ -106,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
             CancelWallStick();
         }
 
-        ///TODO: this moves the player with the bridge, make is a seperate script
+        ///TODO: this moves the player with the bridge, make it a seperate script preferably on bridge
         //if (collPacket_ground.isColliding)
         //{
         //    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
@@ -242,34 +256,22 @@ public class PlayerMovement : MonoBehaviour
 
     void JoystickMovement()
     {
-        //if (limitHorizontalMovement)
-        //{
         float hInput = Input.GetAxis("LeftHorizontal");
-        rb.AddForce(new Vector2(hInput * acceleration, 0.0f));
-        // }
-        //else
-        //{
-        // float hInput = Input.GetAxis("LeftHorizontal");
-        // rb.AddForce(new Vector2(hInput * acceleration / 4, 0.0f));
-        // }
+        rb.AddForce(new Vector2(hInput * acceleration * movementLimiter, 0.0f));
 
         if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
         {
-            if (rb.velocity.x > 0 && (collPacket_ground.isColliding || inFlow))
+            if (collPacket_ground.isColliding || inFlow)
             {
                 //apply friction to the left
-                rb.AddForce(new Vector2(-acceleration, 0.0f), ForceMode2D.Impulse);
-                if (rb.velocity.x < 0)
+                if (acceleration != 0)
                 {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
+                    Vector2 velocity = rb.velocity;
+                    velocity.x *= 1 / acceleration;
+                    rb.velocity = velocity;
                 }
 
-            }
-            else if (rb.velocity.x < 0 && (collPacket_ground.isColliding || inFlow))
-            {
-                //apply friciton to the right
-                rb.AddForce(new Vector2(acceleration, 0.0f), ForceMode2D.Impulse);
-                if (rb.velocity.x > 0)
+                if (rb.velocity.x < 0)
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
                 }
@@ -296,27 +298,26 @@ public class PlayerMovement : MonoBehaviour
     {
         float x;
 
-        if (collPacket_front.isColliding)
+        if (collPacket_frontLegs.isColliding)
         {
-            Debug.Log(direction);
             direction.x *= -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0 && !collPacket_back.isColliding)
+        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0 && !collPacket_backLegs.isColliding)
         {
             x = Input.GetAxis("RightHorizontal");
             direction.x = x > 0 ? 1 : -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0 && !collPacket_back.isColliding)
+        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0 && !collPacket_backLegs.isColliding)
         {
             x = Input.GetAxis("LeftHorizontal");
             direction.x = x > 0 ? 1 : -1;
         }
 
-        if (collPacket_back.isColliding && !collPacket_ground.isColliding)
+        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding)
         {
             isOnWall = true;
         }
-        else if(isOnWall)
+        else if (isOnWall)
         {
             isOnWall = false;
         }
@@ -332,10 +333,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddForce(new Vector2(0.0f, jumpForce));
             }
-            else if (collPacket_back.isColliding)
+            else if (collPacket_backLegs.isColliding)
             {
                 rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
+                CancelWallStick();
             }
 
 
@@ -364,8 +366,10 @@ public class PlayerMovement : MonoBehaviour
         if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
         else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
 
-        anim_legs.SetFloat("speed", Mathf.Abs(rb.velocity.x));
-        anim_arms.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+        float speed = Mathf.Abs(rb.velocity.x);
+        anim_legs.SetFloat("speed", speed);
+        anim_arms.SetFloat("speed", speed);
+        anim_spine.SetFloat("speed", speed);
 
         if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
         else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
@@ -378,28 +382,33 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleWallStick()
     {
-        if (firstFrameOnWall)
+        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
+        if (isOnWall && !wallStickIsRunning)
         {
+            Debug.Log("ooooo howdy cowboy it's the first frame we stickin' to this here wall");
             StartCoroutine(WallStick());
         }
     }
 
     IEnumerator WallStick()
     {
-        while (!collPacket_ground.isColliding)
+        Debug.Log("wall stick");
+        wallStickIsRunning = true;
+        while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
             if (isFalling)
             {
                 rb.gravityScale = 0.25f;
+                acceleration = 0;
+                movementLimiter = 0.0f;
+                yield return new WaitForSeconds(stickTime);
+                if (inFlow) acceleration = acceleration_fast;
+                else acceleration = acceleration_slow;
+                movementLimiter = 1.0f;
             }
             yield return null;
         }
-        acceleration = 0;
-
-        yield return new WaitForSeconds(stickTime);
-
-        if (inFlow) acceleration = acceleration_fast;
-        else acceleration = acceleration_slow;
+        wallStickIsRunning = false;
         yield return null;
         //while(rb.gravityScale < 1.0f)
         //{
@@ -413,6 +422,8 @@ public class PlayerMovement : MonoBehaviour
     {
         StopCoroutine(WallStick());
         rb.gravityScale = 1.0f;
+        movementLimiter = 1.0f;
+        wallStickIsRunning = false;
     }
 
     /// <summary>
@@ -460,20 +471,25 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-    void GetCollisionReportFront(CollisionPacket packet)
+    void GetCollisionReportFrontLegs(CollisionPacket packet)
     {
-        collPacket_front = packet;
+        collPacket_frontLegs = packet;
     }
 
-    void GetCollisionReportBack(CollisionPacket packet)
+    void GetCollisionReportBackLegs(CollisionPacket packet)
     {
-        collPacket_back = packet;
+        collPacket_backLegs = packet;
     }
+
+    void GetCollisionReportFrontTorso(CollisionPacket packet)
+    {
+        collPacket_frontTorso = packet;
+    }
+
 
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
-        Debug.Log(packet);
     }
 
 
