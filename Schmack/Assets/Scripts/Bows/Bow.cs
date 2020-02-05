@@ -97,6 +97,9 @@ public class Bow : MonoBehaviour
 
         direction.x = Input.GetAxis("RightHorizontal");
         direction.y = Input.GetAxis("RightVertical");
+        if (direction.sqrMagnitude > 0.1f) anim.SetBool("aim", true);
+        else if (anim.GetBool("aim")) anim.SetBool("aim", false);
+
         if (fireOnRightTrigger) powerInput = Input.GetAxis("Fire1");
         else powerInput = Input.GetAxis("Fire2");
 

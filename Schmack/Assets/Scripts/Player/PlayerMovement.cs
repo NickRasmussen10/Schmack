@@ -164,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if(collPacket_frontLegs.isColliding && !collPacket_frontTorso.isColliding)
             {
-                state = PlayerState.ledgeGrabbing;
+                state = PlayerState.wallSticking;
             }
             else if (collPacket_backLegs.isColliding)
             {
@@ -337,6 +337,11 @@ public class PlayerMovement : MonoBehaviour
         {
             direction.x *= -1;
         }
+        ///remove this else if to return to ledge gripping
+        else if(collPacket_frontLegs.isColliding || collPacket_frontTorso.isColliding)
+        {
+            direction.x *= -1;
+        }
         else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0 && !collPacket_backLegs.isColliding)
         {
             x = Input.GetAxis("RightHorizontal");
@@ -404,8 +409,8 @@ public class PlayerMovement : MonoBehaviour
         if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
         if(state == PlayerState.ledgeGrabbing)
         {
-            rb.velocity = Vector2.zero;
-            rb.gravityScale = 0.0f;
+            //rb.velocity = Vector2.zero;
+            //rb.gravityScale = 0.0f;
         }
         if (isOnWall && !wallStickIsRunning)
         {

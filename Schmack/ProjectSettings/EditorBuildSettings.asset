@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CityTest.unity
     guid: d6dbc4cf5d5c299438615c5460ca81c6
+  - enabled: 1
+    path: Assets/Scenes/CloseQuarters-Test.unity
+    guid: 3e1bab1c2e5e54c48b085fb29bbd0d50
   m_configObjects: {}
