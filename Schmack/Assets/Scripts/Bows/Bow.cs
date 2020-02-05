@@ -73,6 +73,7 @@ public class Bow : MonoBehaviour
         if(!isDrawnBack && bigArrowSprite.size.x > 0)
         {
             bigArrowSprite.size = new Vector2(0, 0.75f);
+            bigArrow.GetComponentInChildren<UnityEngine.Experimental.Rendering.LWRP.Light2D>().intensity = 0;
         }
     }
 
@@ -181,11 +182,15 @@ public class Bow : MonoBehaviour
     IEnumerator DisplayBigArrow()
     {
         SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
+        UnityEngine.Experimental.Rendering.LWRP.Light2D light = bigArrow.GetComponentInChildren<UnityEngine.Experimental.Rendering.LWRP.Light2D>();
+        light.intensity = 0;
+        float lerpVal = 0.0f;
         Vector2 size = sr.size;
-        while(size.x < 2.5)
+        while(lerpVal < 1.0f)
         {
-            size.x += 0.15f;
-            if (size.x > 2.5f) size.x = 2.5f;
+            lerpVal += Time.unscaledTime * 0.01f;
+            size.x = Mathf.Lerp(0.0f, 2.5f, lerpVal);
+            light.intensity = Mathf.Lerp(0.0f, 2.22f, lerpVal);
             sr.size = size;
             yield return new WaitForEndOfFrame();
         }
