@@ -80,8 +80,6 @@ public class Walker : Enemy
         }
         else
         {
-            if(rotator.right != Vector3.down)
-                rotator.right = (rotator.position + new Vector3(-1, 0, 0)) - rotator.position;
             if (light.pointLightOuterAngle == 25)
             {
                 StopCoroutine(LerpLight(true));
@@ -99,25 +97,28 @@ public class Walker : Enemy
         Vector3 right = Vector3.zero;
         if(lerpVal == 0.0f)
         {
-            while(lerpVal < 1.0f)
+            Quaternion targetRotation = Quaternion.Euler(-180.0f, 0.0f, -90.0f);
+            while (lerpVal < 1.0f)
             {
                 lerpVal += Time.deltaTime;
                 if (lerpVal > 1.0f) lerpVal = 1.0f;
 
-                right = Vector3.Slerp(Vector3.left, Vector3.right, lerpVal);
-                rotator.right = right;
+                rotator.rotation = Quaternion.Slerp(Quaternion.Euler(-180.0f, 0.0f, 0.0f), Quaternion.Euler(-180.0f, 0.0f, 180.0f), lerpVal);
                 yield return null;
             }
         }
         else
         {
-            while(lerpVal > 0.0f)
+            Quaternion targetRotation = Quaternion.Euler(-180.0f, 0.0f, 90.0f);
+            while (lerpVal > 0.0f)
             {
                 lerpVal -= Time.deltaTime;
                 if (lerpVal < 0.0f) lerpVal = 0.0f;
 
                 right = Vector3.Slerp(Vector3.left, Vector3.right, lerpVal);
                 rotator.right = right;
+
+                rotator.rotation = Quaternion.Slerp(Quaternion.Euler(-180.0f, 0.0f, 0.0f), Quaternion.Euler(-180.0f, 0.0f, 180.0f), lerpVal);
                 yield return null;
             }
         }
