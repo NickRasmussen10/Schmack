@@ -8,7 +8,7 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] TrailRenderer trail = null;
 
     protected Rigidbody2D rb;
-    protected BoxCollider2D boxCollider;
+    protected Collider2D collider;
 
     protected RaycastHit2D raycastHit;
     int layermask = 1 << 9 | 1 << 11 | 1 << 12;
@@ -16,7 +16,8 @@ public abstract class Projectile : MonoBehaviour
     protected void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        boxCollider = gameObject.GetComponent<BoxCollider2D>();
+        if (GetComponent<BoxCollider2D>()) collider = gameObject.GetComponent<BoxCollider2D>();
+        else if (GetComponent<CircleCollider2D>()) collider = GetComponent<CircleCollider2D>();
         Instantiate(trail, transform);
     }
 

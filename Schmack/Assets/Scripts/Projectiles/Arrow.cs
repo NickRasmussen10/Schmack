@@ -37,7 +37,7 @@ public class Arrow : Projectile
             if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Interactable")
                 transform.parent = collision.gameObject.transform;
             Destroy(rb);
-            Destroy(boxCollider);
+            Destroy(collider);
 
             //collisionPoint.z = 1;
             transform.position = collisionPoint;
