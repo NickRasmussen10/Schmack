@@ -42,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
 
+    [Header("Wall Slide Particles")]
+    [SerializeField] ParticleSystem pref_wallSlideParticles;
+    //temp solution
+
     enum PlayerState
     {
         idle,
@@ -421,6 +425,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator WallStick()
     {
         wallStickIsRunning = true;
+        ParticleSystem p = Instantiate(pref_wallSlideParticles, transform.position, Quaternion.identity);
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
             if (isFalling)
@@ -435,6 +440,7 @@ public class PlayerMovement : MonoBehaviour
             }
             yield return null;
         }
+        Destroy(p);
         wallStickIsRunning = false;
         yield return null;
         //while(rb.gravityScale < 1.0f)
