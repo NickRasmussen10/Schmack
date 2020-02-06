@@ -71,7 +71,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.Log(rotator);
             rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
             if (transform.localScale.x == -1) rotator.transform.right *= -1;
         }

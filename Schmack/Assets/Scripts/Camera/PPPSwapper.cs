@@ -6,9 +6,9 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PPPSwapper : MonoBehaviour
 {
-    [SerializeField] PostProcessVolume flow;
-    [SerializeField] PostProcessVolume noFlow;
-    [SerializeField] UnityEngine.Experimental.Rendering.LWRP.Light2D gloabalLight;
+    [SerializeField] PostProcessVolume flow = null;
+    [SerializeField] PostProcessVolume noFlow = null;
+    [SerializeField] UnityEngine.Experimental.Rendering.LWRP.Light2D gloabalLight = null;
 
     PlayerMovement playerMovement;
     bool inFlow;

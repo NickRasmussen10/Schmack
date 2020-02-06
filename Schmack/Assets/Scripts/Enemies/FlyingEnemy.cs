@@ -73,6 +73,11 @@ public class FlyingEnemy : Enemy
         }
     }
 
+    protected override IEnumerator Attack()
+    {
+        yield return null;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
