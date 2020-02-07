@@ -8,6 +8,7 @@ public class Walker : Enemy
     [SerializeField] float speed = 5;
     [SerializeField] float turnTime = 1.0f; //how long does he stay at each end of the range before turning around?
     [SerializeField] float reactionTime = 1.0f;
+    [SerializeField] float shotCooldown = 1.0f;
     [SerializeField] Transform rotator = null;
     [SerializeField] GameObject pref_GlueShot = null;
 
@@ -130,7 +131,9 @@ public class Walker : Enemy
 
     protected override IEnumerator CancelAttack()
     {
+        Debug.Log("wot in tarnation?");
         CancelInvoke("TrackPlayer");
+        StopCoroutine(Attack());
         float originRotation = rotator.rotation.z;
 
         float lerpVal = 0.0f;
@@ -164,8 +167,13 @@ public class Walker : Enemy
     protected override IEnumerator Attack()
     {
         yield return new WaitForSeconds(reactionTime);
-        GlueShot glue = Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction *  0.5f), Quaternion.identity).GetComponent<GlueShot>();
-        glue.Fire(spotlight.transform.position, player.position);
+
+        while (true)
+        {
+            GlueShot glue = Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction * 0.5f), Quaternion.identity).GetComponent<GlueShot>();
+            glue.Fire(spotlight.transform.position, player.position);
+            yield return new WaitForSeconds(shotCooldown);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -23,6 +23,8 @@ public abstract class Enemy : MonoBehaviour
 
     protected GameState gameState;
     bool attacking = false;
+    bool seesPlayer = false;
+    bool sawLastFrame = false;
 
     public float GetKnockback() { return playerKnockback; }
     protected Rigidbody2D rb;
@@ -42,14 +44,14 @@ public abstract class Enemy : MonoBehaviour
     protected void Update()
     {
 
+        seesPlayer = SeesPlayer();
 
 
         switch (gameState)
         {
             case GameState.patrolling:
-                if (attacking)
+                if (!seesPlayer && sawLastFrame)
                 {
-                    attacking = false;
                     StartCoroutine(CancelAttack());
                 }
                 Move();
@@ -74,17 +76,18 @@ public abstract class Enemy : MonoBehaviour
                 break;
         }
 
-        if (SeesPlayer() && gameState != GameState.attacking)
+        if (seesPlayer && gameState != GameState.attacking)
         {
             gameState = GameState.seesPlayer;
         }
-        else if(gameState != GameState.attacking)
+        else if(!seesPlayer)
         {
             gameState = GameState.patrolling;
         }
 
+        sawLastFrame = seesPlayer;
 
-        Debug.Log(health);
+
         if (health <= 0)
         {
             gameState = GameState.dead;
@@ -130,7 +133,7 @@ public abstract class Enemy : MonoBehaviour
         }
 
         
-        RaycastHit2D rayCast = Physics2D.Raycast(spotlight.transform.position, player.position - spotlight.transform.position, lightToPlayer.magnitude, ~LayerMask.GetMask("player"));
+        RaycastHit2D rayCast = Physics2D.Raycast(spotlight.transform.position, player.position - spotlight.transform.position, lightToPlayer.magnitude, LayerMask.GetMask("environment"));
         if(rayCast.collider != null)
         {
             Debug.DrawLine(spotlight.transform.position, player.position, Color.white);

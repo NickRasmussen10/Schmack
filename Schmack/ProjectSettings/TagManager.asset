@@ -21,7 +21,7 @@ TagManager:
   - 
   - player
   - environment
-  - arrows
+  - projectiles
   - enemies
   - interactable
   - post processing
