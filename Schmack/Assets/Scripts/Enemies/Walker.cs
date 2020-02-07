@@ -120,7 +120,6 @@ public class Walker : Enemy
             spotlight.color = c;
             yield return null;
         }
-        Debug.Log("end of prep attack reached");
         gameState = GameState.attacking;
     }
 
@@ -164,9 +163,9 @@ public class Walker : Enemy
 
     protected override IEnumerator Attack()
     {
-        Debug.Log("goodbye, son");
         yield return new WaitForSeconds(reactionTime);
-        Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction *  0.5f), Quaternion.identity);
+        GlueShot glue = Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction *  0.5f), Quaternion.identity).GetComponent<GlueShot>();
+        glue.Fire(spotlight.transform.position, player.position);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

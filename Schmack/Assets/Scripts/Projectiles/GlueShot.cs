@@ -7,8 +7,12 @@ public class GlueShot : Projectile
     // Start is called before the first frame update
     protected new virtual void Start()
     {
-        rb.AddForce(transform.forward * 10.0f, ForceMode2D.Impulse);
         base.Start();
+    }
+
+    public void Fire(Vector3 start, Vector3 target)
+    {
+        rb.AddForce((target - start).normalized * 10.0f, ForceMode2D.Impulse);
     }
 
     // Update is called once per frame

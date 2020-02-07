@@ -9,11 +9,13 @@ public abstract class Projectile : MonoBehaviour
     protected Rigidbody2D rb;
     protected Collider2D collider;
 
+    protected bool hasHit = false;
+
     protected RaycastHit2D raycastHit;
     int layermask = 1 << 9 | 1 << 11 | 1 << 12;
 
     protected void Awake()
-    {
+    { 
         rb = gameObject.GetComponent<Rigidbody2D>();
         if (GetComponent<BoxCollider2D>()) collider = gameObject.GetComponent<BoxCollider2D>();
         else if (GetComponent<CircleCollider2D>()) collider = GetComponent<CircleCollider2D>();
@@ -31,7 +33,7 @@ public abstract class Projectile : MonoBehaviour
         if (rb)
             raycastHit = Physics2D.Raycast(transform.position, rb.velocity.normalized, rb.velocity.sqrMagnitude * 0.001f, layermask);
 
-        if(raycastHit.collider != null)
+        if(raycastHit.collider != null && !hasHit)
         {
             TriggerHit(raycastHit.collider, raycastHit.point);
         }

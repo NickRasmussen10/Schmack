@@ -7,8 +7,6 @@ public class Arrow : Projectile
 
     [SerializeField] TrailRenderer trail = null;
 
-    protected bool hasHit = false;
-
     // Start is called before the first frame update
     protected new virtual void Start()
     {
@@ -38,8 +36,15 @@ public class Arrow : Projectile
         if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Arrow")
         {
             hasHit = true;
-            if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Interactable")
+            if (collision.gameObject.tag == "Enemy")
+            {
                 transform.parent = collision.gameObject.transform;
+                collision.gameObject.SendMessage("TakeDamage", 50);
+            }
+            else if(collision.gameObject.tag == "Interactable")
+            {
+                transform.parent = collision.gameObject.transform;
+            }
             Destroy(rb);
             Destroy(collider);
 

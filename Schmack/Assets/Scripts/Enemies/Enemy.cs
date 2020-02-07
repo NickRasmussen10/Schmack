@@ -84,7 +84,7 @@ public abstract class Enemy : MonoBehaviour
         }
 
 
-
+        Debug.Log(health);
         if (health <= 0)
         {
             gameState = GameState.dead;
@@ -100,10 +100,17 @@ public abstract class Enemy : MonoBehaviour
 
     protected void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("whaddup, son?");
         if(collision.gameObject.tag == "Arrow")
         {
+            Debug.Log("oof ouch owie my circuits");
             TakeDamage(50);
         }
+    }
+
+    protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("oof ouch owie my circuits");
     }
 
     protected bool SeesPlayer()
