@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Arrow : Projectile
 {
+
+    [SerializeField] TrailRenderer trail = null;
+
     protected bool hasHit = false;
 
     // Start is called before the first frame update
@@ -11,6 +14,7 @@ public class Arrow : Projectile
     {
         base.Start();
         transform.right = -rb.velocity;
+        Instantiate(trail, transform);
     }
 
     // Update is called once per frame

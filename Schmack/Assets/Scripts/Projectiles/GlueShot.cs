@@ -7,6 +7,7 @@ public class GlueShot : Projectile
     // Start is called before the first frame update
     protected new virtual void Start()
     {
+        rb.AddForce(transform.forward * 10.0f, ForceMode2D.Impulse);
         base.Start();
     }
 
@@ -18,6 +19,6 @@ public class GlueShot : Projectile
 
     protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
-
+        Destroy(gameObject);
     }
 }

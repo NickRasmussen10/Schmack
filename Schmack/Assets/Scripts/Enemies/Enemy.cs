@@ -22,6 +22,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     protected GameState gameState;
+    bool attacking = false;
 
     public float GetKnockback() { return playerKnockback; }
     protected Rigidbody2D rb;
@@ -40,37 +41,53 @@ public abstract class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        if (SeesPlayer())
-        {
-            gameState = GameState.seesPlayer;
-        }
-        else
-        {
-            gameState = GameState.patrolling;
-        }
 
-        
-
-        if(health <= 0)
-        {
-            gameState = GameState.dead;
-        }
 
 
         switch (gameState)
         {
             case GameState.patrolling:
-                StartCoroutine(CancelAttack());
+                if (attacking)
+                {
+                    attacking = false;
+                    StartCoroutine(CancelAttack());
+                }
                 Move();
                 break;
             case GameState.seesPlayer:
-                StartCoroutine(PrepAttack());
+                if (!attacking)
+                {
+                    attacking = true;
+                    StartCoroutine(PrepAttack());
+                }
                 break;
             case GameState.attacking:
+                if (attacking)
+                {
+                    Debug.Log("top 10 images taken right before disaster");
+                    StartCoroutine(Attack());
+                    attacking = false;
+                }
                 break;
             case GameState.dead:
                 Destroy(gameObject);
                 break;
+        }
+
+        if (SeesPlayer() && gameState != GameState.attacking)
+        {
+            gameState = GameState.seesPlayer;
+        }
+        else if(gameState != GameState.attacking)
+        {
+            gameState = GameState.patrolling;
+        }
+
+
+
+        if (health <= 0)
+        {
+            gameState = GameState.dead;
         }
     }
 
@@ -114,7 +131,6 @@ public abstract class Enemy : MonoBehaviour
         }
 
         Debug.DrawLine(spotlight.transform.position, player.position, Color.red);
-        Debug.Log("whaddup, son?");
         return true;
     }
 

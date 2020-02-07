@@ -104,6 +104,7 @@ public class Walker : Enemy
 
     protected override IEnumerator PrepAttack()
     {
+        InvokeRepeating("TrackPlayer", 0.0f, 0.02f);
         float lerpVal = 0.0f;
         Color c = Color.white;
         while (lerpVal < 1.0f)
@@ -112,29 +113,50 @@ public class Walker : Enemy
             if (lerpVal > 1.0f) lerpVal = 1.0f;
 
             spotlight.pointLightOuterAngle = Mathf.Lerp(110, 25, lerpVal);
+            spotlight.intensity = Mathf.Lerp(5, 10, lerpVal);
             c.r = Mathf.Lerp(Color.white.r, Color.red.r, lerpVal);
             c.g = Mathf.Lerp(Color.white.g, Color.red.g, lerpVal);
             c.b = Mathf.Lerp(Color.white.b, Color.red.b, lerpVal);
             spotlight.color = c;
             yield return null;
         }
+        Debug.Log("end of prep attack reached");
         gameState = GameState.attacking;
+    }
+
+    void TrackPlayer()
+    {
+        rotator.right = player.position - spotlight.transform.position;
     }
 
     protected override IEnumerator CancelAttack()
     {
-        float lerpVal = 1.0f;
-        Color c = Color.red;
-        while(lerpVal > 0.0f)
-        {
-            lerpVal -= Time.deltaTime * 2.5f;
-            if (lerpVal < 0.0f) lerpVal = 0.0f;
+        CancelInvoke("TrackPlayer");
+        float originRotation = rotator.rotation.z;
 
-            spotlight.pointLightOuterAngle = Mathf.Lerp(110, 25, lerpVal);
-            c.r = Mathf.Lerp(Color.white.r, Color.red.r, lerpVal);
-            c.g = Mathf.Lerp(Color.white.g, Color.red.g, lerpVal);
-            c.b = Mathf.Lerp(Color.white.b, Color.red.b, lerpVal);
+        float lerpVal = 0.0f;
+        Color c = Color.red;
+        while(lerpVal < 1.0f)
+        {
+            lerpVal += Time.deltaTime * 2.5f;
+            if (lerpVal > 1.0f) lerpVal = 1.0f;
+
+            spotlight.pointLightOuterAngle = Mathf.Lerp(25, 110, lerpVal);
+            spotlight.intensity = Mathf.Lerp(10, 5, lerpVal);
+            c.r = Mathf.Lerp(Color.red.r, Color.white.r, lerpVal);
+            c.g = Mathf.Lerp(Color.red.g, Color.white.g, lerpVal);
+            c.b = Mathf.Lerp(Color.red.b, Color.white.b, lerpVal);
             spotlight.color = c;
+
+            if (direction.x < 0)
+            {
+                rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 180.0f, lerpVal), Vector3.forward);
+            }
+            else
+            {
+                rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 0.0f, lerpVal), Vector3.forward);
+            }
+
             yield return null;
         }
         gameState = GameState.patrolling;
@@ -142,8 +164,9 @@ public class Walker : Enemy
 
     protected override IEnumerator Attack()
     {
+        Debug.Log("goodbye, son");
         yield return new WaitForSeconds(reactionTime);
-        //Instantiate(pref_GlueShot, transform.position, Quaternion.identity);
+        Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction *  0.5f), Quaternion.identity);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

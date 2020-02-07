@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class Projectile : MonoBehaviour
 {
     //[SerializeField] ParticleSystem PS_Hit = null;
-    [SerializeField] TrailRenderer trail = null;
 
     protected Rigidbody2D rb;
     protected Collider2D collider;
@@ -18,7 +17,6 @@ public abstract class Projectile : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         if (GetComponent<BoxCollider2D>()) collider = gameObject.GetComponent<BoxCollider2D>();
         else if (GetComponent<CircleCollider2D>()) collider = GetComponent<CircleCollider2D>();
-        Instantiate(trail, transform);
     }
 
     // Start is called before the first frame update
