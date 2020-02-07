@@ -11,8 +11,6 @@ public class FlyingEnemy : Enemy
 
     float[] limits = new float[2];
 
-    GameObject player;
-
     enum MovementState
     {
         idle,
@@ -82,7 +80,7 @@ public class FlyingEnemy : Enemy
     {
         if(collision.gameObject.tag == "Player")
         {
-            player = collision.gameObject;
+            //player = collision.gameObject;
         }
     }
 }
