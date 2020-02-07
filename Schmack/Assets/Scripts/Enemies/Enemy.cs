@@ -13,6 +13,16 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected Transform player = null;
     [SerializeField] protected UnityEngine.Experimental.Rendering.LWRP.Light2D spotlight = null;
 
+    protected enum GameState
+    {
+        patrolling,
+        seesPlayer,
+        attacking,
+        dead
+    }
+
+    protected GameState gameState;
+
     public float GetKnockback() { return playerKnockback; }
     protected Rigidbody2D rb;
 
@@ -24,16 +34,43 @@ public abstract class Enemy : MonoBehaviour
     {
         health = maxHealth;
         rb = gameObject.GetComponent<Rigidbody2D>();
+        gameState = GameState.patrolling;
     }
 
     // Update is called once per frame
     protected void Update()
     {
-        SeesPlayer();
-        Move();
+        if (SeesPlayer())
+        {
+            gameState = GameState.seesPlayer;
+        }
+        else
+        {
+            gameState = GameState.patrolling;
+        }
+
+        
+
         if(health <= 0)
         {
-            Destroy(gameObject);
+            gameState = GameState.dead;
+        }
+
+
+        switch (gameState)
+        {
+            case GameState.patrolling:
+                StartCoroutine(CancelAttack());
+                Move();
+                break;
+            case GameState.seesPlayer:
+                StartCoroutine(PrepAttack());
+                break;
+            case GameState.attacking:
+                break;
+            case GameState.dead:
+                Destroy(gameObject);
+                break;
         }
     }
 
@@ -54,7 +91,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected bool SeesPlayer()
     {
-        Vector2 lightToPlayer = player.position - GetComponent<Light>().transform.position;
+        Vector2 lightToPlayer = player.position - spotlight.transform.position;
         if(lightToPlayer.sqrMagnitude > spotlight.pointLightOuterRadius * spotlight.pointLightOuterRadius)
         {
             Debug.DrawLine(spotlight.transform.position, player.position, Color.white);
@@ -77,8 +114,14 @@ public abstract class Enemy : MonoBehaviour
         }
 
         Debug.DrawLine(spotlight.transform.position, player.position, Color.red);
+        Debug.Log("whaddup, son?");
         return true;
     }
 
+    protected abstract IEnumerator PrepAttack();
+
+    protected abstract IEnumerator CancelAttack();
+
     protected abstract IEnumerator Attack();
+
 }

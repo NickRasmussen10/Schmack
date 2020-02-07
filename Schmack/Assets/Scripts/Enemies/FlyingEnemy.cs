@@ -71,6 +71,16 @@ public class FlyingEnemy : Enemy
         }
     }
 
+    protected override IEnumerator PrepAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override IEnumerator CancelAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+
     protected override IEnumerator Attack()
     {
         yield return null;
