@@ -43,8 +43,7 @@ public abstract class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-
-        seesPlayer = SeesPlayer();
+        seesPlayer = GetSeesPlayer();
 
 
         switch (gameState)
@@ -116,7 +115,7 @@ public abstract class Enemy : MonoBehaviour
         Debug.Log("oof ouch owie my circuits");
     }
 
-    protected bool SeesPlayer()
+    protected bool GetSeesPlayer()
     {
         Vector2 lightToPlayer = player.position - spotlight.transform.position;
         if(lightToPlayer.sqrMagnitude > spotlight.pointLightOuterRadius * spotlight.pointLightOuterRadius)
