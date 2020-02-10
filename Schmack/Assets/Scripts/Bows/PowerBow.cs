@@ -24,6 +24,5 @@ public class PowerBow : Bow
             direction.Normalize();
         }
         HandleFiring();
-        PlaySounds();
     }
 }

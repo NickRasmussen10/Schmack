@@ -43,18 +43,12 @@ public class Bow : MonoBehaviour
     [Header("Firing Point")]
     [SerializeField] GameObject GO_referencePoint = null;
 
-    AudioManager audioMan;
     Animator anim;
 
     // Start is called before the first frame update
     protected void Start()
     {
         Activate();
-        audioMan = AudioManager.instance;
-        if (audioMan == null)
-        {
-            Debug.LogError("No audiomanager found");
-        }
         timeScale = timeScaleMax;
 
 
@@ -68,7 +62,6 @@ public class Bow : MonoBehaviour
     {
         HandleInput();
         HandleFiring();
-        PlaySounds();
 
         if(!isDrawnBack && bigArrowSprite.size.x > 0)
         {
@@ -77,19 +70,7 @@ public class Bow : MonoBehaviour
     }
 
 
-    protected void PlaySounds()
-    {
-        if (isDrawnBack)
-        {
-            audioMan.PlaySound("BowDraw");
-        }
-        if (fire)
-        {
-            fire = false;
-            audioMan.PlaySound("BowFire");
-            //newaudio.PlaySound("ArrowFly");
-        }
-    }
+   
 
     protected void HandleInput()
     {
