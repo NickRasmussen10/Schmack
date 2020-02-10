@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
     float movementLimiter = 1.0f;
     bool wallStickIsRunning = false;
 
-    AudioManager audioMan;
+
     Animator anim_legs;
     Animator anim_arms;
     Animator anim_spine;
@@ -84,11 +84,6 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioMan = AudioManager.instance;
-        if (audioMan == null)
-        {
-            Debug.LogError("No audiomanager found");
-        }
         anim_legs = GameObject.Find("legs").GetComponent<Animator>();
         anim_arms = GameObject.Find("arms").GetComponent<Animator>();
         anim_spine = GameObject.Find("spine").GetComponent<Animator>();
