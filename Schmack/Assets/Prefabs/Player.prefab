@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 3313707899150451025}
   - component: {fileID: 4743543933163889281}
   - component: {fileID: 4934228852730721799}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: WallDetectionFrontLegs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 8860116446394135037}
   - component: {fileID: 5368452444218752086}
   - component: {fileID: 8378446052456934648}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: GroundDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 6904690787493593337}
   - component: {fileID: 8405513069914234139}
   - component: {fileID: 6187645895505341573}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: WallDetectionBackLegs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 6591625840955071032}
   - component: {fileID: 1191388809747498484}
   - component: {fileID: 3415773513555429888}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: WallDetectionFrontTorso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1290,7 +1290,7 @@ PrefabInstance:
     - target: {fileID: 4106939263188085107, guid: a4ec8b8b7b700944bbe0944509fff90e,
         type: 3}
       propertyPath: m_SortingOrder
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4106939263188085107, guid: a4ec8b8b7b700944bbe0944509fff90e,
         type: 3}

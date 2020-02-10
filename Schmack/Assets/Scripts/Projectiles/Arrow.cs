@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Arrow : Projectile
 {
-
     [SerializeField] TrailRenderer trail = null;
 
     // Start is called before the first frame update
     protected new virtual void Start()
     {
         base.Start();
+
+        //start facing in direction of velocity
         transform.right = -rb.velocity;
         Instantiate(trail, transform);
     }
@@ -20,47 +21,43 @@ public class Arrow : Projectile
     {
         base.Update();
 
-        //if (hasHit && rb != null)
-        //{
-        //    Destroy(rb);
-        //    Destroy(collider);
-        //}
-        if (rb != null)
+        //if rigid body is not null
+        if (rb)
         {
+            //update arrow to face the same direction as current velocity
             transform.right = -rb.velocity;
         }
     }
 
+
+    /// <summary>
+    /// Handles logic for when the projectile detects collision with a valid object
+    /// </summary>
+    /// <param name="collision">the collider of the object that collision has been detected with</param>
+    /// <param name="collisionPoint">the exact point at which the projectile hit the collider</param>
     protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
-        if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "Arrow")
+        //if arrow an enemy
+        if (collision.gameObject.tag == "Enemy")
         {
-            hasHit = true;
-            if (collision.gameObject.tag == "Enemy")
-            {
-                transform.parent = collision.gameObject.transform;
-                collision.gameObject.SendMessage("TakeDamage", 50);
-            }
-            else if(collision.gameObject.tag == "Interactable")
-            {
-                transform.parent = collision.gameObject.transform;
-            }
-            Destroy(rb);
-            Destroy(collider);
-
-            //collisionPoint.z = 1;
-            transform.position = collisionPoint;
-            GetComponent<Animator>().Play("wiggle");
+            //parent arrow to enemy and apply damage to enemy
+            transform.parent = collision.gameObject.transform;
+            collision.gameObject.SendMessage("TakeDamage", 0.5f);
         }
-    }
+        //if arrow hit an interactable
+        else if (collision.gameObject.tag == "Interactable")
+        {
+            //parent arrow to interactable
+            transform.parent = collision.gameObject.transform;
+        }
 
-    public void AddForce(Vector2 force)
-    {
-        rb.AddForce(force);
-    }
+        //destroy arrow's rigid body and collider
+        Destroy(rb);
+        Destroy(GetComponent<Collider>());
 
-    public void AddForce(float x, float y)
-    {
-        AddForce(new Vector2(x, y));
+        //snap arrow to point of collision
+        transform.position = collisionPoint;
+
+        GetComponent<Animator>().Play("wiggle");
     }
 }

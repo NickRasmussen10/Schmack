@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class Walker : Enemy
 {
-    [Header("Walking Enemy Info")]
-    [SerializeField] float speed = 5;
+    [Header("Walking Enemy Behavioral Variables")]
     [SerializeField] float turnTime = 1.0f; //how long does he stay at each end of the range before turning around?
     [SerializeField] float reactionTime = 1.0f; //how long in seconds does it take for the enemy to attack the player?
     [SerializeField] float shotCooldown = 1.0f; //how long in seconds does it take for the enemy to fire another shot?
-    [SerializeField] Transform rotator = null; //"head" that rotates to look at player / facing direction
-    [SerializeField] GameObject pref_GlueShot = null; 
 
-    [SerializeField] BoxCollider2D groundDetector = null;
-    [SerializeField] BoxCollider2D wallDetector = null;
+    [Header("Firing")]
+    [SerializeField] Transform rotator = null; //"head" that rotates to look at player / facing direction
+    [SerializeField] GameObject pref_GlueShot = null;
+
+    CollisionPacket collPacket_ground;
+    CollisionPacket collPacket_wall;
+    [Header("Child Colliders, nuffin' ta see here")]
+    [SerializeField] BoxCollider2D groundCollider;
+    [SerializeField] BoxCollider2D wallCollider;
 
     bool isAtEnd = false;
     bool turning = false;
-    
+
     float timer = 0.0f;
 
     Vector2 scale;
@@ -36,9 +40,12 @@ public class Walker : Enemy
         rotator.right = Vector3.left;
 
         //update detectors to be on correct side of enemy
-        Vector2 offset = groundDetector.offset;
-        offset.x = -GetComponent<BoxCollider2D>().size.x / 2;
-        groundDetector.offset = offset;
+        Vector2 offset = groundCollider.offset;
+        offset.x = -(GetComponent<BoxCollider2D>().size.x / 2) - groundCollider.size.x / 2;
+        groundCollider.offset = offset;
+        offset = wallCollider.offset;
+        offset.x = -(GetComponent<BoxCollider2D>().size.x / 2) - wallCollider.size.x / 2;
+        wallCollider.offset = offset;
 
         //start with full turn timer
         timer = turnTime;
@@ -59,8 +66,8 @@ public class Walker : Enemy
     /// </summary>
     protected override void Move()
     {
-        //if te end of the platform has been detected (edge or wall)
-        if(isAtEnd || raycastHit.collider != null)
+        //if the end of the platform has been detected (edge or wall)
+        if (!collPacket_ground.isColliding || collPacket_wall.isColliding)
         {
             //turn around in given direcion
             if (!turning)
@@ -71,7 +78,7 @@ public class Walker : Enemy
         else
         {
             //move forward
-            transform.Translate(direction * speed);
+            transform.Translate(direction * speed * Time.deltaTime);
         }
     }
 
@@ -92,9 +99,9 @@ public class Walker : Enemy
         float lerpVal = direction.x < 0 ? 0.0f : 1.0f;
         Vector3 right = Vector3.zero;
 
-        
+
         //lerp turn left to right
-        if(lerpVal == 0.0f)
+        if (lerpVal == 0.0f)
         {
             float rotation = 0.0f;
             while (lerpVal < 1.0f)
@@ -102,6 +109,7 @@ public class Walker : Enemy
                 lerpVal += Time.deltaTime * 3.0f;
                 if (lerpVal > 1.0f) lerpVal = 1.0f;
 
+                //lerp head rotation
                 rotation = Mathf.Lerp(180.0f, 0.0f, lerpVal);
                 rotator.rotation = Quaternion.AngleAxis(rotation, Vector3.forward);
                 yield return null;
@@ -117,65 +125,105 @@ public class Walker : Enemy
                 lerpVal -= Time.deltaTime * 3.0f;
                 if (lerpVal < 0.0f) lerpVal = 0.0f;
 
+                //lerp head rotation
                 rotation = Mathf.Lerp(180.0f, 0.0f, lerpVal);
                 rotator.rotation = Quaternion.AngleAxis(rotation, Vector3.forward);
                 yield return null;
             }
         }
+
+        //mark coroutine as complete
         turning = false;
-        Vector2 offset = groundDetector.offset;
+
+        //update detection collider positions so that they are at front enemy in new direction
+        Vector2 offset = groundCollider.offset;
         offset.x *= -1;
-        groundDetector.offset = offset;
+        groundCollider.offset = offset;
+        offset = wallCollider.offset;
+        offset.x *= -1;
+        wallCollider.offset = offset;
+
+        //change direction
         direction.x *= -1;
     }
 
+    /// <summary>
+    /// Handles the "calculation time" and bringing the enemy to an attack state
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator PrepAttack()
     {
+        //track the player
         InvokeRepeating("TrackPlayer", 0.0f, 0.02f);
+
         float lerpVal = 0.0f;
         Color c = Color.white;
+
+        //go to attack light
         while (lerpVal < 1.0f)
         {
             lerpVal += Time.deltaTime * 2.5f;
             if (lerpVal > 1.0f) lerpVal = 1.0f;
 
+            //lerp light intensity and angle
             spotlight.pointLightOuterAngle = Mathf.Lerp(110, 25, lerpVal);
             spotlight.intensity = Mathf.Lerp(5, 10, lerpVal);
+
+            //lerp light color
             c.r = Mathf.Lerp(Color.white.r, Color.red.r, lerpVal);
             c.g = Mathf.Lerp(Color.white.g, Color.red.g, lerpVal);
             c.b = Mathf.Lerp(Color.white.b, Color.red.b, lerpVal);
             spotlight.color = c;
             yield return null;
         }
+
         gameState = GameState.attacking;
     }
 
+
+    /// <summary>
+    /// Rotates light towards player
+    /// </summary>
     void TrackPlayer()
     {
         rotator.right = player.position - spotlight.transform.position;
     }
 
+
+    /// <summary>
+    /// Brings enemy back to patrolling state from enemy
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator CancelAttack()
     {
         Debug.Log("wot in tarnation?");
+        //stop tracking and player player
         CancelInvoke("TrackPlayer");
         StopCoroutine(Attack());
+
+        //remember the head's starting rotation
         float originRotation = rotator.rotation.z;
 
         float lerpVal = 0.0f;
         Color c = Color.red;
-        while(lerpVal < 1.0f)
+
+        //lerp back to patrolling state
+        while (lerpVal < 1.0f)
         {
             lerpVal += Time.deltaTime * 2.5f;
             if (lerpVal > 1.0f) lerpVal = 1.0f;
 
+            //lerp light angle and intensity
             spotlight.pointLightOuterAngle = Mathf.Lerp(25, 110, lerpVal);
             spotlight.intensity = Mathf.Lerp(10, 5, lerpVal);
+
+            //lerp light color
             c.r = Mathf.Lerp(Color.red.r, Color.white.r, lerpVal);
             c.g = Mathf.Lerp(Color.red.g, Color.white.g, lerpVal);
             c.b = Mathf.Lerp(Color.red.b, Color.white.b, lerpVal);
             spotlight.color = c;
 
+            //lerp head rotation to correct position based on enemy's direction
             if (direction.x < 0)
             {
                 rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 180.0f, lerpVal), Vector3.forward);
@@ -187,28 +235,40 @@ public class Walker : Enemy
 
             yield return null;
         }
+
         gameState = GameState.patrolling;
     }
 
+
+    /// <summary>
+    /// Handles enemy attacking player
+    /// </summary>
+    /// <returns></returns>
     protected override IEnumerator Attack()
     {
+        //wait for reactionTime seconds
         yield return new WaitForSeconds(reactionTime);
 
+        //keep looping until coroutine is stopped elsewhere     NOTE: this could potentially be handled as a boolean flag outside the method?
         while (true)
         {
+            //create and fire a glue shot
             GlueShot glue = Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction * 0.5f), Quaternion.identity).GetComponent<GlueShot>();
             glue.Fire(spotlight.transform.position, player.position);
+
+            //wait for shotCooldown seconds and repeat
             yield return new WaitForSeconds(shotCooldown);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    void GetCollisionReportGround(CollisionPacket packet)
     {
-        isAtEnd = false;
+        collPacket_ground = packet;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    void GetCollisionReportWall(CollisionPacket packet)
     {
-        isAtEnd = true;
+        collPacket_wall = packet;
     }
 }

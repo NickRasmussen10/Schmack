@@ -380,7 +380,8 @@ MonoBehaviour:
   rotator: {fileID: 3606049500673354353}
   pref_GlueShot: {fileID: 3970952004255705323, guid: 995cf4d03c53e964fa4c8a1fdddf1a61,
     type: 3}
-  groundDetector: {fileID: 6563829338939345736}
+  groundCollider: {fileID: 6563829338939345736}
+  wallCollider: {fileID: 3146383760261539543}
 --- !u!1 &3372066498410877225
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +392,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6057846031420251371}
   - component: {fileID: 3146383760261539543}
-  m_Layer: 11
+  - component: {fileID: 724180569}
+  m_Layer: 14
   m_Name: WallDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +424,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -5.83, y: 3.69}
@@ -436,8 +438,21 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 7.11}
+  m_Size: {x: 1, y: 6.39}
   m_EdgeRadius: 0
+--- !u!114 &724180569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3372066498410877225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72064647f1bb90b43b97e9574d25e4aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderID: Wall
 --- !u!1 &3416571725058173000
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +554,8 @@ GameObject:
   m_Component:
   - component: {fileID: 373381359267418772}
   - component: {fileID: 6563829338939345736}
-  m_Layer: 11
+  - component: {fileID: 304530055}
+  m_Layer: 14
   m_Name: GroundDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -586,6 +602,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4024792, y: 0.823913}
   m_EdgeRadius: 0
+--- !u!114 &304530055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4983958175323606177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72064647f1bb90b43b97e9574d25e4aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderID: Ground
 --- !u!1 &5114577232586172181
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    [Header("Base enemy info")]
-    [SerializeField] float maxHealth = 100.0f;
-    [SerializeField] protected float acceleration = 1.0f;
-    [SerializeField] protected float maxSpeed = 0.5f;
-    [SerializeField] float playerKnockback = 1000;
+    [Header("Base Enemy Behavioral Info")]
+    [SerializeField] [Range(0.0f, 1.0f)] float maxHealth = 1.0f; //percentage based, 1.0 is highest
+    [SerializeField] protected float speed = 2.5f;
+    [SerializeField] float playerKnockback = 1000; //how much force does this enemy apply to the player on a hit
 
+    [Header("Base Enemy References")]
     [SerializeField] protected Transform player = null;
     [SerializeField] protected UnityEngine.Experimental.Rendering.LWRP.Light2D spotlight = null;
 

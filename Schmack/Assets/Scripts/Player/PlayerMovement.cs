@@ -61,8 +61,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 direction = Vector2.zero;
     Bow bow;
 
-    //RaycastHit2D[] raycastHits = new RaycastHit2D[5];
-    //Bounds playerBounds;
     CollisionPacket collPacket_ground;
     CollisionPacket collPacket_frontLegs;
     CollisionPacket collPacket_backLegs;
