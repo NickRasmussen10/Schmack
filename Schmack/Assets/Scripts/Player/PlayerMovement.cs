@@ -6,11 +6,6 @@ using Cinemachine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    /// <summary>
-    /// Temp UI Stuff
-    /// </summary>
-    [SerializeField] Slider flowSlider = null;
-
     [Header("Flow Testing Mode")]
     [SerializeField] bool flowTestMode = false;
 
@@ -38,9 +33,13 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Wall sticking")]
     [SerializeField] float stickTime = 1.0f; //how long the player stays in place for
-    //[SerializeField] float stickiness = 1.0f; //how slowly the player regains speed on wall stick
     [SerializeField] float horizontalForce = 50;
     [SerializeField] float wallJumpLimiter = 0.5f;
+
+    [Header("References :(")]
+    [SerializeField] Slider flowSlider = null;
+    [SerializeField] CinemachineVirtualCamera vcam;
+    CinemachineFramingTransposer framingTransposer;
 
 
     enum PlayerState
@@ -67,8 +66,6 @@ public class PlayerMovement : MonoBehaviour
     CollisionPacket collPacket_frontTorso;
 
     bool isFalling = false;
-    //bool isGrounded = false;
-    //bool isWalking = false;
     bool isOnWall = false;
 
     float movementLimiter = 1.0f;
@@ -94,6 +91,8 @@ public class PlayerMovement : MonoBehaviour
         jumpForce = jumpForce_slow;
         flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.5f;
         direction = new Vector2(1.0f, 1.0f);
+        framingTransposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
+        InvokeRepeating("AdjustCamera", 0.0f, 0.02f);
     }
 
     // Update is called once per frame
@@ -155,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if(collPacket_frontLegs.isColliding && !collPacket_frontTorso.isColliding)
+            if (collPacket_frontLegs.isColliding && !collPacket_frontTorso.isColliding)
             {
                 state = PlayerState.wallSticking;
             }
@@ -168,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
                 state = PlayerState.jumping;
             }
         }
-        
+
     }
 
     void HandleFlow()
@@ -309,7 +308,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
         if (rb.velocity.x > 0 && transform.localScale.x != 1)
             gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if (rb.velocity.x < 0&& transform.localScale.x != -1)
+        else if (rb.velocity.x < 0 && transform.localScale.x != -1)
             gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
     }
@@ -331,7 +330,7 @@ public class PlayerMovement : MonoBehaviour
             direction.x *= -1;
         }
         ///remove this else if to return to ledge gripping
-        else if(collPacket_frontLegs.isColliding || collPacket_frontTorso.isColliding)
+        else if (collPacket_frontLegs.isColliding || collPacket_frontTorso.isColliding)
         {
             direction.x *= -1;
         }
@@ -400,7 +399,7 @@ public class PlayerMovement : MonoBehaviour
     void HandleWallStick()
     {
         if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
-        if(state == PlayerState.ledgeGrabbing)
+        if (state == PlayerState.ledgeGrabbing)
         {
             //rb.velocity = Vector2.zero;
             //rb.gravityScale = 0.0f;
@@ -430,12 +429,6 @@ public class PlayerMovement : MonoBehaviour
         }
         wallStickIsRunning = false;
         yield return null;
-        //while(rb.gravityScale < 1.0f)
-        //{
-        //    rb.gravityScale += Time.deltaTime * stickiness;
-        //    if (rb.gravityScale > 1.0f) rb.gravityScale = 1.0f;
-        //    yield return null;
-        //}
     }
 
     void CancelWallStick()
@@ -468,6 +461,7 @@ public class PlayerMovement : MonoBehaviour
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
+        if (packet.isColliding) Debug.Log("whadup, ground?");
     }
 
 
@@ -501,4 +495,54 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="x">force in the x direction</param>
     /// <param name="y">force in the y direction</param>
     private void AddForce(float x, float y) { rb.AddForce(new Vector2(x, y)); }
+
+    void AdjustCamera()
+    {
+        //update virtual camera's y bias and screen position to lead the player downwards
+        framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, -.49f, .49f);
+        framingTransposer.m_ScreenY = Mathf.Lerp(0.6f, 0.3f, -(rb.velocity.y * 0.1f));
+
+        //framingTransposer.m_ScreenX = Mathf.Clamp(rb.velocity.x * 0.01f, -.381f, .381f);
+
+        if (Mathf.Abs(rb.velocity.x) > 0.3f)
+        {
+            if (inFlow)
+            {
+                framingTransposer.m_BiasX = 0.15f;
+                framingTransposer.m_ScreenX = 0.5f;
+                if (!collPacket_ground.isColliding)
+                {
+                    framingTransposer.m_DeadZoneWidth = 0.5f;
+                }
+                else
+                {
+                    framingTransposer.m_DeadZoneWidth = 0.4f;
+                }
+            }
+            else
+            {
+                framingTransposer.m_BiasX = Mathf.Clamp(rb.velocity.x * 0.02f, 0.0f, .3f);
+                framingTransposer.m_ScreenX = Mathf.Lerp(0.55f, 0.45f, (rb.velocity.x * 0.05f) + .5f);
+                if (!collPacket_ground.isColliding)
+                {
+                    framingTransposer.m_DeadZoneWidth = 0.4f;
+                }
+                else
+                {
+                    framingTransposer.m_DeadZoneWidth = 0.2f;
+                }
+            }
+        }
+        else
+        {
+            framingTransposer.m_ScreenX = 0.5f;
+        }
+        //framingTransposer.m_DeadZoneWidth = 0.1f/Mathf.Clamp(Mathf.Abs(rb.velocity.x), 0.2f, 0.6f);
+
+    }
+
+    void AdjustCameraY()
+    {
+
+    }
 }

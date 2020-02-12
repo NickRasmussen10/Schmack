@@ -368,12 +368,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  acceleration: 1
-  maxSpeed: 0.5
+  speed: 3
   playerKnockback: 1000
   player: {fileID: 0}
   spotlight: {fileID: 281904282}
-  speed: 0.05
   turnTime: 1
   reactionTime: 1
   shotCooldown: 1
@@ -393,6 +391,7 @@ GameObject:
   - component: {fileID: 6057846031420251371}
   - component: {fileID: 3146383760261539543}
   - component: {fileID: 724180569}
+  - component: {fileID: 9057585396040839969}
   m_Layer: 14
   m_Name: WallDetector
   m_TagString: Untagged
@@ -427,7 +426,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -5.83, y: 3.69}
+  m_Offset: {x: -5.83, y: 4.04}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -441,6 +440,19 @@ BoxCollider2D:
   m_Size: {x: 1, y: 6.39}
   m_EdgeRadius: 0
 --- !u!114 &724180569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3372066498410877225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72064647f1bb90b43b97e9574d25e4aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderID: Wall
+--- !u!114 &9057585396040839969
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

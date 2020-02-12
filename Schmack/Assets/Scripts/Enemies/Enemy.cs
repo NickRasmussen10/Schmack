@@ -22,9 +22,9 @@ public abstract class Enemy : MonoBehaviour
     }
 
     protected GameState gameState;
-    bool attacking = false;
     bool seesPlayer = false;
-    bool sawLastFrame = false;
+
+    protected Coroutine attack;
 
     public float GetKnockback() { return playerKnockback; }
     protected Rigidbody2D rb;
@@ -43,31 +43,34 @@ public abstract class Enemy : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
+        //store if enemy sees the player
         seesPlayer = GetSeesPlayer();
 
 
         switch (gameState)
         {
             case GameState.patrolling:
-                if (!seesPlayer && sawLastFrame)
+                //if this is the first frame the enemy has not seen the player
+                if (!seesPlayer && attack != null)
                 {
                     StartCoroutine(CancelAttack());
+                    attack = null;
                 }
                 Move();
                 break;
             case GameState.seesPlayer:
-                if (!attacking)
+                //if this is the first frame the enemy is attacking
+                if (attack == null)
                 {
-                    attacking = true;
-                    StartCoroutine(PrepAttack());
+                    attack = StartCoroutine(PrepAttack());
                 }
                 break;
             case GameState.attacking:
-                if (attacking)
+                //if this is the first frame the enemy is attacking and the game state is attacking
+                if (attack == null)
                 {
                     Debug.Log("top 10 images taken right before disaster");
-                    StartCoroutine(Attack());
-                    attacking = false;
+                    attack = StartCoroutine(Attack());
                 }
                 break;
             case GameState.dead:
@@ -75,16 +78,17 @@ public abstract class Enemy : MonoBehaviour
                 break;
         }
 
+        //if the enemy sees the player and it is not in attacking state
         if (seesPlayer && gameState != GameState.attacking)
         {
             gameState = GameState.seesPlayer;
         }
+
+        //if the enemy does not see the player
         else if(!seesPlayer)
         {
             gameState = GameState.patrolling;
         }
-
-        sawLastFrame = seesPlayer;
 
 
         if (health <= 0)
@@ -93,60 +97,78 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Handles the enemy recieving damage
+    /// </summary>
+    /// <param name="damage"></param>
     protected void TakeDamage(float damage)
     {
         health -= damage;
     }
 
+    /// <summary>
+    /// Handles the enemy's movement patterns
+    /// </summary>
     protected abstract void Move();
 
-    protected void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("whaddup, son?");
-        if(collision.gameObject.tag == "Arrow")
-        {
-            Debug.Log("oof ouch owie my circuits");
-            TakeDamage(50);
-        }
-    }
 
-    protected void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("oof ouch owie my circuits");
-    }
-
+    /// <summary>
+    /// returns true is the enemy can see the player, false otherwise
+    /// </summary>
+    /// <returns></returns>
     protected bool GetSeesPlayer()
     {
+        //find the vector from the enemy's light to the player
         Vector2 lightToPlayer = player.position - spotlight.transform.position;
-        if(lightToPlayer.sqrMagnitude > spotlight.pointLightOuterRadius * spotlight.pointLightOuterRadius)
+
+        //if light-to-player vector's magnitude is larger than the light's range, enemy cannot see player
+        if(lightToPlayer.sqrMagnitude > (spotlight.pointLightOuterRadius * spotlight.pointLightOuterRadius) * 0.6f)
         {
-            Debug.DrawLine(spotlight.transform.position, player.position, Color.white);
             return false;
         }
 
+
+
+        //find angle between enemy's light and player
         float angleToPlayer = Mathf.Atan2(lightToPlayer.x, lightToPlayer.y) * Mathf.Rad2Deg * direction.x;
-        if(angleToPlayer < spotlight.pointLightOuterAngle / 2)
+
+        //if player is too far to the side of the light, enemy cannot see player
+        if(angleToPlayer < (spotlight.pointLightOuterAngle / 2) * 0.8f)
         {
-            Debug.DrawLine(spotlight.transform.position, player.position, Color.white);
             return false;
         }
 
         
+        //cast a ray from the enemy's light to the player
         RaycastHit2D rayCast = Physics2D.Raycast(spotlight.transform.position, player.position - spotlight.transform.position, lightToPlayer.magnitude, LayerMask.GetMask("environment"));
-        if(rayCast.collider != null)
+
+        //if the ray hits anything, enemy cannot see player
+        if (rayCast.collider != null)
         {
-            Debug.DrawLine(spotlight.transform.position, player.position, Color.white);
             return false;
         }
 
-        Debug.DrawLine(spotlight.transform.position, player.position, Color.red);
+        //if all checks passed, enemy can see player
         return true;
     }
 
+    /// <summary>
+    /// Handles "calculation delay time" and bringing the enemy to an attack state
+    /// </summary>
+    /// <returns></returns>
     protected abstract IEnumerator PrepAttack();
 
+    /// <summary>
+    /// Brings enemy back to patrolling state from attack
+    /// </summary>
+    /// <returns></returns>
     protected abstract IEnumerator CancelAttack();
 
+    /// <summary>
+    /// Handles enemy attacking player
+    /// </summary>
+    /// <returns></returns>
     protected abstract IEnumerator Attack();
 
 }

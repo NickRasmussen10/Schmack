@@ -16,8 +16,8 @@ public class Walker : Enemy
     CollisionPacket collPacket_ground;
     CollisionPacket collPacket_wall;
     [Header("Child Colliders, nuffin' ta see here")]
-    [SerializeField] BoxCollider2D groundCollider;
-    [SerializeField] BoxCollider2D wallCollider;
+    [SerializeField] GameObject groundCollider;
+    [SerializeField] GameObject wallCollider;
 
     bool isAtEnd = false;
     bool turning = false;
@@ -40,12 +40,12 @@ public class Walker : Enemy
         rotator.right = Vector3.left;
 
         //update detectors to be on correct side of enemy
-        Vector2 offset = groundCollider.offset;
-        offset.x = -(GetComponent<BoxCollider2D>().size.x / 2) - groundCollider.size.x / 2;
-        groundCollider.offset = offset;
-        offset = wallCollider.offset;
-        offset.x = -(GetComponent<BoxCollider2D>().size.x / 2) - wallCollider.size.x / 2;
-        wallCollider.offset = offset;
+        //Vector2 offset = groundCollider.offset;
+        //offset.x = -(GetComponent<BoxCollider2D>().size.x / 2) - groundCollider.size.x / 2;
+        //groundCollider.offset = offset;
+        //offset = wallCollider.offset;
+        //offset.x = -(GetComponent<BoxCollider2D>().size.x / 2) - wallCollider.size.x / 2;
+        //wallCollider.offset = offset;
 
         //start with full turn timer
         timer = turnTime;
@@ -135,20 +135,20 @@ public class Walker : Enemy
         //mark coroutine as complete
         turning = false;
 
-        //update detection collider positions so that they are at front enemy in new direction
-        Vector2 offset = groundCollider.offset;
-        offset.x *= -1;
-        groundCollider.offset = offset;
-        offset = wallCollider.offset;
-        offset.x *= -1;
-        wallCollider.offset = offset;
-
         //change direction
         direction.x *= -1;
+
+        //update detection collider positions so that they are at front enemy in new direction
+        Vector3 scale = groundCollider.transform.localScale;
+        scale.x *= -1;
+        groundCollider.transform.localScale = scale;
+        scale = wallCollider.transform.localScale;
+        scale.x *= -1;
+        wallCollider.transform.localScale = scale;
     }
 
     /// <summary>
-    /// Handles the "calculation time" and bringing the enemy to an attack state
+    /// Handles "calculation delay time" and bringing the enemy to an attack state
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator PrepAttack()
@@ -178,6 +178,7 @@ public class Walker : Enemy
         }
 
         gameState = GameState.attacking;
+        attack = null;
     }
 
 
@@ -187,22 +188,19 @@ public class Walker : Enemy
     void TrackPlayer()
     {
         rotator.right = player.position - spotlight.transform.position;
+        //rotator.rotation = Quaternion.Euler(0.0f, 0.0f, Mathf.Atan2((player.position - spotlight.gameObject.transform.position).y, (player.position - spotlight.gameObject.transform.position).x) * Mathf.Rad2Deg);
     }
 
 
     /// <summary>
-    /// Brings enemy back to patrolling state from enemy
+    /// Brings enemy back to patrolling state from attack
     /// </summary>
     /// <returns></returns>
     protected override IEnumerator CancelAttack()
     {
-        Debug.Log("wot in tarnation?");
         //stop tracking and player player
         CancelInvoke("TrackPlayer");
-        StopCoroutine(Attack());
-
-        //remember the head's starting rotation
-        float originRotation = rotator.rotation.z;
+        StopCoroutine(attack);
 
         float lerpVal = 0.0f;
         Color c = Color.red;
@@ -210,6 +208,7 @@ public class Walker : Enemy
         //lerp back to patrolling state
         while (lerpVal < 1.0f)
         {
+            Debug.Log(lerpVal);
             lerpVal += Time.deltaTime * 2.5f;
             if (lerpVal > 1.0f) lerpVal = 1.0f;
 
@@ -223,17 +222,19 @@ public class Walker : Enemy
             c.b = Mathf.Lerp(Color.red.b, Color.white.b, lerpVal);
             spotlight.color = c;
 
-            //lerp head rotation to correct position based on enemy's direction
-            if (direction.x < 0)
-            {
-                rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 180.0f, lerpVal), Vector3.forward);
-            }
-            else
-            {
-                rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 0.0f, lerpVal), Vector3.forward);
-            }
-
             yield return null;
+        }
+
+        float originRotation = rotator.rotation.z;
+
+        //lerp head rotation to correct position based on enemy's direction
+        if (direction.x < 0)
+        {
+            rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 180.0f, lerpVal), Vector3.forward);
+        }
+        else
+        {
+            rotator.rotation = Quaternion.AngleAxis(Mathf.Lerp(originRotation, 0.0f, lerpVal), Vector3.forward);
         }
 
         gameState = GameState.patrolling;
@@ -253,8 +254,8 @@ public class Walker : Enemy
         while (true)
         {
             //create and fire a glue shot
-            GlueShot glue = Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction * 0.5f), Quaternion.identity).GetComponent<GlueShot>();
-            glue.Fire(spotlight.transform.position, player.position);
+            //GlueShot glue = Instantiate(pref_GlueShot, spotlight.transform.position + ((Vector3)direction * 0.5f), Quaternion.identity).GetComponent<GlueShot>();
+            //glue.Fire(spotlight.transform.position, player.position);
 
             //wait for shotCooldown seconds and repeat
             yield return new WaitForSeconds(shotCooldown);
@@ -262,11 +263,20 @@ public class Walker : Enemy
     }
 
 
+    /// <summary>
+    /// recieves a collision packet from the ground reporter
+    /// </summary>
+    /// <param name="packet"></param>
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
     }
 
+
+    /// <summary>
+    /// recieves a collision packet from the wall reporter
+    /// </summary>
+    /// <param name="packet"></param>
     void GetCollisionReportWall(CollisionPacket packet)
     {
         collPacket_wall = packet;

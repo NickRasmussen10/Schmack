@@ -53,7 +53,7 @@ public class Arrow : Projectile
 
         //destroy arrow's rigid body and collider
         Destroy(rb);
-        Destroy(GetComponent<Collider>());
+        Destroy(collider);
 
         //snap arrow to point of collision
         transform.position = collisionPoint;
