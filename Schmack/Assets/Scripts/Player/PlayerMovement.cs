@@ -12,14 +12,9 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
 
     [Header("Flow")]
-    [SerializeField] float flowForgivenessTime = 1.0f;
-    [SerializeField] float flowDepreciationRate = 1.0f;
-    [SerializeField] float flowAppreciationRate = 1.0f;
-    float flowJuice = 1.0f;
-    public bool inFlow = false;
-    float flowTimer = 0.0f;
-    float flowThreshold = 0.0f;
-
+    [SerializeField] float flowForgivenessTime = 1.0f; //how much time can the player stand still before they start losing flow
+    [SerializeField] float flowDepreciationRate = 1.0f; //how fast the flow drains when player is moving too slow
+    [SerializeField] float flowAppreciationRate = 1.0f; //how fast flow returns to the player when they are moving fast enough
 
     [Header("Movement - Flow")]
     [SerializeField] float acceleration_fast = 8;
@@ -32,46 +27,45 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce_slow = 200;
 
     [Header("Wall sticking")]
-    [SerializeField] float stickTime = 1.0f; //how long the player stays in place for
-    [SerializeField] float horizontalForce = 50;
-    [SerializeField] float wallJumpLimiter = 0.5f;
+    [SerializeField] float stickTime = 1.0f; //how long the player's movement and acceleration are limited for after hitting a wall, used to give forgiveness to direction changes during a wall jump
+    [SerializeField] float horizontalForce = 50; //how much force is applied horizontally after jumping off a wall
+    [SerializeField] float wallJumpLimiter = 0.5f; //how much force is taken away from the verticality of a wall jump
 
     [Header("References :(")]
-    [SerializeField] Slider flowSlider = null;
-    [SerializeField] CinemachineVirtualCamera vcam;
-    CinemachineFramingTransposer framingTransposer;
+    [SerializeField] Slider flowSlider = null; //UI element for flow
+    [SerializeField] CinemachineVirtualCamera vcam; //camera's active virtual camera
+    CinemachineFramingTransposer framingTransposer; //active virtual camera's framing transposer
 
+    float flowJuice = 1.0f; //how much spendable flow the player has
+    public bool inFlow = false;
+    float flowTimer = 0.0f; //keeps track of how long the player has been stalled for
+    float flowThreshold = 0.0f; //how slow the player needs to be going to lose flow
 
     enum PlayerState
     {
         idle,
         running,
         jumping,
-        wallSticking,
-        ledgeGrabbing
+        wallSticking
     }
-
     PlayerState state;
 
-    float acceleration;
-    float maxSpeed;
-    float jumpForce;
+    float acceleration; //player's current acceleration, swaps between acc_fast and acc_slow
+    float maxSpeed; //players current maximum speed, swaps between maxSpeed_fast and maxSpeed_slow
+    float jumpForce; //players current jump force, swaps between jump_fast and jump_slow
 
-    public Vector2 direction = Vector2.zero;
-    Bow bow;
+    public Vector2 direction = Vector2.zero; //the direction (usually left or right) that the player is facing
 
-    CollisionPacket collPacket_ground;
-    CollisionPacket collPacket_frontLegs;
-    CollisionPacket collPacket_backLegs;
-    CollisionPacket collPacket_frontTorso;
+    //Collision packets recieving information on collisions with player's immediate surroundings
+    CollisionPacket collPacket_ground; //reports on ground collisions
+    CollisionPacket collPacket_frontLegs; //reports on collisions in front of player
+    CollisionPacket collPacket_backLegs; //reports on collisions behind player
 
-    bool isFalling = false;
-    bool isOnWall = false;
+    float movementLimiter = 1.0f; //multiplier applied to player's horizontal input
+    Coroutine wallStick = null; //stores the wallStick coroutine to limit coroutine duplication
 
-    float movementLimiter = 1.0f;
-    bool wallStickIsRunning = false;
-
-
+    //Animators for each of the player's animatable child objects
+    //NOTE: this implementation of animations will likely become obsolete with a blend tree based system
     Animator anim_legs;
     Animator anim_arms;
     Animator anim_spine;
@@ -79,20 +73,26 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //get component references
         anim_legs = GameObject.Find("legs").GetComponent<Animator>();
         anim_arms = GameObject.Find("arms").GetComponent<Animator>();
         anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        bow = gameObject.GetComponentInChildren<Bow>();
+        framingTransposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
+
+        //run camera adjustment method
+        InvokeRepeating("AdjustCamera", 0.0f, 0.02f);
+
+        //set flow variables
         inFlow = false;
-        state = PlayerState.idle;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
         flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.5f;
+
+        //set misc. player info
+        state = PlayerState.idle;
         direction = new Vector2(1.0f, 1.0f);
-        framingTransposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
-        InvokeRepeating("AdjustCamera", 0.0f, 0.02f);
     }
 
     // Update is called once per frame
@@ -101,42 +101,10 @@ public class PlayerMovement : MonoBehaviour
         HandleFlow();
         JoystickMovement();
         UpdatePlayerDirection();
-
-
-        //if player is going downward, flag them as falling
-        isFalling = rb.velocity.y < 0 ? true : false;
         Jump();
-
         HandleWallStick();
-
         SetPlayerState();
-
-        if (state != PlayerState.wallSticking && state != PlayerState.ledgeGrabbing)
-        {
-            CancelWallStick();
-        }
-
-        ///TODO: this moves the player with the bridge, make it a seperate script preferably on bridge
-        //if (collPacket_ground.isColliding)
-        //{
-        //    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
-        //    if (collPacket_ground.collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
-        //    {
-        //        transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
-        //    }
-        //    else
-        //    {
-        //        transform.parent = null;
-        //    }
-        //}
-
         Animations();
-
-        if (Input.GetKey(KeyCode.Escape))
-            Application.Quit();
-
-        //flow testing mode
-        if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
     }
 
     void SetPlayerState()
@@ -154,11 +122,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (collPacket_frontLegs.isColliding && !collPacket_frontTorso.isColliding)
-            {
-                state = PlayerState.wallSticking;
-            }
-            else if (collPacket_backLegs.isColliding)
+            if (collPacket_frontLegs.isColliding || collPacket_backLegs.isColliding)
             {
                 state = PlayerState.wallSticking;
             }
@@ -167,7 +131,6 @@ public class PlayerMovement : MonoBehaviour
                 state = PlayerState.jumping;
             }
         }
-
     }
 
     void HandleFlow()
@@ -214,6 +177,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //flow testing mode
+        if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
         if (flowTestMode && !inFlow)
         {
             FlowChange();
@@ -313,24 +277,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    IEnumerator DisableHorizontalMovement()
-    {
-        //limitHorizontalMovement = false;
-        yield return new WaitForSeconds(0.75f);
-        //limitHorizontalMovement = true;
-
-    }
-
     void UpdatePlayerDirection()
     {
         float x;
 
-        if (collPacket_frontLegs.isColliding && collPacket_frontTorso.isColliding)
-        {
-            direction.x *= -1;
-        }
-        ///remove this else if to return to ledge gripping
-        else if (collPacket_frontLegs.isColliding || collPacket_frontTorso.isColliding)
+        if (collPacket_frontLegs.isColliding)
         {
             direction.x *= -1;
         }
@@ -343,15 +294,6 @@ public class PlayerMovement : MonoBehaviour
         {
             x = Input.GetAxis("LeftHorizontal");
             direction.x = x > 0 ? 1 : -1;
-        }
-
-        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding)
-        {
-            isOnWall = true;
-        }
-        else if (isOnWall)
-        {
-            isOnWall = false;
         }
 
         gameObject.transform.localScale = direction;
@@ -377,6 +319,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Animations()
     {
+        bool isOnWall = collPacket_backLegs.isColliding ? true : false;
+
         if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
         else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
         if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
@@ -398,36 +342,33 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleWallStick()
     {
-        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding) isOnWall = true;
-        if (state == PlayerState.ledgeGrabbing)
+        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding && wallStick == null)
         {
-            //rb.velocity = Vector2.zero;
-            //rb.gravityScale = 0.0f;
+            wallStick = StartCoroutine(WallStick());
         }
-        if (isOnWall && !wallStickIsRunning)
+
+        if (state != PlayerState.wallSticking && wallStick != null)
         {
-            StartCoroutine(WallStick());
+            CancelWallStick();
         }
     }
 
     IEnumerator WallStick()
     {
-        wallStickIsRunning = true;
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
-            if (isFalling)
+            if (rb.velocity.y < 0)
             {
                 rb.gravityScale = 0.25f;
                 acceleration = 0;
                 movementLimiter = 0.0f;
                 yield return new WaitForSeconds(stickTime);
-                if (inFlow) acceleration = acceleration_fast;
-                else acceleration = acceleration_slow;
+                acceleration = inFlow ? acceleration_fast : acceleration_slow;
                 movementLimiter = 1.0f;
             }
             yield return null;
         }
-        wallStickIsRunning = false;
+        wallStick = null;
         yield return null;
     }
 
@@ -436,7 +377,7 @@ public class PlayerMovement : MonoBehaviour
         StopCoroutine(WallStick());
         rb.gravityScale = 1.0f;
         movementLimiter = 1.0f;
-        wallStickIsRunning = false;
+        wallStick = null;
     }
 
 
@@ -451,12 +392,6 @@ public class PlayerMovement : MonoBehaviour
     {
         collPacket_backLegs = packet;
     }
-
-    void GetCollisionReportFrontTorso(CollisionPacket packet)
-    {
-        collPacket_frontTorso = packet;
-    }
-
 
     void GetCollisionReportGround(CollisionPacket packet)
     {
@@ -546,3 +481,21 @@ public class PlayerMovement : MonoBehaviour
 
     }
 }
+
+
+
+
+
+///TODO: this moves the player with the bridge, make it a seperate script preferably on bridge
+//if (collPacket_ground.isColliding)
+//{
+//    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
+//    if (collPacket_ground.collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
+//    {
+//        transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
+//    }
+//    else
+//    {
+//        transform.parent = null;
+//    }
+//}
