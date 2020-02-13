@@ -100,21 +100,26 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleFlow();
         JoystickMovement();
-        UpdatePlayerDirection();
         Jump();
         HandleWallStick();
         SetPlayerState();
-        Animations();
+        UpdateAnimation();
     }
 
+    /// <summary>
+    /// Sets the PlayerState enum based on player's currect situation
+    /// </summary>
     void SetPlayerState()
     {
+        // if player is on ground
         if (collPacket_ground.isColliding)
         {
+            //if player is moving, state = running
             if (rb.velocity.sqrMagnitude > 0)
             {
                 state = PlayerState.running;
             }
+            //if player is not running, state = idle
             else
             {
                 state = PlayerState.idle;
@@ -122,7 +127,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (collPacket_frontLegs.isColliding || collPacket_backLegs.isColliding)
+            //if player has a wall immediately behind them, state = wall sticking
+            if (collPacket_backLegs.isColliding)
             {
                 state = PlayerState.wallSticking;
             }
@@ -133,6 +139,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles logic surrounding flow state, including switching states and managing states
+    /// </summary>
     void HandleFlow()
     {
         //if flow button is pressed and player is not in flow and player has a full flow bar
@@ -140,21 +149,23 @@ public class PlayerMovement : MonoBehaviour
         {
             FlowChange();
         }
+        //if flow button is pressed and player is in flow
         else if (Input.GetButtonDown("Flow") && inFlow)
         {
             FlowChange();
         }
 
-        //if player is in flow and it not moving fast enough
+        //if player is in flow and it not moving fast enough, start countdown to losing flow
         if (inFlow && rb.velocity.sqrMagnitude < flowThreshold)
         {
-            StartCoroutine("TurtleTime");
+            StartCoroutine(FlowCountdown());
         }
 
         //if player is in flow and moving fast enough
         if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
         {
-            StopCoroutine("TurtleTime");
+            //reset flow countdown
+            StopCoroutine(FlowCountdown());
             flowTimer = flowForgivenessTime;
             flowJuice += Time.deltaTime * flowAppreciationRate;
             if (flowJuice > 1.0f) flowJuice = 1.0f;
@@ -162,12 +173,13 @@ public class PlayerMovement : MonoBehaviour
         //if flow forgiveness timer is up
         else if (flowTimer == 0 && flowJuice > 0.0f && inFlow)
         {
+            //depreciate flow
             flowJuice -= Time.deltaTime * flowDepreciationRate;
             if (flowJuice < 0.0f) flowJuice = 0.0f;
         }
 
 
-
+        //if player is in flow and is out of flow resource, end flow
         if (inFlow && flowJuice == 0)
         {
             FlowChange();
@@ -184,7 +196,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    IEnumerator TurtleTime()
+    /// <summary>
+    /// Gives a delay of flowForgivenessTime seconds
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator FlowCountdown()
     {
         while (flowTimer > 0)
         {
@@ -203,26 +219,27 @@ public class PlayerMovement : MonoBehaviour
     {
         inFlow = !inFlow;
 
-        if (inFlow)
-        {
-            StartCoroutine(Flerp(true));
-        }
-        else
-        {
-            StartCoroutine(Flerp(false));
-        }
+        if (inFlow) StartCoroutine(Flerp(true));
+        else StartCoroutine(Flerp(false));
     }
 
+    /// <summary>
+    /// Creates a linear interpolation between player's reality and flow state
+    /// </summary>
+    /// <param name="lerpUp"></param>
+    /// <returns></returns>
     IEnumerator Flerp(bool lerpUp)
     {
         float lerpVal;
+
+        //start at either flow (1.0f) or reality (0.0f) based on given bool value
         if (lerpUp) lerpVal = 0.0f;
         else lerpVal = 1.0f;
 
-        CinemachineVirtualCamera vc = Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CinemachineVirtualCamera>();
-
+        //if lerping up, while value is below 1     if lerping down, while value is above 0
         while ((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
         {
+            //add to or subtract from value
             if (lerpUp)
             {
                 lerpVal += Time.deltaTime;
@@ -234,81 +251,79 @@ public class PlayerMovement : MonoBehaviour
                 if (lerpVal < 0.0f) lerpVal = 0.0f;
             }
 
+            //lerp acceleration, maximum speed, and jump
             acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
             maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
             jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
 
-            vc.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
+            //lerp camera's size
+            vcam.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
 
             yield return null;
         }
 
     }
 
+    /// <summary>
+    /// Translate's player's joystick input to player character's movement
+    /// </summary>
     void JoystickMovement()
     {
-        float hInput = Input.GetAxis("LeftHorizontal");
-        rb.AddForce(new Vector2(hInput * acceleration * movementLimiter, 0.0f));
-
-        if (Input.GetAxis("LeftHorizontal") < 0.05f && Input.GetAxis("LeftHorizontal") > -0.05f)
+        //add a force to the player based on horizontal movement of the left joystick, the player's currect acceleration, and the movement limiter factor
+        float inputLeft = Input.GetAxis("LeftHorizontal");
+        float inputRight = Input.GetAxis("RightHorizontal");
+        rb.AddForce(new Vector2(inputLeft * acceleration * movementLimiter, 0.0f));
+        if(!collPacket_backLegs.isColliding && ((direction.x > 0 && inputLeft < 0) || (direction.x < 0 && inputLeft > 0)))
         {
-            if (state == PlayerState.running || inFlow)
-            {
-                //apply friction to the left
-                if (acceleration != 0)
-                {
-                    Vector2 velocity = rb.velocity;
-                    velocity.x *= 1 / acceleration;
-                    rb.velocity = velocity;
-                }
+            direction.x *= -1;
+        }
 
-                //if (rb.velocity.x < 0)
-                //{
-                //    rb.velocity = new Vector2(0, rb.velocity.y);
-                //}
+        //if player is giving little to no input to the horizontal component of the left joystick
+        if (Mathf.Abs(inputLeft) < 0.05f && collPacket_ground.isColliding)
+        {
+            //apply friction
+            if (acceleration != 0)
+            {
+                Vector2 velocity = rb.velocity;
+                velocity.x *= 1 / acceleration;
+                rb.velocity = velocity;
             }
         }
-        //else
+
+        //cap velocity between max speed and negative max speed
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
-        if (rb.velocity.x > 0 && transform.localScale.x != 1)
-            gameObject.transform.localScale = new Vector3(1, 1, 1);
-        else if (rb.velocity.x < 0 && transform.localScale.x != -1)
-            gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
-    }
 
-    void UpdatePlayerDirection()
-    {
-        float x;
-
+        //if the player just ran into a wall, turn around
         if (collPacket_frontLegs.isColliding)
         {
             direction.x *= -1;
         }
-        else if (Mathf.Abs(Input.GetAxis("RightHorizontal")) > 0 && !collPacket_backLegs.isColliding)
+        //if player is aim left or right and is not on a wall, set direction.x to x component of player's aim
+        else if (Mathf.Abs(inputRight) > 0 && !collPacket_backLegs.isColliding)
         {
-            x = Input.GetAxis("RightHorizontal");
-            direction.x = x > 0 ? 1 : -1;
-        }
-        else if (Mathf.Abs(Input.GetAxis("LeftHorizontal")) > 0 && !collPacket_backLegs.isColliding)
-        {
-            x = Input.GetAxis("LeftHorizontal");
-            direction.x = x > 0 ? 1 : -1;
+            direction.x = inputRight > 0 ? 1 : -1;
         }
 
-        gameObject.transform.localScale = direction;
+        //update player's scale to reflect their direction
+        transform.localScale = direction;
     }
 
+    /// <summary>
+    /// Translates player's jump input to player character jumping
+    /// </summary>
     void Jump()
     {
         if (Input.GetButtonDown("Jump"))
         {
             if (state == PlayerState.idle || state == PlayerState.running)
             {
+                //apply upward force to player
                 rb.AddForce(new Vector2(0.0f, jumpForce));
             }
             else if (state == PlayerState.wallSticking)
             {
+                //negate player's current momentum, apply force upwards and away from the wall
                 rb.velocity = Vector2.zero;
                 rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
                 CancelWallStick();
@@ -317,22 +332,32 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    void Animations()
+    /// <summary>
+    /// Reports player information to animator state machine
+    /// </summary>
+    void UpdateAnimation()
     {
         bool isOnWall = collPacket_backLegs.isColliding ? true : false;
 
+        //set onGround bool of legs
         if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
         else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+
+        //set onGround bool of arms
         if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
         else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
 
+        //set animators' speeds
         float speed = Mathf.Abs(rb.velocity.x);
         anim_legs.SetFloat("speed", speed);
         anim_arms.SetFloat("speed", speed);
         anim_spine.SetFloat("speed", speed);
 
+        //set onWall bool of legs
         if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
         else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
+
+        //set onWall bool of arms
         if (isOnWall && !anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", true);
         else if (!isOnWall && anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", false);
     }
@@ -342,24 +367,35 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleWallStick()
     {
+        //if player is directly in front of wall and is off the ground, run wall stick
         if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding && wallStick == null)
         {
             wallStick = StartCoroutine(WallStick());
         }
 
+        //if player leaves wall, cancel wall stick
         if (state != PlayerState.wallSticking && wallStick != null)
         {
             CancelWallStick();
         }
     }
 
+
+    /// <summary>
+    /// Applies wall stick logic to player
+    /// </summary>
+    /// <returns></returns>
     IEnumerator WallStick()
     {
+        //while player is off ground and on wall
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
+            //if player is falling
             if (rb.velocity.y < 0)
             {
                 rb.gravityScale = 0.25f;
+
+                //disable horizontal movement for stickTime seconds (gives player a chance to turn around without leaving the wall
                 acceleration = 0;
                 movementLimiter = 0.0f;
                 yield return new WaitForSeconds(stickTime);
@@ -368,12 +404,18 @@ public class PlayerMovement : MonoBehaviour
             }
             yield return null;
         }
+
+        //dereference wall stick to prep if for future use
         wallStick = null;
         yield return null;
     }
 
+    /// <summary>
+    /// Disables all logic dealing with wall stick
+    /// </summary>
     void CancelWallStick()
     {
+        Debug.Log("wall jump");
         StopCoroutine(WallStick());
         rb.gravityScale = 1.0f;
         movementLimiter = 1.0f;
@@ -382,21 +424,31 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
+    /// <summary>
+    /// recieves collision packet from front of player
+    /// </summary>
+    /// <param name="packet"></param>
     void GetCollisionReportFrontLegs(CollisionPacket packet)
     {
         collPacket_frontLegs = packet;
     }
 
+    /// <summary>
+    /// recieves a collision packet from behind player
+    /// </summary>
+    /// <param name="packet"></param>
     void GetCollisionReportBackLegs(CollisionPacket packet)
     {
         collPacket_backLegs = packet;
     }
 
+    /// <summary>
+    /// recieves a collision packet from below player
+    /// </summary>
+    /// <param name="packet"></param>
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
-        if (packet.isColliding) Debug.Log("whadup, ground?");
     }
 
 
@@ -407,10 +459,11 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="knockback">the force to be applied to the player</param>
     /// <param name="groundRequired">does the player need to be on the ground?</param>
-    public void AddKnockback(Vector2 knockback, bool groundRequired)
+    public void AddKnockback(Vector2 knockback, bool airOnly)
     {
         rb.velocity = Vector2.zero;
-        if (groundRequired)
+        //if knockback is marked as disabled on ground, only apply force if player is in the air
+        if (airOnly)
         {
             if (!collPacket_ground.isColliding)
             {
@@ -421,7 +474,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(knockback);
         }
-
     }
 
     /// <summary>
@@ -431,71 +483,74 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="y">force in the y direction</param>
     private void AddForce(float x, float y) { rb.AddForce(new Vector2(x, y)); }
 
+
+
+
+
+    [Header("Camera Movement Values - X")]
+    [SerializeField] [Range(0.0f, 1.0f)] float velocityThreshold = 0.3f;
+    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthGround = 0.2f;
+    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthAir = 0.4f;
+    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthGroundFlow = 0.4f;
+    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthAirFlow = 0.5f;
+    [SerializeField] [Range(0.0f, 0.1f)] float biasMultiplierX = 0.02f;
+    [SerializeField] [Range(0.0f, 1.0f)] float biasX = 0.3f;
+    [SerializeField] [Range(0.0f, 1.0f)] float biasFlowX = 0.15f;
+    [SerializeField] [Range(0.0f, 0.1f)] float screenXMultiplier = 0.05f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenXLow = 0.45f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenXHigh = 0.55f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenXFlow = 0.5f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenXDefault = 0.5f;
+
+    [Header("Camera Movement Values - Y")]
+    [SerializeField] [Range(-.5f, 0.0f)] float biasYLow = -.49f;
+    [SerializeField] [Range(0.0f, 0.5f)] float biasYHigh = .49f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenYMultiplier = 0.1f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenYLow = 0.3f;
+    [SerializeField] [Range(0.0f, 1.0f)] float screenYHigh = 0.6f;
+    /// <summary>
+    /// Adjusts camera's position, bias, and dead zone to dynamically follow the player. I'd much rather this be handled as a component on camera but super dependant on the player's values
+    /// </summary>
     void AdjustCamera()
     {
         //update virtual camera's y bias and screen position to lead the player downwards
-        framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, -.49f, .49f);
-        framingTransposer.m_ScreenY = Mathf.Lerp(0.6f, 0.3f, -(rb.velocity.y * 0.1f));
+        framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, -biasYLow, biasYHigh);
+        framingTransposer.m_ScreenY = Mathf.Lerp(screenYHigh, screenYLow, -(rb.velocity.y * screenYMultiplier));
 
-        //framingTransposer.m_ScreenX = Mathf.Clamp(rb.velocity.x * 0.01f, -.381f, .381f);
-
-        if (Mathf.Abs(rb.velocity.x) > 0.3f)
+        //is player is moving faster than this completely arbirary number
+        if (Mathf.Abs(rb.velocity.x) > velocityThreshold)
         {
             if (inFlow)
             {
-                framingTransposer.m_BiasX = 0.15f;
-                framingTransposer.m_ScreenX = 0.5f;
+                framingTransposer.m_BiasX = biasFlowX;
+                framingTransposer.m_ScreenX = screenXFlow;
                 if (!collPacket_ground.isColliding)
                 {
-                    framingTransposer.m_DeadZoneWidth = 0.5f;
+                    framingTransposer.m_DeadZoneWidth = deadZoneWidthAirFlow;
                 }
                 else
                 {
-                    framingTransposer.m_DeadZoneWidth = 0.4f;
+                    framingTransposer.m_DeadZoneWidth = deadZoneWidthGroundFlow;
                 }
             }
             else
             {
-                framingTransposer.m_BiasX = Mathf.Clamp(rb.velocity.x * 0.02f, 0.0f, .3f);
-                framingTransposer.m_ScreenX = Mathf.Lerp(0.55f, 0.45f, (rb.velocity.x * 0.05f) + .5f);
+                framingTransposer.m_BiasX = Mathf.Clamp(rb.velocity.x * biasMultiplierX, 0.0f, biasX);
+                framingTransposer.m_ScreenX = Mathf.Lerp(screenXHigh, screenXLow, (rb.velocity.x * screenXMultiplier) + .5f);
                 if (!collPacket_ground.isColliding)
                 {
-                    framingTransposer.m_DeadZoneWidth = 0.4f;
+                    framingTransposer.m_DeadZoneWidth = deadZoneWidthAir;
                 }
                 else
                 {
-                    framingTransposer.m_DeadZoneWidth = 0.2f;
+                    framingTransposer.m_DeadZoneWidth = deadZoneWidthGround;
                 }
             }
         }
         else
         {
-            framingTransposer.m_ScreenX = 0.5f;
+            framingTransposer.m_ScreenX = screenXDefault;
         }
-        //framingTransposer.m_DeadZoneWidth = 0.1f/Mathf.Clamp(Mathf.Abs(rb.velocity.x), 0.2f, 0.6f);
-
-    }
-
-    void AdjustCameraY()
-    {
 
     }
 }
-
-
-
-
-
-///TODO: this moves the player with the bridge, make it a seperate script preferably on bridge
-//if (collPacket_ground.isColliding)
-//{
-//    Bridge b = raycastHits[0].collider.gameObject.GetComponent<Bridge>();
-//    if (collPacket_ground.collider.gameObject.layer == 12 && b != null && b.direction != 0.0f)
-//    {
-//        transform.Translate(new Vector2(b.openingSpeed * b.direction * Time.deltaTime, 0.0f));
-//    }
-//    else
-//    {
-//        transform.parent = null;
-//    }
-//}

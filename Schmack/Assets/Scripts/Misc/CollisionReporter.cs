@@ -25,8 +25,6 @@ public class CollisionReporter : MonoBehaviour
         //assemble a collision packet and send it to the player
         CollisionPacket collisionPacket = new CollisionPacket(true, collision);
         parent.SendMessage("GetCollisionReport" + colliderID, collisionPacket);
-
-        Debug.Log(gameObject + " is colliding");
     }
 
     private void OnTriggerExit2D(Collider2D collision)
