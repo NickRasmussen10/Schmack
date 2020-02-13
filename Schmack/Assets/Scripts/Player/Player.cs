@@ -97,9 +97,9 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enemy")
         {
-            Vector2 knockback = (gameObject.transform.position - collision.gameObject.transform.position).normalized * collision.gameObject.GetComponent<Enemy>().GetKnockback();
-            gameObject.GetComponent<PlayerMovement>().AddKnockback(knockback, false);
-            TakeDamage(25);
+            //Vector2 knockback = (gameObject.transform.position - collision.gameObject.transform.position).normalized * collision.gameObject.GetComponent<Enemy>().GetKnockback();
+            //gameObject.GetComponent<PlayerMovement>().AddKnockback(knockback, false);
+            //TakeDamage(25);
         }
     }
 

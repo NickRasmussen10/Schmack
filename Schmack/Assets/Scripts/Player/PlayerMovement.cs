@@ -297,6 +297,7 @@ public class PlayerMovement : MonoBehaviour
         //if the player just ran into a wall, turn around
         if (collPacket_frontLegs.isColliding)
         {
+            Debug.Log("is it this?");
             direction.x *= -1;
         }
         //if player is aim left or right and is not on a wall, set direction.x to x component of player's aim
@@ -304,7 +305,6 @@ public class PlayerMovement : MonoBehaviour
         {
             direction.x = inputRight > 0 ? 1 : -1;
         }
-
         //update player's scale to reflect their direction
         transform.localScale = direction;
     }
@@ -430,7 +430,8 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="packet"></param>
     void GetCollisionReportFrontLegs(CollisionPacket packet)
     {
-        collPacket_frontLegs = packet;
+        if(!packet.collider.isTrigger)
+            collPacket_frontLegs = packet;
     }
 
     /// <summary>

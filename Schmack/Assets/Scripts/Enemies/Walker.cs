@@ -13,11 +13,15 @@ public class Walker : Enemy
     [SerializeField] Transform rotator = null; //"head" that rotates to look at player / facing direction
     [SerializeField] GameObject pref_GlueShot = null;
 
-    CollisionPacket collPacket_ground;
-    CollisionPacket collPacket_wall;
+    
     [Header("Child Colliders, nuffin' ta see here")]
     [SerializeField] GameObject groundCollider;
     [SerializeField] GameObject wallCollider;
+    [SerializeField] GameObject topCollider;
+
+    CollisionPacket collPacket_ground;
+    CollisionPacket collPacket_wall;
+    CollisionPacket collPacket_top;
 
     bool isAtEnd = false;
     bool turning = false;
@@ -208,7 +212,6 @@ public class Walker : Enemy
         //lerp back to patrolling state
         while (lerpVal < 1.0f)
         {
-            Debug.Log(lerpVal);
             lerpVal += Time.deltaTime * 2.5f;
             if (lerpVal > 1.0f) lerpVal = 1.0f;
 
@@ -280,5 +283,20 @@ public class Walker : Enemy
     void GetCollisionReportWall(CollisionPacket packet)
     {
         collPacket_wall = packet;
+    }
+
+
+    /// <summary>
+    /// receives a collision packet from the top of the enemy
+    /// </summary>
+    /// <param name="packet"></param>
+    void GetCollisionReportTop(CollisionPacket packet)
+    {
+        collPacket_top = packet;
+
+        if(packet.collider.gameObject.tag == "Player")
+        {
+            packet.collider.gameObject.transform.parent = packet.isColliding ? transform : null;
+        }
     }
 }
