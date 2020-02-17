@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class Projectile : MonoBehaviour
 {
     protected Rigidbody2D rb;
-    protected Collider2D collider;
 
     protected bool hasHit = false; //has this project hit a valid collider
 
@@ -17,10 +16,6 @@ public abstract class Projectile : MonoBehaviour
     protected void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-
-        //assign collider based on detected collider type
-        if (GetComponent<BoxCollider2D>()) collider = gameObject.GetComponent<BoxCollider2D>();
-        else if (GetComponent<CircleCollider2D>()) collider = GetComponent<CircleCollider2D>();
     }
 
     // Start is called before the first frame update

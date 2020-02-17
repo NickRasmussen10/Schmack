@@ -297,7 +297,6 @@ public class PlayerMovement : MonoBehaviour
         //if the player just ran into a wall, turn around
         if (collPacket_frontLegs.isColliding)
         {
-            Debug.Log("is it this?");
             direction.x *= -1;
         }
         //if player is aim left or right and is not on a wall, set direction.x to x component of player's aim
@@ -415,7 +414,6 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void CancelWallStick()
     {
-        Debug.Log("wall jump");
         StopCoroutine(WallStick());
         rb.gravityScale = 1.0f;
         movementLimiter = 1.0f;
@@ -514,44 +512,44 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void AdjustCamera()
     {
-        //update virtual camera's y bias and screen position to lead the player downwards
-        framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, -biasYLow, biasYHigh);
-        framingTransposer.m_ScreenY = Mathf.Lerp(screenYHigh, screenYLow, -(rb.velocity.y * screenYMultiplier));
+        ////update virtual camera's y bias and screen position to lead the player downwards
+        //framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, -biasYLow, biasYHigh);
+        //framingTransposer.m_ScreenY = Mathf.Lerp(screenYHigh, screenYLow, -(rb.velocity.y * screenYMultiplier));
 
-        //is player is moving faster than this completely arbirary number
-        if (Mathf.Abs(rb.velocity.x) > velocityThreshold)
-        {
-            if (inFlow)
-            {
-                framingTransposer.m_BiasX = biasFlowX;
-                framingTransposer.m_ScreenX = screenXFlow;
-                if (!collPacket_ground.isColliding)
-                {
-                    framingTransposer.m_DeadZoneWidth = deadZoneWidthAirFlow;
-                }
-                else
-                {
-                    framingTransposer.m_DeadZoneWidth = deadZoneWidthGroundFlow;
-                }
-            }
-            else
-            {
-                framingTransposer.m_BiasX = Mathf.Clamp(rb.velocity.x * biasMultiplierX, 0.0f, biasX);
-                framingTransposer.m_ScreenX = Mathf.Lerp(screenXHigh, screenXLow, (rb.velocity.x * screenXMultiplier) + .5f);
-                if (!collPacket_ground.isColliding)
-                {
-                    framingTransposer.m_DeadZoneWidth = deadZoneWidthAir;
-                }
-                else
-                {
-                    framingTransposer.m_DeadZoneWidth = deadZoneWidthGround;
-                }
-            }
-        }
-        else
-        {
-            framingTransposer.m_ScreenX = screenXDefault;
-        }
+        ////is player is moving faster than this completely arbirary number
+        //if (Mathf.Abs(rb.velocity.x) > velocityThreshold)
+        //{
+        //    if (inFlow)
+        //    {
+        //        framingTransposer.m_BiasX = biasFlowX;
+        //        framingTransposer.m_ScreenX = screenXFlow;
+        //        if (!collPacket_ground.isColliding)
+        //        {
+        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthAirFlow;
+        //        }
+        //        else
+        //        {
+        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthGroundFlow;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        framingTransposer.m_BiasX = Mathf.Clamp(rb.velocity.x * biasMultiplierX, 0.0f, biasX);
+        //        framingTransposer.m_ScreenX = Mathf.Lerp(screenXHigh, screenXLow, (rb.velocity.x * screenXMultiplier) + .5f);
+        //        if (!collPacket_ground.isColliding)
+        //        {
+        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthAir;
+        //        }
+        //        else
+        //        {
+        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthGround;
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    framingTransposer.m_ScreenX = screenXDefault;
+        //}
 
     }
 }

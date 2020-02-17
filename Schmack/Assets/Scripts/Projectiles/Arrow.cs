@@ -42,6 +42,7 @@ public class Arrow : Projectile
         {
             //parent arrow to enemy and apply damage to enemy
             transform.parent = collision.gameObject.transform;
+            Debug.Log(collision.gameObject);
             collision.gameObject.SendMessage("TakeDamage", 0.5f);
         }
         //if arrow hit an interactable
@@ -51,9 +52,8 @@ public class Arrow : Projectile
             transform.parent = collision.gameObject.transform;
         }
 
-        //destroy arrow's rigid body and collider
+        //destroy arrow's rigid body
         Destroy(rb);
-        Destroy(collider);
 
         //snap arrow to point of collision
         transform.position = collisionPoint;

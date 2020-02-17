@@ -6,12 +6,15 @@ using UnityEngine;
 public class CollisionReporter : MonoBehaviour
 {
     [SerializeField] string colliderID = ""; //unique identification, used by parent game object to tell the difference between multiple collision reporters
-    GameObject parent; //parent object 
+    [SerializeField] GameObject reciever = null;
 
     // Start is called before the first frame update
     void Start()
     {
-        parent = transform.parent.gameObject;
+        if (!reciever)
+        {
+            reciever = transform.parent.gameObject;
+        }
     }
 
     // Update is called once per frame
@@ -24,13 +27,13 @@ public class CollisionReporter : MonoBehaviour
     {
         //assemble a collision packet and send it to the player
         CollisionPacket collisionPacket = new CollisionPacket(true, collision);
-        parent.SendMessage("GetCollisionReport" + colliderID, collisionPacket);
+        reciever.SendMessage("GetCollisionReport" + colliderID, collisionPacket);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         //assemble a collision packet and send it to the player
         CollisionPacket collisionPacket = new CollisionPacket(false, collision);
-        parent.SendMessage("GetCollisionReport" + colliderID, collisionPacket);
+        reciever.SendMessage("GetCollisionReport" + colliderID, collisionPacket);
     }
 }
