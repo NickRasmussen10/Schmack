@@ -1611,7 +1611,7 @@ PrefabInstance:
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.614043
+      value: -13.627377
       objectReference: {fileID: 0}
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
@@ -4879,7 +4879,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871742037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.614043, y: -1.4414496, z: -10}
+  m_LocalPosition: {x: -13.627377, y: -1.4414496, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 892102405}
@@ -32757,6 +32757,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 302801166, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 4e9ab944fbf24894e996546a6efc3cec,
+        type: 3}
+    - target: {fileID: 302801166, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2181198692823557942, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
       propertyPath: bowText
