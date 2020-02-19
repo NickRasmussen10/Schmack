@@ -78,6 +78,14 @@ public class PatrolBot : MonoBehaviour
         //}
     }
 
+    private void LateUpdate()
+    {
+        if (seesPlayer)
+        {
+            TrackPlayer();
+        }
+    }
+
     void TakeDamage(float damage) { health -= damage; }
 
 
@@ -214,8 +222,8 @@ public class PatrolBot : MonoBehaviour
 
     void TrackPlayer()
     {
-        //Debug.Log("tracking player");
-        //head.right = (player.position - head.position).normalized;
+        Debug.Log("tracking player");
+        head.right = (player.position - head.position).normalized;
     }
 
 
