@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class Bow : MonoBehaviour
 {
@@ -86,6 +87,14 @@ public class Bow : MonoBehaviour
         else if (anim.GetBool("aim")) anim.SetBool("aim", false);
 
         powerInput = controls.Player.Draw.ReadValue<float>();
+        if(powerInput>0)
+        {
+            Gamepad.current.SetMotorSpeeds(.05f, .15f);
+        }
+        else
+        {
+            Gamepad.current.SetMotorSpeeds(0.0f,0.0f);
+        }
 
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
