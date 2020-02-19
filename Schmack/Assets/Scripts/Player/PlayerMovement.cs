@@ -294,7 +294,7 @@ public class PlayerMovement : MonoBehaviour
         float inputLeft = controls.Player.Move.ReadValue<float>();
         float inputRight = controls.Player.Aim.ReadValue<Vector2>().x;
         rb.AddForce(new Vector2(inputLeft * acceleration * movementLimiter, 0.0f));
-        if(!collPacket_backLegs.isColliding && ((direction.x > 0 && inputLeft < 0) || (direction.x < 0 && inputLeft > 0)))
+        if (!collPacket_backLegs.isColliding && ((direction.x > 0 && inputLeft < 0) || (direction.x < 0 && inputLeft > 0)))
         {
             direction.x *= -1;
         }
@@ -310,7 +310,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = velocity;
             }
         }
-        
+
         //cap velocity between max speed and negative max speed
         rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -maxSpeed, maxSpeed), rb.velocity.y);
 
@@ -343,18 +343,19 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("jump");
         //if (Input.GetButtonDown("Jump"))
         //{
-            if (state == PlayerState.idle || state == PlayerState.running)
-            {
-                //apply upward force to player
-                rb.AddForce(new Vector2(0.0f, jumpForce));
-            }
-            else if (state == PlayerState.wallSticking)
-            {
-                //negate player's current momentum, apply force upwards and away from the wall
-                rb.velocity = Vector2.zero;
-                rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
-                CancelWallStick();
-            }
+        if (state == PlayerState.idle || state == PlayerState.running)
+        {
+            //apply upward force to player
+            rb.AddForce(new Vector2(0.0f, jumpForce));
+        }
+        else if (state == PlayerState.wallSticking)
+        {
+            //negate player's current momentum, apply force upwards and away from the wall
+            rb.velocity = Vector2.zero;
+            rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
+            StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f));
+            CancelWallStick();
+        }
         //}
     }
 
@@ -414,6 +415,7 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     IEnumerator WallStick()
     {
+        StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f, 0.05f));
         //while player is off ground and on wall
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
@@ -456,7 +458,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="packet"></param>
     void GetCollisionReportFrontLegs(CollisionPacket packet)
     {
-        if(!packet.collider.isTrigger)
+        if (!packet.collider.isTrigger)
             collPacket_frontLegs = packet;
     }
 
@@ -467,6 +469,12 @@ public class PlayerMovement : MonoBehaviour
     void GetCollisionReportBackLegs(CollisionPacket packet)
     {
         collPacket_backLegs = packet;
+
+        if (!packet.isColliding)
+        {
+            rb.gravityScale = 1.0f;
+            Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
+        }
     }
 
     /// <summary>
@@ -476,6 +484,24 @@ public class PlayerMovement : MonoBehaviour
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
+        if (packet.isColliding)
+        {
+            StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f));
+        }
+    }
+
+    IEnumerator BurstRumble(float intensity_low, float intensity_high, float time)
+    {
+        Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
+        yield return new WaitForSeconds(time);
+        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
+    }
+
+    IEnumerator BurstRumble(float intensity_low, float intensity_high, float time, float intensity_continuous)
+    {
+        Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
+        yield return new WaitForSeconds(time);
+        Gamepad.current.SetMotorSpeeds(intensity_continuous, intensity_continuous);
     }
 
 

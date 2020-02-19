@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class QuitGame : MonoBehaviour
 {
@@ -7,5 +8,10 @@ public class QuitGame : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Escape))
             Application.Quit();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
     }
 }

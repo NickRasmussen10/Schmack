@@ -87,14 +87,9 @@ public class Bow : MonoBehaviour
         else if (anim.GetBool("aim")) anim.SetBool("aim", false);
 
         powerInput = controls.Player.Draw.ReadValue<float>();
-        if(powerInput>0)
-        {
-            Gamepad.current.SetMotorSpeeds(.05f, .15f);
-        }
-        else
-        {
-            Gamepad.current.SetMotorSpeeds(0.0f,0.0f);
-        }
+
+        if (powerInput > 0) Gamepad.current.SetMotorSpeeds(.05f, .15f);
+        //else Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
 
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
@@ -160,6 +155,7 @@ public class Bow : MonoBehaviour
 
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
 
         isDrawnBack = false;
 
@@ -193,7 +189,7 @@ public class Bow : MonoBehaviour
 
         while (lerpVal > 0)
         {
-            lerpVal -= Time.deltaTime * 20f;
+            lerpVal -= Time.deltaTime * 10f;
             if (lerpVal < 0) lerpVal = 0;
             Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
