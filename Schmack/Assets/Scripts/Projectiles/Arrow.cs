@@ -41,8 +41,8 @@ public class Arrow : Projectile
         if (collision.gameObject.tag == "Enemy")
         {
             //parent arrow to enemy and apply damage to enemy
-            transform.parent = collision.gameObject.transform;
-            Debug.Log(collision.gameObject);
+            transform.parent = collision.gameObject.GetComponentsInChildren<Transform>()[1]; //have to parent arrow to root object so it moves with animations, DISGUSTIN'
+            Debug.Log(transform.parent);
             collision.gameObject.SendMessage("TakeDamage", 0.5f);
         }
         //if arrow hit an interactable

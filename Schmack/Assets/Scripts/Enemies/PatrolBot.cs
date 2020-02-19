@@ -190,7 +190,11 @@ public class PatrolBot : MonoBehaviour
 
     bool GetSeesPlayer()
     {
-        Vector3 vecToPlayer = player.position - light.transform.position;
+        Vector3 vecToPlayer;
+        if (light)
+            vecToPlayer = player.position - light.transform.position;
+        else
+            vecToPlayer = Vector3.zero;
 
         if (vecToPlayer.sqrMagnitude < light.pointLightOuterRadius * light.pointLightOuterRadius)
         {

@@ -35,10 +35,13 @@ public abstract class Projectile : MonoBehaviour
         //if raycast detected hit and projectile has not yet hit something
         if(raycastHit.collider != null && !hasHit)
         {
-            //mark projectile as hit
-            hasHit = true;
+            if (!raycastHit.collider.gameObject.GetComponent<CollisionReporter>())
+            {
+                //mark projectile as hit
+                hasHit = true;
 
-            TriggerHit(raycastHit.collider, raycastHit.point);
+                TriggerHit(raycastHit.collider, raycastHit.point);
+            }
         }
     }
 
