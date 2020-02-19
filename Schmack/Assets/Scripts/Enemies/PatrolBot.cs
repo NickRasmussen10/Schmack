@@ -14,6 +14,7 @@ public class PatrolBot : MonoBehaviour
 
     Vector2 direction = Vector2.left;
     float movementLimitor = 1.0f;
+    bool seesPlayer = false;
 
     enum State
     {
@@ -42,18 +43,22 @@ public class PatrolBot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        seesPlayer = GetSeesPlayer();
+        if (seesPlayer && !anim.GetBool("seesPlayer")) InvokeRepeating("TrackPlayer", 0.0f, 0.02f);
+        else if (!seesPlayer && anim.GetBool("seesPlayer")) CancelInvoke("TrackPlayer");
+
         switch (state)
         {
             case State.patrol:
                 Move();
-                if (GetSeesPlayer())
+                if (seesPlayer)
                 {
                     state = State.attack;
                     StartCoroutine(HandleAttack());
                 }
                 break;
             case State.attack:
-                if (!GetSeesPlayer())
+                if (!seesPlayer)
                 {
                     state = State.patrol;
                 }
@@ -119,58 +124,57 @@ public class PatrolBot : MonoBehaviour
 
     IEnumerator HandleAttack()
     {
-        float lerpVal = 0.0f;
-        float originAngle = light.pointLightOuterAngle;
-        Vector3 vecToPlayer = player.position - transform.position;
+        //float lerpVal = 0.0f;
+        //float originAngle = light.pointLightOuterAngle;
+        //Vector3 vecToPlayer = player.position - transform.position;
 
-        while (state == State.attack)
-        {
-            if (lerpVal < 1.0f)
-            {
-                lerpVal += Time.deltaTime;
-                if (lerpVal > 1.0f) lerpVal = 1.0f;
+        //while (state == State.attack)
+        //{
+        //    if (lerpVal < 1.0f)
+        //    {
+        //        lerpVal += Time.deltaTime;
+        //        if (lerpVal > 1.0f) lerpVal = 1.0f;
 
-                light.pointLightOuterAngle = Mathf.Lerp(originAngle, 25, lerpVal);
-            }
-            else
-            {
-                //Instantiate(pref_Projectile, light.transform.position, Quaternion.identity);
-                //yield return new WaitForSeconds(1.0f);
-            }
-            TrackPlayer();
-            vecToPlayer = player.position - transform.position;
-            if (vecToPlayer.x >= 0 && direction.x != 1) FlipDirection();
-            else if (vecToPlayer.x < 0 && direction.x != -1) FlipDirection();
-            if (Vector3.Distance(player.position, transform.position) > attackRange)
-            {
-                transform.Translate(new Vector3(vecToPlayer.x > 0 ? 1 : -1, 0.0f, 0.0f) * speed * Time.deltaTime * movementLimitor);
-            }
+        //        light.pointLightOuterAngle = Mathf.Lerp(originAngle, 25, lerpVal);
+        //    }
+        //    else
+        //    {
+        //        //Instantiate(pref_Projectile, light.transform.position, Quaternion.identity);
+        //        //yield return new WaitForSeconds(1.0f);
+        //    }
+        //    TrackPlayer();
+        //    vecToPlayer = player.position - transform.position;
+        //    if (vecToPlayer.x >= 0 && direction.x != 1) FlipDirection();
+        //    else if (vecToPlayer.x < 0 && direction.x != -1) FlipDirection();
+        //    if (Vector3.Distance(player.position, transform.position) > attackRange)
+        //    {
+        //        transform.Translate(new Vector3(vecToPlayer.x > 0 ? 1 : -1, 0.0f, 0.0f) * speed * Time.deltaTime * movementLimitor);
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
 
-        lerpVal = 0.0f;
-        float originZ = head.eulerAngles.z;
-        originAngle = light.pointLightOuterAngle;
+        //lerpVal = 0.0f;
+        //float originZ = head.eulerAngles.z;
+        //originAngle = light.pointLightOuterAngle;
 
-        while (lerpVal < 1.0f)
-        {
-            lerpVal += Time.deltaTime;
-            if (lerpVal > 1.0f) lerpVal = 1.0f;
+        //while (lerpVal < 1.0f)
+        //{
+        //    lerpVal += Time.deltaTime;
+        //    if (lerpVal > 1.0f) lerpVal = 1.0f;
 
-            light.pointLightOuterAngle = Mathf.Lerp(originAngle, 110, lerpVal);
-            head.eulerAngles = new Vector3(0.0f, 0.0f, Mathf.Lerp(originZ, direction.x == -1 ? 180.0f : 0.0f, lerpVal));
-            yield return null;
-        }
+        //    light.pointLightOuterAngle = Mathf.Lerp(originAngle, 110, lerpVal);
+        //    head.eulerAngles = new Vector3(0.0f, 0.0f, Mathf.Lerp(originZ, direction.x == -1 ? 180.0f : 0.0f, lerpVal));
+        //    yield return null;
+        //}
 
-        activeCoroutine = null;
+        //activeCoroutine = null;
         yield return null;
     }
 
 
     public void FlipDirection()
     {
-        Debug.Log("flipped direction");
         direction.x *= -1;
         //foreach (Transform transform in collisionReporters)
         //{
@@ -206,7 +210,8 @@ public class PatrolBot : MonoBehaviour
 
     void TrackPlayer()
     {
-        head.right = (player.position - head.position).normalized;
+        //Debug.Log("tracking player");
+        //head.right = (player.position - head.position).normalized;
     }
 
 
@@ -217,10 +222,13 @@ public class PatrolBot : MonoBehaviour
             anim.SetTrigger("turn");
         }
         anim.SetFloat("health", health);
-        //if ((!coll_ground.isColliding || (coll_wall.isColliding && coll_wall.collider.gameObject.layer == 9)) && !anim.GetBool("turn"))
-        //{
-        //    anim.SetBool("turn", true);
-        //}
+        anim.SetBool("seesPlayer", seesPlayer);
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        Debug.Log("animator IK pass");
+        head.right = (player.position - head.position).normalized;
     }
 
     void GetCollisionReportGround(CollisionPacket packet)

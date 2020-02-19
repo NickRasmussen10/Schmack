@@ -40,14 +40,21 @@ public class Bow : MonoBehaviour
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
     public float timeScale;
 
-    [Header("Firing Point")]
+    [Header("Gross Yucky References")]
     [SerializeField] GameObject GO_referencePoint = null;
+    [SerializeField] Controls controls = null;
 
     Animator anim;
+
+    private void Awake()
+    {
+    }
 
     // Start is called before the first frame update
     protected void Start()
     {
+        controls = transform.parent.gameObject.GetComponent<PlayerMovement>().controls;
+
         Activate();
         timeScale = timeScaleMax;
 
@@ -74,15 +81,11 @@ public class Bow : MonoBehaviour
 
     protected void HandleInput()
     {
-        if (Input.GetButtonDown("SwapFire")) fireOnRightTrigger = !fireOnRightTrigger;
-
-        direction.x = Input.GetAxis("RightHorizontal");
-        direction.y = Input.GetAxis("RightVertical");
+        direction = controls.Player.Aim.ReadValue<Vector2>();
         if (direction.sqrMagnitude > 0.1f) anim.SetBool("aim", true);
         else if (anim.GetBool("aim")) anim.SetBool("aim", false);
 
-        if (fireOnRightTrigger) powerInput = Input.GetAxis("Fire1");
-        else powerInput = Input.GetAxis("Fire2");
+        powerInput = controls.Player.Draw.ReadValue<float>();
 
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;

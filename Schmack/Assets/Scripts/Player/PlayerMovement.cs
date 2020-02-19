@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera vcam; //camera's active virtual camera
     CinemachineFramingTransposer framingTransposer; //active virtual camera's framing transposer
 
+    public Controls controls = null;
+
     float flowJuice = 1.0f; //how much spendable flow the player has
     public bool inFlow = false;
     float flowTimer = 0.0f; //keeps track of how long the player has been stalled for
@@ -70,6 +72,13 @@ public class PlayerMovement : MonoBehaviour
     Animator anim_arms;
     Animator anim_spine;
 
+    private void Awake()
+    {
+        controls = new Controls();
+        controls.Player.Jump.performed += jump => Jump();
+        controls.Player.Flow.performed += flow => TryFlow();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -98,12 +107,20 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleFlow();
+        if (inFlow) HandleFlow();
         JoystickMovement();
-        Jump();
         HandleWallStick();
         SetPlayerState();
         UpdateAnimation();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Disable();
     }
 
     /// <summary>
@@ -144,19 +161,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void HandleFlow()
     {
-        //if flow button is pressed and player is not in flow and player has a full flow bar
-        if (Input.GetButtonDown("Flow") && !inFlow && flowJuice == 1.0f)
-        {
-            FlowChange();
-        }
-        //if flow button is pressed and player is in flow
-        else if (Input.GetButtonDown("Flow") && inFlow)
-        {
-            FlowChange();
-        }
-
         //if player is in flow and it not moving fast enough, start countdown to losing flow
-        if (inFlow && rb.velocity.sqrMagnitude < flowThreshold)
+        if (rb.velocity.sqrMagnitude < flowThreshold)
         {
             StartCoroutine(FlowCountdown());
         }
@@ -180,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //if player is in flow and is out of flow resource, end flow
-        if (inFlow && flowJuice == 0)
+        if (flowJuice == 0)
         {
             FlowChange();
         }
@@ -189,8 +195,22 @@ public class PlayerMovement : MonoBehaviour
 
 
         //flow testing mode
-        if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
-        if (flowTestMode && !inFlow)
+        //if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
+        //if (flowTestMode && !inFlow)
+        //{
+        //    FlowChange();
+        //}
+    }
+
+    void TryFlow()
+    {
+        //if flow button is pressed and player is not in flow and player has a full flow bar
+        if (!inFlow && flowJuice == 1.0f)
+        {
+            FlowChange();
+        }
+        //if flow button is pressed and player is in flow
+        else if (inFlow)
         {
             FlowChange();
         }
@@ -270,8 +290,8 @@ public class PlayerMovement : MonoBehaviour
     void JoystickMovement()
     {
         //add a force to the player based on horizontal movement of the left joystick, the player's currect acceleration, and the movement limiter factor
-        float inputLeft = Input.GetAxis("LeftHorizontal");
-        float inputRight = Input.GetAxis("RightHorizontal");
+        float inputLeft = controls.Player.Move.ReadValue<float>();
+        float inputRight = controls.Player.Aim.ReadValue<Vector2>().x;
         rb.AddForce(new Vector2(inputLeft * acceleration * movementLimiter, 0.0f));
         if(!collPacket_backLegs.isColliding && ((direction.x > 0 && inputLeft < 0) || (direction.x < 0 && inputLeft > 0)))
         {
@@ -308,13 +328,20 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = direction;
     }
 
+    void Movement(float direction)
+    {
+        rb.AddForce(new Vector2(direction * acceleration * movementLimiter, 0.0f));
+    }
+
+
     /// <summary>
     /// Translates player's jump input to player character jumping
     /// </summary>
     void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
+        Debug.Log("jump");
+        //if (Input.GetButtonDown("Jump"))
+        //{
             if (state == PlayerState.idle || state == PlayerState.running)
             {
                 //apply upward force to player
@@ -327,7 +354,7 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
                 CancelWallStick();
             }
-        }
+        //}
     }
 
 
@@ -512,11 +539,11 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void AdjustCamera()
     {
-        ////update virtual camera's y bias and screen position to lead the player downwards
-        //framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, -biasYLow, biasYHigh);
-        //framingTransposer.m_ScreenY = Mathf.Lerp(screenYHigh, screenYLow, -(rb.velocity.y * screenYMultiplier));
+        //update virtual camera's y bias and screen position to lead the player downwards
+        framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, biasYLow, biasYHigh);
+        framingTransposer.m_ScreenY = Mathf.Lerp(screenYHigh, screenYLow, -(rb.velocity.y * screenYMultiplier));
 
-        ////is player is moving faster than this completely arbirary number
+        //is player is moving faster than this completely arbirary number
         //if (Mathf.Abs(rb.velocity.x) > velocityThreshold)
         //{
         //    if (inFlow)
