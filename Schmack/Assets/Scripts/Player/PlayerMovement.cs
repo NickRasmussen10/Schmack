@@ -341,8 +341,6 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         Debug.Log("jump");
-        //if (Input.GetButtonDown("Jump"))
-        //{
         if (state == PlayerState.idle || state == PlayerState.running)
         {
             //apply upward force to player
@@ -356,7 +354,6 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f));
             CancelWallStick();
         }
-        //}
     }
 
 
@@ -405,6 +402,9 @@ public class PlayerMovement : MonoBehaviour
         if (state != PlayerState.wallSticking && wallStick != null)
         {
             CancelWallStick();
+
+            //dereference wall stick to prep for future use
+            wallStick = null;
         }
     }
 
@@ -415,6 +415,7 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     IEnumerator WallStick()
     {
+        Debug.Log("whaddup, wall?");
         StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f, 0.05f));
         //while player is off ground and on wall
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
@@ -433,9 +434,6 @@ public class PlayerMovement : MonoBehaviour
             }
             yield return null;
         }
-
-        //dereference wall stick to prep if for future use
-        wallStick = null;
         yield return null;
     }
 
@@ -474,6 +472,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.gravityScale = 1.0f;
             Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
+            movementLimiter = 1.0f;
         }
     }
 
@@ -492,16 +491,16 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator BurstRumble(float intensity_low, float intensity_high, float time)
     {
-        Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
+        //Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
         yield return new WaitForSeconds(time);
-        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
+        //Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
     }
 
     IEnumerator BurstRumble(float intensity_low, float intensity_high, float time, float intensity_continuous)
     {
-        Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
+        //Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
         yield return new WaitForSeconds(time);
-        Gamepad.current.SetMotorSpeeds(intensity_continuous, intensity_continuous);
+        //Gamepad.current.SetMotorSpeeds(intensity_continuous, intensity_continuous);
     }
 
 

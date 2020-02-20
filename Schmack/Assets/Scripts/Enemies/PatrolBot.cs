@@ -6,6 +6,7 @@ public class PatrolBot : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float attackRange;
+    [SerializeField] float attackFrequency;
     [SerializeField] Transform head;
     [SerializeField] UnityEngine.Experimental.Rendering.LWRP.Light2D light;
     [SerializeField] GameObject pref_Projectile;
@@ -13,6 +14,7 @@ public class PatrolBot : MonoBehaviour
     Transform player;
 
     Vector2 direction = Vector2.left;
+    Vector3 forwardEuler = new Vector3(0.0f, 0.0f, 180.0f);
     float movementLimitor = 1.0f;
     bool seesPlayer = false;
 
@@ -68,14 +70,8 @@ public class PatrolBot : MonoBehaviour
             default:
                 break;
         }
-        UpdateAnimationValues();
 
-        //if ((head.eulerAngles.z > 90 && direction.x != -1) ||
-        //   (head.eulerAngles.z < 90 && direction.x != 1))
-        //{
-        //    Debug.Log("whoop! other way");
-        //    FlipDirection();
-        //}
+        UpdateAnimationValues();
     }
 
     private void LateUpdate()
@@ -83,6 +79,12 @@ public class PatrolBot : MonoBehaviour
         if (seesPlayer)
         {
             TrackPlayer();
+        }
+        else if (!anim.GetBool("turn") && !anim.GetBool("turn_backwards"))
+        {
+            Debug.Log("this one");
+            forwardEuler = direction.x == 1 ? Vector3.zero : new Vector3(0.0f, 0.0f, 180.0f);
+            head.transform.eulerAngles = forwardEuler;
         }
     }
 
@@ -177,12 +179,37 @@ public class PatrolBot : MonoBehaviour
         //}
 
         //activeCoroutine = null;
+
+        StartCoroutine(Fire());
+
+        while(state == State.attack)
+        {
+            if(Vector3.Distance(player.position, transform.position) > attackRange)
+            {
+                transform.Translate((player.position.x < transform.position.x ? Vector2.left : Vector2.right) * speed * Time.deltaTime * movementLimitor);
+            }
+            yield return null;
+        }
         yield return null;
+    }
+
+    IEnumerator Fire()
+    {
+        while (state == State.attack)
+        {
+            yield return new WaitForSeconds(attackFrequency);
+            if (state == State.attack) //double checked because he could have lost the player withing attackFrequency seconds. I know, it's gross. I hate it too, but I just want to move one to *anything* else
+            {
+                GlueShot shot = Instantiate(pref_Projectile, head.transform.position, Quaternion.identity).GetComponent<GlueShot>();
+                shot.Fire(head.transform.position, player.position);
+            }
+        }
     }
 
 
     public void FlipDirection()
     {
+        Debug.Log("flip");
         direction.x *= -1;
         //foreach (Transform transform in collisionReporters)
         //{
@@ -193,7 +220,17 @@ public class PatrolBot : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+
+
+        scale = head.transform.localScale;
+        scale.x *= -1;
+        head.transform.localScale = scale;
+        Vector3 euler = head.transform.eulerAngles;
+        euler.z += euler.z == 0 ? 180 : -180;
+        head.transform.eulerAngles = euler;
+
         anim.SetBool("turn", false);
+        anim.SetBool("turn_backwards", false);
     }
 
     bool GetSeesPlayer()
@@ -231,16 +268,10 @@ public class PatrolBot : MonoBehaviour
     {
         if ((!coll_ground.isColliding || (coll_wall.isColliding && coll_wall.collider.gameObject.layer == 9)) && /*!anim.GetCurrentAnimatorStateInfo(0).IsName("turn")*/ state == State.patrol)
         {
-            anim.SetTrigger("turn");
+            anim.SetBool(direction.x == -1 ? "turn" : "turn_backwards", true);
         }
         anim.SetFloat("health", health);
         anim.SetBool("seesPlayer", seesPlayer);
-    }
-
-    private void OnAnimatorIK(int layerIndex)
-    {
-        Debug.Log("animator IK pass");
-        head.right = (player.position - head.position).normalized;
     }
 
     void GetCollisionReportGround(CollisionPacket packet)
