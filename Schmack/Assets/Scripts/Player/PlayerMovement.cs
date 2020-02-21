@@ -65,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
     CollisionPacket collPacket_backLegs; //reports on collisions behind player
 
     float movementLimiter = 1.0f; //multiplier applied to player's horizontal input
-    Coroutine wallStick = null; //stores the wallStick coroutine to limit coroutine duplication
 
     //Animators for each of the player's animatable child objects
     //NOTE: this implementation of animations will likely become obsolete with a blend tree based system
@@ -351,7 +350,6 @@ public class PlayerMovement : MonoBehaviour
             //negate player's current momentum, apply force upwards and away from the wall
             rb.velocity = Vector2.zero;
             rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
-            StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f));
             CancelWallStick();
         }
     }
@@ -393,19 +391,19 @@ public class PlayerMovement : MonoBehaviour
     void HandleWallStick()
     {
         //if player is directly in front of wall and is off the ground, run wall stick
-        if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding && wallStick == null)
-        {
-            wallStick = StartCoroutine(WallStick());
-        }
+        //if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding && wallStick == null)
+        //{
+        //    wallStick = StartCoroutine(WallStick());
+        //}
 
         //if player leaves wall, cancel wall stick
-        if (state != PlayerState.wallSticking && wallStick != null)
-        {
-            CancelWallStick();
+        //if (state != PlayerState.wallSticking && wallStick != null)
+        //{
+        //    CancelWallStick();
 
-            //dereference wall stick to prep for future use
-            wallStick = null;
-        }
+        //    //dereference wall stick to prep for future use
+        //    wallStick = null;
+        //}
     }
 
 
@@ -415,8 +413,7 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     IEnumerator WallStick()
     {
-        Debug.Log("whaddup, wall?");
-        StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f, 0.05f));
+        StartCoroutine(Rumble.BurstRumbleContinuous(0.5f, 0.5f, 0.1f, 0.05f));
         //while player is off ground and on wall
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
@@ -443,9 +440,9 @@ public class PlayerMovement : MonoBehaviour
     void CancelWallStick()
     {
         StopCoroutine(WallStick());
+        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
         rb.gravityScale = 1.0f;
         movementLimiter = 1.0f;
-        wallStick = null;
     }
 
 
@@ -471,8 +468,12 @@ public class PlayerMovement : MonoBehaviour
         if (!packet.isColliding)
         {
             rb.gravityScale = 1.0f;
-            Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
             movementLimiter = 1.0f;
+            CancelWallStick();
+        }
+        else if (!collPacket_ground.isColliding)
+        {
+            StartCoroutine(WallStick());
         }
     }
 
@@ -485,26 +486,10 @@ public class PlayerMovement : MonoBehaviour
         collPacket_ground = packet;
         if (packet.isColliding)
         {
-            StartCoroutine(BurstRumble(0.5f, 0.5f, 0.1f));
+            CancelWallStick();
+            StartCoroutine(Rumble.BurstRumble(0.5f, 0.5f, 0.1f));
         }
     }
-
-    IEnumerator BurstRumble(float intensity_low, float intensity_high, float time)
-    {
-        //Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
-        yield return new WaitForSeconds(time);
-        //Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
-    }
-
-    IEnumerator BurstRumble(float intensity_low, float intensity_high, float time, float intensity_continuous)
-    {
-        //Gamepad.current.SetMotorSpeeds(intensity_low, intensity_high);
-        yield return new WaitForSeconds(time);
-        //Gamepad.current.SetMotorSpeeds(intensity_continuous, intensity_continuous);
-    }
-
-
-
 
     /// <summary>
     /// applies the given force to the player

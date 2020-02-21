@@ -75,6 +75,8 @@ public class Bow : MonoBehaviour
         {
             bigArrowSprite.size = new Vector2(0, 0.75f);
         }
+
+        Debug.Log("rumble: " + Rumble.rumble);
     }
 
 
@@ -88,9 +90,6 @@ public class Bow : MonoBehaviour
 
         powerInput = controls.Player.Draw.ReadValue<float>();
 
-        if (powerInput > 0) Gamepad.current.SetMotorSpeeds(.05f, .15f);
-        //else Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
-
         if (direction.sqrMagnitude == 0)
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
     }
@@ -101,7 +100,7 @@ public class Bow : MonoBehaviour
 
         if (numArrows > 0)
         {
-            if (powerInput == 1)
+            if (powerInput == 1 && !isDrawnBack)
             {
                 DrawBack();
             }
@@ -131,12 +130,12 @@ public class Bow : MonoBehaviour
             anim.SetBool("isFired", false);
         }
 
-        
+        Debug.Log("draw back called");
+        if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
 
         if (frameDelay == 10)
         {
-            StartCoroutine("TimeDilationDown");
-            //TimeDilation(true);
+            StartCoroutine(TimeDilationDown());
         }
         else
         {
@@ -146,6 +145,8 @@ public class Bow : MonoBehaviour
 
     void Fire()
     {
+        StartCoroutine(Rumble.BurstRumble(1.0f, 1.0f, 0.1f));
+
         numArrows--;
         fire = true;
         anim.SetBool("isFired", true);
@@ -155,7 +156,6 @@ public class Bow : MonoBehaviour
 
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
 
         isDrawnBack = false;
 
