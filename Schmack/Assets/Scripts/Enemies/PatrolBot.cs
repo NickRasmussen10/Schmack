@@ -82,7 +82,6 @@ public class PatrolBot : MonoBehaviour
         }
         else if (!anim.GetBool("turn") && !anim.GetBool("turn_backwards"))
         {
-            Debug.Log("this one");
             forwardEuler = direction.x == 1 ? Vector3.zero : new Vector3(0.0f, 0.0f, 180.0f);
             head.transform.eulerAngles = forwardEuler;
         }
@@ -200,8 +199,8 @@ public class PatrolBot : MonoBehaviour
             yield return new WaitForSeconds(attackFrequency);
             if (state == State.attack) //double checked because he could have lost the player withing attackFrequency seconds. I know, it's gross. I hate it too, but I just want to move one to *anything* else
             {
-                GlueShot shot = Instantiate(pref_Projectile, head.transform.position, Quaternion.identity).GetComponent<GlueShot>();
-                shot.Fire(head.transform.position, player.position);
+                GlueShot shot = Instantiate(pref_Projectile, head.transform.position + head.right, Quaternion.identity).GetComponent<GlueShot>();
+                shot.Fire(player.position);
             }
         }
     }
@@ -209,7 +208,6 @@ public class PatrolBot : MonoBehaviour
 
     public void FlipDirection()
     {
-        Debug.Log("flip");
         direction.x *= -1;
         //foreach (Transform transform in collisionReporters)
         //{
@@ -259,7 +257,6 @@ public class PatrolBot : MonoBehaviour
 
     void TrackPlayer()
     {
-        Debug.Log("tracking player");
         head.right = (player.position - head.position).normalized;
     }
 

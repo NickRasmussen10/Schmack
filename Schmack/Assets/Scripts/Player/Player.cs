@@ -11,20 +11,17 @@ public class Player : MonoBehaviour
     /// 
     [SerializeField] Text bowText = null;
     [SerializeField] List<Image> displayArrows = new List<Image>();
+    [SerializeField] SpriteRenderer bigsad;
 
     PlayerMovement playerMovement = null;
     [SerializeField] GameObject rotator = null;
 
-    [SerializeField] float maxHealth = 100;
+    [SerializeField] float maxHealth = 1.0f;
     float health;
 
     [SerializeField] GameObject[] bows = null;
     public GameObject currentBow;
     Bow bowScript;
-
-    //[SerializeField] GameObject pref_indicator = null;
-    //[SerializeField] float indicatorDistance = 5.0f;
-    //GameObject indicator;
 
     public SpriteRenderer bowSprite;
 
@@ -48,9 +45,7 @@ public class Player : MonoBehaviour
         //    GoToNextBow();
         //}
 
-        SetIndicatorPosition();
-
-        if(health<=50)
+        if(health<=0.5f)
         {
             bowSprite.color = Color.red;
         }
@@ -119,20 +114,16 @@ public class Player : MonoBehaviour
         currentBow.SetActive(true);
     }
 
-    protected void SetIndicatorPosition()
-    {
-        //indicator.transform.position = (Vector2)transform.position + (bowScript.direction * indicatorDistance);
-    }
 
-
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
     }
 
     private void Die()
     {
-        Destroy(gameObject);
-        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SceneSwitch>().LoadScene(2);
+        Destroy(gameObject.GetComponent<PlayerMovement>());
+        bigsad.enabled = true;
+        //GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SceneSwitch>().LoadScene(2);
     }
 }

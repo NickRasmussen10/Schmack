@@ -339,7 +339,6 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void Jump()
     {
-        Debug.Log("jump");
         if (state == PlayerState.idle || state == PlayerState.running)
         {
             //apply upward force to player
@@ -413,7 +412,7 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     IEnumerator WallStick()
     {
-        StartCoroutine(Rumble.BurstRumbleContinuous(0.5f, 0.5f, 0.1f, 0.05f));
+        StartCoroutine(Rumble.BurstRumbleContinuous(0.5f, 0.1f, 0.05f));
         //while player is off ground and on wall
         while (!collPacket_ground.isColliding && collPacket_backLegs.isColliding)
         {
@@ -487,8 +486,24 @@ public class PlayerMovement : MonoBehaviour
         if (packet.isColliding)
         {
             CancelWallStick();
-            StartCoroutine(Rumble.BurstRumble(0.5f, 0.5f, 0.1f));
+            StartCoroutine(Rumble.BurstRumble(0.5f, 0.1f));
         }
+    }
+
+    /// <summary>
+    /// slows the player down to set speed and jump for specified amount of time
+    /// </summary>
+    /// <param name="newMaxSpeed">the player's slowed speed</param>
+    /// <param name="newJumpForce">the player's slowed jump force</param>
+    /// <param name="time">length of slowness in seconds</param>
+    /// <returns></returns>
+    public IEnumerator SlowDown(float newMaxSpeed, float newJumpForce, float time)
+    {
+        maxSpeed = newMaxSpeed;
+        jumpForce = newJumpForce;
+        yield return new WaitForSeconds(time);
+        maxSpeed = inFlow ? maxSpeed_fast : maxSpeed_slow;
+        jumpForce = inFlow ? jumpForce_fast : jumpForce_slow;
     }
 
     /// <summary>

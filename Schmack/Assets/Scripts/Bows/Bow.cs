@@ -145,7 +145,7 @@ public class Bow : MonoBehaviour
 
     void Fire()
     {
-        StartCoroutine(Rumble.BurstRumble(1.0f, 1.0f, 0.1f));
+        StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
         fire = true;
