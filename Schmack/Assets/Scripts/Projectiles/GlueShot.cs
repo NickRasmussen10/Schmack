@@ -26,12 +26,10 @@ public class GlueShot : Projectile
 
     protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
-        Debug.Log(collision);
         if(collision.gameObject.tag == "Player")
         {
-            Debug.Log("owie");
             collision.gameObject.GetComponent<Player>().TakeDamage(0.3f);
-            StartCoroutine(collision.gameObject.GetComponent<PlayerMovement>().SlowDown(3.0f, 175.0f, 2.5f));
+            collision.gameObject.GetComponent<PlayerMovement>().ReduceMovement(3.0f, 175.0f, 1.0f);
         }
         Destroy(gameObject);
     }

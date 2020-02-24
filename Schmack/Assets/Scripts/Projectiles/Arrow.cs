@@ -42,7 +42,6 @@ public class Arrow : Projectile
         {
             //parent arrow to enemy and apply damage to enemy
             transform.parent = collision.gameObject.GetComponentsInChildren<Transform>()[1]; //have to parent arrow to root object so it moves with animations, DISGUSTIN'
-            Debug.Log(transform.parent);
             collision.gameObject.SendMessage("TakeDamage", 0.5f);
         }
         //if arrow hit an interactable
@@ -52,11 +51,13 @@ public class Arrow : Projectile
             transform.parent = collision.gameObject.transform;
         }
 
-        //destroy arrow's rigid body
-        Destroy(rb);
+        //Vector3 direction = (Vector2)rb()
 
         //snap arrow to point of collision
-        transform.position = collisionPoint;
+        transform.position = collisionPoint + ((Vector3)rb.velocity.normalized * Random.Range(-0.25f, 0.25f));
+
+        //destroy arrow's rigid body
+        Destroy(rb);
 
         GetComponent<Animator>().Play("wiggle");
     }

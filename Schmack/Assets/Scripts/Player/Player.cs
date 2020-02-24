@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
 
         if(health <= 0)
         {
+            Debug.Log("oof");
             Die();
         }
 

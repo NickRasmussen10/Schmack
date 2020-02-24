@@ -497,11 +497,16 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="newJumpForce">the player's slowed jump force</param>
     /// <param name="time">length of slowness in seconds</param>
     /// <returns></returns>
-    public IEnumerator SlowDown(float newMaxSpeed, float newJumpForce, float time)
+    public void ReduceMovement(float p_maxSpeed, float p_jumpForce, float time)
     {
-        maxSpeed = newMaxSpeed;
-        jumpForce = newJumpForce;
-        yield return new WaitForSeconds(time);
+        StartCoroutine(C_ReduceMovement(p_maxSpeed, p_jumpForce, time));
+    }
+
+    IEnumerator C_ReduceMovement(float p_maxSpeed, float p_jumpForce, float time)
+    {
+        maxSpeed = p_maxSpeed;
+        jumpForce = p_jumpForce;
+        yield return new WaitForSecondsRealtime(time);
         maxSpeed = inFlow ? maxSpeed_fast : maxSpeed_slow;
         jumpForce = inFlow ? jumpForce_fast : jumpForce_slow;
     }

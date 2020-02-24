@@ -34,7 +34,6 @@ public class Bow : MonoBehaviour
     [SerializeField] float noFlow_knockbackForce = 700.0f;
 
     float coolDownTimer = 0.0f;
-    int frameDelay = 0;
 
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
@@ -71,16 +70,16 @@ public class Bow : MonoBehaviour
         HandleInput();
         HandleFiring();
 
-        if(!isDrawnBack && bigArrowSprite.size.x > 0)
+        if (!isDrawnBack && bigArrowSprite.size.x > 0)
         {
             bigArrowSprite.size = new Vector2(0, 0.75f);
         }
 
-        Debug.Log("rumble: " + Rumble.rumble);
+        if (!isDrawnBack && Time.timeScale != timeScaleMax) Time.timeScale = timeScaleMax;
     }
 
 
-   
+
 
     protected void HandleInput()
     {
@@ -130,29 +129,22 @@ public class Bow : MonoBehaviour
             anim.SetBool("isFired", false);
         }
 
-        Debug.Log("draw back called");
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
 
-        if (frameDelay == 10)
-        {
-            StartCoroutine(TimeDilationDown());
-        }
-        else
-        {
-            frameDelay++;
-        }
+        StartCoroutine(TimeDilationDown());
+
     }
 
     void Fire()
     {
+
+        StopCoroutine(TimeDilationDown());
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
         fire = true;
         anim.SetBool("isFired", true);
         anim.SetBool("isDrawn", false);
-        frameDelay = 0;
-        StopCoroutine("TimeDilationDown");
 
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -174,7 +166,7 @@ public class Bow : MonoBehaviour
     {
         SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
         Vector2 size = sr.size;
-        while(size.x < 2.5)
+        while (size.x < 2.5)
         {
             size.x += 0.15f;
             if (size.x > 2.5f) size.x = 2.5f;
@@ -185,15 +177,19 @@ public class Bow : MonoBehaviour
 
     IEnumerator TimeDilationDown()
     {
-        float lerpVal = 1.0f;
-
-        while (lerpVal > 0)
+        yield return new WaitForSecondsRealtime(0.2f);
+        if (isDrawnBack)
         {
-            lerpVal -= Time.deltaTime * 10f;
-            if (lerpVal < 0) lerpVal = 0;
-            Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            yield return null;
+            float lerpVal = 1.0f;
+
+            while (lerpVal > 0)
+            {
+                lerpVal -= Time.deltaTime * 10f;
+                if (lerpVal < 0) lerpVal = 0;
+                Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                yield return null;
+            }
         }
     }
 
