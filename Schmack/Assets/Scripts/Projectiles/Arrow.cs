@@ -29,6 +29,23 @@ public class Arrow : Projectile
         }
     }
 
+    private void OnBecameInvisible()
+    {
+        StartCoroutine(DeleteDelay(5.0f));
+    }
+
+    private void OnBecameVisible()
+    {
+        //really don't like not specifically stopping DeleteDelay(), this feels like it could cause some issues down the road
+        StopAllCoroutines();
+    }
+
+    IEnumerator DeleteDelay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
+    }
+
 
     /// <summary>
     /// Handles logic for when the projectile detects collision with a valid object
@@ -51,13 +68,13 @@ public class Arrow : Projectile
             transform.parent = collision.gameObject.transform;
         }
 
-        //Vector3 direction = (Vector2)rb()
-
-        //snap arrow to point of collision
-        transform.position = collisionPoint + ((Vector3)rb.velocity.normalized * Random.Range(-0.25f, 0.25f));
+        Vector3 randomization = (Vector2)rb.velocity.normalized * Random.Range(-0.25f, 0.25f);
 
         //destroy arrow's rigid body
         Destroy(rb);
+
+        //snap arrow to point of collision
+        transform.position = collisionPoint + randomization;
 
         GetComponent<Animator>().Play("wiggle");
     }

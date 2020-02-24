@@ -10,8 +10,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Flow Testing Mode")]
     [SerializeField] bool flowTestMode = false;
 
-    Rigidbody2D rb;
-
     [Header("Flow")]
     [SerializeField] float flowForgivenessTime = 1.0f; //how much time can the player stand still before they start losing flow
     [SerializeField] float flowDepreciationRate = 1.0f; //how fast the flow drains when player is moving too slow
@@ -34,8 +32,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("References :(")]
     [SerializeField] Slider flowSlider = null; //UI element for flow
-    [SerializeField] CinemachineVirtualCamera vcam; //camera's active virtual camera
-    CinemachineFramingTransposer framingTransposer; //active virtual camera's framing transposer
+
+    Rigidbody2D rb;
+    public Vector2 GetVelocity() { return rb.velocity; }
+    public Vector2 GetDirection() { return rb.velocity.normalized; }
 
     public Controls controls = null;
 
@@ -87,7 +87,6 @@ public class PlayerMovement : MonoBehaviour
         anim_arms = GameObject.Find("arms").GetComponent<Animator>();
         anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        framingTransposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
 
         //run camera adjustment method
         InvokeRepeating("AdjustCamera", 0.0f, 0.02f);
@@ -275,9 +274,6 @@ public class PlayerMovement : MonoBehaviour
             acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
             maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
             jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
-
-            //lerp camera's size
-            vcam.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, lerpVal);
 
             yield return null;
         }
@@ -539,75 +535,4 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="x">force in the x direction</param>
     /// <param name="y">force in the y direction</param>
     private void AddForce(float x, float y) { rb.AddForce(new Vector2(x, y)); }
-
-
-
-
-
-    [Header("Camera Movement Values - X")]
-    [SerializeField] [Range(0.0f, 1.0f)] float velocityThreshold = 0.3f;
-    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthGround = 0.2f;
-    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthAir = 0.4f;
-    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthGroundFlow = 0.4f;
-    [SerializeField] [Range(0.0f, 1.0f)] float deadZoneWidthAirFlow = 0.5f;
-    [SerializeField] [Range(0.0f, 0.1f)] float biasMultiplierX = 0.02f;
-    [SerializeField] [Range(0.0f, 1.0f)] float biasX = 0.3f;
-    [SerializeField] [Range(0.0f, 1.0f)] float biasFlowX = 0.15f;
-    [SerializeField] [Range(0.0f, 0.1f)] float screenXMultiplier = 0.05f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenXLow = 0.45f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenXHigh = 0.55f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenXFlow = 0.5f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenXDefault = 0.5f;
-
-    [Header("Camera Movement Values - Y")]
-    [SerializeField] [Range(-.5f, 0.0f)] float biasYLow = -.49f;
-    [SerializeField] [Range(0.0f, 0.5f)] float biasYHigh = .49f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenYMultiplier = 0.1f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenYLow = 0.3f;
-    [SerializeField] [Range(0.0f, 1.0f)] float screenYHigh = 0.6f;
-    /// <summary>
-    /// Adjusts camera's position, bias, and dead zone to dynamically follow the player. I'd much rather this be handled as a component on camera but super dependant on the player's values
-    /// </summary>
-    void AdjustCamera()
-    {
-        //update virtual camera's y bias and screen position to lead the player downwards
-        framingTransposer.m_BiasY = Mathf.Clamp(rb.velocity.y * 0.01f, biasYLow, biasYHigh);
-        framingTransposer.m_ScreenY = Mathf.Lerp(screenYHigh, screenYLow, -(rb.velocity.y * screenYMultiplier));
-
-        //is player is moving faster than this completely arbirary number
-        //if (Mathf.Abs(rb.velocity.x) > velocityThreshold)
-        //{
-        //    if (inFlow)
-        //    {
-        //        framingTransposer.m_BiasX = biasFlowX;
-        //        framingTransposer.m_ScreenX = screenXFlow;
-        //        if (!collPacket_ground.isColliding)
-        //        {
-        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthAirFlow;
-        //        }
-        //        else
-        //        {
-        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthGroundFlow;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        framingTransposer.m_BiasX = Mathf.Clamp(rb.velocity.x * biasMultiplierX, 0.0f, biasX);
-        //        framingTransposer.m_ScreenX = Mathf.Lerp(screenXHigh, screenXLow, (rb.velocity.x * screenXMultiplier) + .5f);
-        //        if (!collPacket_ground.isColliding)
-        //        {
-        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthAir;
-        //        }
-        //        else
-        //        {
-        //            framingTransposer.m_DeadZoneWidth = deadZoneWidthGround;
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    framingTransposer.m_ScreenX = screenXDefault;
-        //}
-
-    }
 }

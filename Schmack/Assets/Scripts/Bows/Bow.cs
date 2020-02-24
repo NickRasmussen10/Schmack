@@ -11,11 +11,20 @@ public class Bow : MonoBehaviour
     bool fireOnRightTrigger = true;
 
     public Vector2 direction;
-    public bool isDrawnBack = false;
-    public bool drawHeld = false;
-    public bool fire = false;
+    //public bool isDrawnBack = false;
+    //public bool drawHeld = false;
+    //public bool fire = false;
     public bool inFlow;
     protected float powerInput = 0.0f;
+
+    public enum State
+    {
+        idle,
+        drawn,
+        fired
+    }
+
+    public State state;
 
     public int numArrows;
     List<GameObject> arrows = new List<GameObject>();
@@ -32,8 +41,6 @@ public class Bow : MonoBehaviour
     [Header("Firing - Slow Flow")]
     [SerializeField] float noFlow_shotPower = 1500.0f;
     [SerializeField] float noFlow_knockbackForce = 700.0f;
-
-    float coolDownTimer = 0.0f;
 
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
@@ -68,14 +75,30 @@ public class Bow : MonoBehaviour
     protected void Update()
     {
         HandleInput();
-        HandleFiring();
 
-        if (!isDrawnBack && bigArrowSprite.size.x > 0)
+        switch (state)
         {
-            bigArrowSprite.size = new Vector2(0, 0.75f);
+            case State.idle:
+                if (powerInput == 1 && numArrows > 0) DrawBack();
+                break;
+            case State.drawn:
+                if (powerInput == 0) Fire();
+                break;
+            case State.fired:
+                break;
+            default:
+                break;
         }
 
-        if (!isDrawnBack && Time.timeScale != timeScaleMax) Time.timeScale = timeScaleMax;
+
+        
+        //HandleFiring();
+
+        if (state != State.drawn)
+        {
+            if(bigArrowSprite.size.x > 0) bigArrowSprite.size = new Vector2(0, 0.75f);
+            if(Time.timeScale != timeScaleMax) Time.timeScale = timeScaleMax; ;
+        }
     }
 
 
@@ -93,33 +116,32 @@ public class Bow : MonoBehaviour
             direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
     }
 
-    protected void HandleFiring()
-    {
-        if (coolDownTimer > 0) coolDownTimer -= Time.deltaTime;
+    //protected void HandleFiring()
+    //{
 
-        if (numArrows > 0)
-        {
-            if (powerInput == 1 && !isDrawnBack)
-            {
-                DrawBack();
-            }
-            else if (powerInput == 0 && isDrawnBack)
-            {
-                Fire();
-            }
-        }
-        else
-        {
-            isDrawnBack = false;
-        }
-    }
+    //    if (numArrows > 0)
+    //    {
+    //        if (powerInput == 1 && !isDrawnBack)
+    //        {
+    //            DrawBack();
+    //        }
+    //        else if (powerInput == 0 && isDrawnBack)
+    //        {
+    //            Fire();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        isDrawnBack = false;
+    //    }
+    //}
 
     void DrawBack()
     {
-        if (!isDrawnBack)
+        if (state != State.drawn)
         {
             StartCoroutine(DisplayBigArrow());
-            isDrawnBack = true;
+            state = State.drawn;
         }
 
         if (!anim.GetBool("isDrawn"))
@@ -137,19 +159,16 @@ public class Bow : MonoBehaviour
 
     void Fire()
     {
-
+        state = State.fired;
         StopCoroutine(TimeDilationDown());
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
-        fire = true;
         anim.SetBool("isFired", true);
         anim.SetBool("isDrawn", false);
 
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-
-        isDrawnBack = false;
 
         GameObject newArrow = Instantiate(pref_arrow, GO_referencePoint.transform.position, GO_referencePoint.transform.rotation);
 
@@ -160,6 +179,19 @@ public class Bow : MonoBehaviour
 
         if (inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
         else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
+
+        StartCoroutine(Temp_FireDelay());
+    }
+
+    IEnumerator Temp_FireDelay()
+    {
+        yield return new WaitForSeconds(0.35f);
+        state = State.idle;
+    }
+
+    public void LoadNextArrow()
+    {
+        state = State.idle;
     }
 
     IEnumerator DisplayBigArrow()
@@ -178,7 +210,7 @@ public class Bow : MonoBehaviour
     IEnumerator TimeDilationDown()
     {
         yield return new WaitForSecondsRealtime(0.2f);
-        if (isDrawnBack)
+        if (state == State.drawn)
         {
             float lerpVal = 1.0f;
 
@@ -206,6 +238,7 @@ public class Bow : MonoBehaviour
         gameObject.SetActive(true);
         InvokeRepeating("BowRecharge", rechargeTime, rechargeTime);
         bigArrowSprite = bigArrow.GetComponent<SpriteRenderer>();
+        state = State.idle;
     }
 
     public void Deactivate()

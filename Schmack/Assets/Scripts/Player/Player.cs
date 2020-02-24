@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
@@ -52,7 +53,6 @@ public class Player : MonoBehaviour
 
         if(health <= 0)
         {
-            Debug.Log("oof");
             Die();
         }
 
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
             bowScript.inFlow = playerMovement.inFlow;
         }
 
-        if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && !bowScript.isDrawnBack)
+        if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
         {
             rotator.transform.right = Vector2.right;
         }
@@ -119,6 +119,7 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CameraManager>().SendMessage("CallDisplayDamage", 1.0f);
     }
 
     private void Die()
