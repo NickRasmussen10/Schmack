@@ -4,23 +4,10 @@ using UnityEngine;
 
 public class StartButton : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag=="Arrow")
+        if (other.gameObject.tag == "Arrow")
         {
-            GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f);
             GameObject.Find("start").GetComponent<SceneSwitch>().LoadScene(1);
         }
     }
