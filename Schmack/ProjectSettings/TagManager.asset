@@ -10,6 +10,7 @@ TagManager:
   - AudioMan
   - Interactable
   - BombArrow
+  - SceneSwap
   layers:
   - Default
   - TransparentFX

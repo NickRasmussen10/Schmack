@@ -123,8 +123,8 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject.GetComponent<PlayerMovement>());
-        bigsad.enabled = true;
-        //GameObject.FindGameObjectWithTag("MainCamera").GetComponent<SceneSwitch>().LoadScene(2);
+        //Destroy(gameObject.GetComponent<PlayerMovement>());
+        //bigsad.enabled = true;
+        GameObject.FindGameObjectWithTag("SceneSwap").GetComponent<SceneSwitch>().LoadScene(2);
     }
 }
