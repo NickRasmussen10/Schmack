@@ -76,6 +76,7 @@ public class Arrow : Projectile
         //snap arrow to point of collision
         transform.position = collisionPoint + randomization;
 
+        GameObject.FindObjectOfType<SoundManager>().Play("ArrowHit");
         GetComponent<Animator>().Play("wiggle");
     }
 }

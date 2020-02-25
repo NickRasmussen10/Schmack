@@ -55,6 +55,7 @@ public class Bow : MonoBehaviour
 
     private void Awake()
     {
+
     }
 
     // Start is called before the first frame update
@@ -179,6 +180,8 @@ public class Bow : MonoBehaviour
 
         if (inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
         else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
+
+        GameObject.FindObjectOfType<SoundManager>().Play("BowFire");
 
         StartCoroutine(Temp_FireDelay());
     }

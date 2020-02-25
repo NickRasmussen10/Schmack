@@ -63,6 +63,11 @@ public class CameraManager : MonoBehaviour
         StartCoroutine(DisplayDamage(time));
     }
 
+    void CallDisplayDeath()
+    {
+
+    }
+
     IEnumerator DisplayDamage(float time)
     {
         float lerpVal = ppv_playerDamage.weight; //could possibly change this to player damamge's vignette intensity
@@ -85,6 +90,8 @@ public class CameraManager : MonoBehaviour
             yield return null;
         }
     }
+
+    
 
     IEnumerator FlerpToFlow()
     {

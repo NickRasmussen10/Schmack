@@ -7,10 +7,11 @@ TagManager:
   - Enemy
   - Arrow
   - Start
-  - AudioMan
   - Interactable
   - BombArrow
   - SceneSwap
+  - AudioManager
+  - AudioMan
   layers:
   - Default
   - TransparentFX
