@@ -108,9 +108,6 @@ public class PlayerMovement : MonoBehaviour
         HandleWallStick();
         SetPlayerState();
         UpdateAnimation();
-
-        Debug.Log("acceleration, speed, jump: {" + acceleration + ", " + maxSpeed + ", " + jumpForce + "}");
-        Debug.Log(Time.timeScale != 1.0f);
     }
 
     private void OnEnable()

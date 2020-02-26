@@ -68,7 +68,7 @@ public class CameraManager : MonoBehaviour
         framingTransposer.m_BiasY = Mathf.Clamp(playerMovement.GetVelocity().y * 0.01f, -.5f, .5f);
         framingTransposer.m_ScreenY = Mathf.Lerp(.6f, .3f, -(playerMovement.GetVelocity().y * 0.1f));
 
-        framingTransposer.m_ScreenX = Mathf.Lerp(0.5f, 0.6f, playerMovement.GetDirection().x + 0.5f);
+        framingTransposer.m_ScreenX = Mathf.Lerp(0.45f, 0.55f, playerMovement.GetDirection().x + 0.5f);
     }
 
     void CallDisplayDamage(float time)

@@ -103,6 +103,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Quit",
+            "id": "a0569757-d18d-4378-8191-5116a586a7e2",
+            "actions": [
+                {
+                    "name": "quit",
+                    "type": "Button",
+                    "id": "bd75073e-6da9-4362-aa8a-7a7f65047ac7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "888aaf3f-a9ac-4d9e-a2a1-ad052ec9d3e6",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "quit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

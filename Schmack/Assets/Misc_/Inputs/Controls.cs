@@ -116,6 +116,33 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Quit"",
+            ""id"": ""a0569757-d18d-4378-8191-5116a586a7e2"",
+            ""actions"": [
+                {
+                    ""name"": ""quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd75073e-6da9-4362-aa8a-7a7f65047ac7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""888aaf3f-a9ac-4d9e-a2a1-ad052ec9d3e6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -127,6 +154,9 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Flow = m_Player.FindAction("Flow", throwIfNotFound: true);
         m_Player_Draw = m_Player.FindAction("Draw", throwIfNotFound: true);
+        // Quit
+        m_Quit = asset.FindActionMap("Quit", throwIfNotFound: true);
+        m_Quit_quit = m_Quit.FindAction("quit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -237,6 +267,39 @@ public class @Controls : IInputActionCollection, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Quit
+    private readonly InputActionMap m_Quit;
+    private IQuitActions m_QuitActionsCallbackInterface;
+    private readonly InputAction m_Quit_quit;
+    public struct QuitActions
+    {
+        private @Controls m_Wrapper;
+        public QuitActions(@Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @quit => m_Wrapper.m_Quit_quit;
+        public InputActionMap Get() { return m_Wrapper.m_Quit; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(QuitActions set) { return set.Get(); }
+        public void SetCallbacks(IQuitActions instance)
+        {
+            if (m_Wrapper.m_QuitActionsCallbackInterface != null)
+            {
+                @quit.started -= m_Wrapper.m_QuitActionsCallbackInterface.OnQuit;
+                @quit.performed -= m_Wrapper.m_QuitActionsCallbackInterface.OnQuit;
+                @quit.canceled -= m_Wrapper.m_QuitActionsCallbackInterface.OnQuit;
+            }
+            m_Wrapper.m_QuitActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @quit.started += instance.OnQuit;
+                @quit.performed += instance.OnQuit;
+                @quit.canceled += instance.OnQuit;
+            }
+        }
+    }
+    public QuitActions @Quit => new QuitActions(this);
     public interface IPlayerActions
     {
         void OnJump(InputAction.CallbackContext context);
@@ -244,5 +307,9 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnFlow(InputAction.CallbackContext context);
         void OnDraw(InputAction.CallbackContext context);
+    }
+    public interface IQuitActions
+    {
+        void OnQuit(InputAction.CallbackContext context);
     }
 }
