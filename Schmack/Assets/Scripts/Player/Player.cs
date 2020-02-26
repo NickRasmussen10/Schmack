@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     /// Temp UI stuff
     /// </summary>
     /// 
-    [SerializeField] Text bowText = null;
+    Text bowText = null;
     [SerializeField] List<Image> displayArrows = new List<Image>();
     [SerializeField] SpriteRenderer bigsad;
 
@@ -36,6 +36,13 @@ public class Player : MonoBehaviour
 
         currentBow = bows[0];
         bowScript = currentBow.GetComponent<Bow>();
+
+        //UI
+        bowText = GameObject.Find("BowText").GetComponent<Text>();
+        displayArrows[0] = GameObject.Find("Arrow (0)").GetComponent<Image>();
+        displayArrows[1] = GameObject.Find("Arrow (1)").GetComponent<Image>();
+        displayArrows[2] = GameObject.Find("Arrow (2)").GetComponent<Image>();
+
         bowText.text = currentBow.name;
         cameraManager = FindObjectOfType<CameraManager>();
     }

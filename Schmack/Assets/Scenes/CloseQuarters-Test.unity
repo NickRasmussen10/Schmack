@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -34380,66 +34380,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[2].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: e57b48095ec935f49a8c9c68bf4c9c28, type: 3}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[2].name
-      value: BowDraw
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[2].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[2].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[3].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: aed4fa7cf09683448b7fcba0f3a8e722, type: 3}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[3].name
-      value: Rumble
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[3].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[3].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[3].loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[1].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[0].pitch
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1102297327080111507, guid: 1c9cee7c4398d0445aa5ed7619163be0,
         type: 3}

@@ -47,10 +47,24 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: bf7212f0062d296458458517214792e9, type: 3}
     name: ArrowHit
     volume: 1
-    pitch: 0
+    pitch: 1
+    loop: 0
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: fcdc387ffacd86e4083c0b171e6d9f62, type: 3}
     name: BowFire
     volume: 1
-    pitch: 0
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: e57b48095ec935f49a8c9c68bf4c9c28, type: 3}
+    name: BowDraw
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: aed4fa7cf09683448b7fcba0f3a8e722, type: 3}
+    name: Rumble
+    volume: 1
+    pitch: 1
+    loop: 1
     source: {fileID: 0}

@@ -33,7 +33,7 @@ public class CameraManager : MonoBehaviour
         ppv_playerDamage = volumes[2];
 
         //get global light
-        globalLight = GameObject.FindGameObjectWithTag("GlobalLight").GetComponent<UnityEngine.Experimental.Rendering.LWRP.Light2D>();
+        globalLight = GameObject.Find("Global Light").GetComponent<UnityEngine.Experimental.Rendering.LWRP.Light2D>();
 
         //get player script references
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
