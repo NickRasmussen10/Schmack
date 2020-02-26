@@ -67,6 +67,8 @@ public class CameraManager : MonoBehaviour
         //update virtual camera's y bias and screen position to lead the player downwards
         framingTransposer.m_BiasY = Mathf.Clamp(playerMovement.GetVelocity().y * 0.01f, -.5f, .5f);
         framingTransposer.m_ScreenY = Mathf.Lerp(.6f, .3f, -(playerMovement.GetVelocity().y * 0.1f));
+
+        framingTransposer.m_ScreenX = Mathf.Lerp(0.5f, 0.6f, playerMovement.GetDirection().x + 0.5f);
     }
 
     void CallDisplayDamage(float time)
