@@ -96,7 +96,7 @@ public class Bow : MonoBehaviour
         if (state != State.drawn)
         {
             if(bigArrowSprite.size.x > 0) bigArrowSprite.size = new Vector2(0, 0.75f);
-            if(Time.timeScale != timeScaleMax) Time.timeScale = timeScaleMax; ;
+            //if(Time.timeScale != timeScaleMax) Time.timeScale = timeScaleMax;
         }
     }
 

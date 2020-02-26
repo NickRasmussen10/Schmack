@@ -57,6 +57,14 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""f0032b7d-805b-4e81-8504-4aa9b41982e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -114,6 +122,17 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Draw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""004aa2ef-c8bb-4952-8a38-82484d8370f0"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -154,6 +173,7 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Flow = m_Player.FindAction("Flow", throwIfNotFound: true);
         m_Player_Draw = m_Player.FindAction("Draw", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // Quit
         m_Quit = asset.FindActionMap("Quit", throwIfNotFound: true);
         m_Quit_quit = m_Quit.FindAction("quit", throwIfNotFound: true);
@@ -211,6 +231,7 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Flow;
     private readonly InputAction m_Player_Draw;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -220,6 +241,7 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         public InputAction @Flow => m_Wrapper.m_Player_Flow;
         public InputAction @Draw => m_Wrapper.m_Player_Draw;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -244,6 +266,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Draw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
                 @Draw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
                 @Draw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDraw;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -263,6 +288,9 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Draw.started += instance.OnDraw;
                 @Draw.performed += instance.OnDraw;
                 @Draw.canceled += instance.OnDraw;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -307,6 +335,7 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnFlow(InputAction.CallbackContext context);
         void OnDraw(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IQuitActions
     {
