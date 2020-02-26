@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
 
     public SpriteRenderer bowSprite;
 
+    CameraManager cameraManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,23 +37,18 @@ public class Player : MonoBehaviour
         currentBow = bows[0];
         bowScript = currentBow.GetComponent<Bow>();
         bowText.text = currentBow.name;
-        //indicator = Instantiate(pref_indicator);
+        cameraManager = FindObjectOfType<CameraManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetButtonDown("SwapWeapon"))
-        //{
-        //    GoToNextBow();
-        //}
-
         if(health<=0.5f)
         {
             bowSprite.color = Color.red;
         }
 
-        if(health <= 0)
+        if(health == 0)
         {
             Die();
         }
@@ -118,14 +115,17 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (health < 0) return;
+
         health -= damage;
-        Camera.main.GetComponent<CinemachineBrain>().ActiveVirtualCamera.VirtualCameraGameObject.GetComponent<CameraManager>().SendMessage("CallDisplayDamage", 1.0f);
+        if (health < 0) health = 0;
+        cameraManager.SendMessage("CallDisplayDamage", 5.0f);
     }
 
     private void Die()
     {
-        //Destroy(gameObject.GetComponent<PlayerMovement>());
-        //bigsad.enabled = true;
-        GameObject.FindGameObjectWithTag("SceneSwap").GetComponent<SceneSwitch>().LoadScene(2);
+        health = -1;
+        gameObject.GetComponent<PlayerMovement>().enabled = false;
+        cameraManager.SendMessage("CallDisplayDeath", transform.position);
     }
 }

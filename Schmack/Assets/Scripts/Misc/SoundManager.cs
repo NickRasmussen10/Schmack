@@ -6,8 +6,9 @@ using UnityEngine.Audio;
 {
     public AudioClip clip;
     public string name;
-    [Range(0.0f, 1.0f)] public float volume;
-    [Range(0.1f, 3.0f)] public float pitch;
+    [Range(0.0f, 1.0f)] public float volume = 1.0f;
+    [Range(0.1f, 3.0f)] public float pitch = 1.0f;
+    public bool loop = false;
 
     [HideInInspector] public AudioSource source;
 }
@@ -23,6 +24,9 @@ public class SoundManager : MonoBehaviour
         {
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
+            sound.source.volume = sound.volume;
+            sound.source.pitch = sound.pitch;
+            sound.source.loop = sound.loop;
         }
     }
 
@@ -37,5 +41,11 @@ public class SoundManager : MonoBehaviour
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
         if (s.source) s.source.Play();
+    }
+
+    public void Stop(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s.source) s.source.Stop();
     }
 }

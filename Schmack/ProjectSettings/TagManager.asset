@@ -11,7 +11,7 @@ TagManager:
   - BombArrow
   - SceneSwap
   - AudioManager
-  - AudioMan
+  - GlobalLight
   layers:
   - Default
   - TransparentFX

@@ -31,7 +31,7 @@ public class Arrow : Projectile
 
     private void OnBecameInvisible()
     {
-        StartCoroutine(DeleteDelay(5.0f));
+        if(gameObject.activeSelf) StartCoroutine(DeleteDelay(5.0f));
     }
 
     private void OnBecameVisible()
@@ -54,14 +54,14 @@ public class Arrow : Projectile
     /// <param name="collisionPoint">the exact point at which the projectile hit the collider</param>
     protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
-        //if arrow an enemy
+        //if arrow hits an enemy
         if (collision.gameObject.tag == "Enemy")
         {
             //parent arrow to enemy and apply damage to enemy
             transform.parent = collision.gameObject.GetComponentsInChildren<Transform>()[1]; //have to parent arrow to root object so it moves with animations, DISGUSTIN'
             collision.gameObject.SendMessage("TakeDamage", 0.5f);
         }
-        //if arrow hit an interactable
+        //if arrow hits an interactable
         else if (collision.gameObject.tag == "Interactable")
         {
             //parent arrow to interactable

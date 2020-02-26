@@ -88,9 +88,6 @@ public class PlayerMovement : MonoBehaviour
         anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
 
-        //run camera adjustment method
-        InvokeRepeating("AdjustCamera", 0.0f, 0.02f);
-
         //set flow variables
         inFlow = false;
         acceleration = acceleration_slow;
@@ -111,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
         HandleWallStick();
         SetPlayerState();
         UpdateAnimation();
+
+        Debug.Log("acceleration, speed, jump: {" + acceleration + ", " + maxSpeed + ", " + jumpForce + "}");
+        Debug.Log(Time.timeScale != 1.0f);
     }
 
     private void OnEnable()

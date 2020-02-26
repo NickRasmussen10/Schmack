@@ -6,7 +6,7 @@ using UnityEngine;
 public class CollisionReporter : MonoBehaviour
 {
     [SerializeField] string colliderID = ""; //unique identification, used by parent game object to tell the difference between multiple collision reporters
-    [SerializeField] GameObject reciever = null;
+    [SerializeField] GameObject reciever = null; //will be set to parent game object if no reciever is given in inspector
 
     // Start is called before the first frame update
     void Start()

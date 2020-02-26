@@ -6,14 +6,10 @@ using UnityEngine.InputSystem;
 
 public class Bow : MonoBehaviour
 {
-    [SerializeField] GameObject bigArrow = null;
     SpriteRenderer bigArrowSprite;
     bool fireOnRightTrigger = true;
 
     public Vector2 direction;
-    //public bool isDrawnBack = false;
-    //public bool drawHeld = false;
-    //public bool fire = false;
     public bool inFlow;
     protected float powerInput = 0.0f;
 
@@ -49,9 +45,12 @@ public class Bow : MonoBehaviour
 
     [Header("Gross Yucky References")]
     [SerializeField] GameObject GO_referencePoint = null;
-    [SerializeField] Controls controls = null;
+    [SerializeField] GameObject bigArrow = null;
+
+    Controls controls = null;
 
     Animator anim;
+    SoundManager sound;
 
     private void Awake()
     {
@@ -70,6 +69,7 @@ public class Bow : MonoBehaviour
         numArrows = maxArrows;
 
         anim = GameObject.Find("arms").GetComponent<Animator>();
+        sound = FindObjectOfType<SoundManager>();
     }
 
     // Update is called once per frame
@@ -80,20 +80,18 @@ public class Bow : MonoBehaviour
         switch (state)
         {
             case State.idle:
-                if (powerInput == 1 && numArrows > 0) DrawBack();
+                if (powerInput > 0.9f && numArrows > 0) DrawBack();
                 break;
             case State.drawn:
+                TimeDilationDown();
                 if (powerInput == 0) Fire();
                 break;
             case State.fired:
+                state = State.idle;
                 break;
             default:
                 break;
         }
-
-
-        
-        //HandleFiring();
 
         if (state != State.drawn)
         {
@@ -114,7 +112,7 @@ public class Bow : MonoBehaviour
         powerInput = controls.Player.Draw.ReadValue<float>();
 
         if (direction.sqrMagnitude == 0)
-            direction.x = gameObject.transform.parent.gameObject.GetComponent<PlayerMovement>().direction.x;
+            direction = gameObject.transform.parent.localScale.x == -1 ? Vector2.left : Vector2.right;
     }
 
     //protected void HandleFiring()
@@ -153,15 +151,17 @@ public class Bow : MonoBehaviour
         }
 
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
+        sound.Play("BowDraw");
+        sound.Play("Rumble");
 
-        StartCoroutine(TimeDilationDown());
+        //StartCoroutine(TimeDilationDown());
 
     }
 
     void Fire()
     {
         state = State.fired;
-        StopCoroutine(TimeDilationDown());
+        frameDelay = 0;
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
@@ -181,9 +181,10 @@ public class Bow : MonoBehaviour
         if (inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
         else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
 
-        GameObject.FindObjectOfType<SoundManager>().Play("BowFire");
+        sound.Stop("Rumble");
+        sound.Play("BowFire");
 
-        StartCoroutine(Temp_FireDelay());
+        //StartCoroutine(Temp_FireDelay());
     }
 
     IEnumerator Temp_FireDelay()
@@ -210,21 +211,16 @@ public class Bow : MonoBehaviour
         }
     }
 
-    IEnumerator TimeDilationDown()
-    {
-        yield return new WaitForSecondsRealtime(0.2f);
-        if (state == State.drawn)
-        {
-            float lerpVal = 1.0f;
 
-            while (lerpVal > 0)
-            {
-                lerpVal -= Time.deltaTime * 10f;
-                if (lerpVal < 0) lerpVal = 0;
-                Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                yield return null;
-            }
+
+    int frameDelay = 0; // I hate this, I wish it was a coroutine, but the coroutine was causing some pretty serious bugs
+    void TimeDilationDown()
+    {
+        frameDelay++;
+        if(frameDelay == 10)
+        {
+            Time.timeScale = timeScaleMin;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
         }
     }
 
