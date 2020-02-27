@@ -547,6 +547,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &83591400 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7172196165138337591, guid: 52545a174b539a84dbc02cc73308018a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1886640561}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &83591407
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83591400}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2230c7ee2c102a8408e5faaca107ebc8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &89414537 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6025988707816912030, guid: a82178bc8e04aef47b26f092c0f8416c,
@@ -33359,7 +33384,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1413748086, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
 --- !u!1 &1928144949
 GameObject:
@@ -34479,6 +34505,16 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 1601438126}
+    - target: {fileID: 4343363199602133389, guid: c20ad686330bc9441aab1f4986af154b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343363199602133389, guid: c20ad686330bc9441aab1f4986af154b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c20ad686330bc9441aab1f4986af154b, type: 3}
 --- !u!1001 &4753274913223552756
