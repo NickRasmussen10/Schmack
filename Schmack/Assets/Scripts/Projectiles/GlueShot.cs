@@ -31,6 +31,7 @@ public class GlueShot : Projectile
             collision.gameObject.GetComponent<Player>().TakeDamage(0.3f);
             collision.gameObject.GetComponent<PlayerMovement>().ReduceMovement(3.0f, 175.0f, 1.0f);
         }
+        FindObjectOfType<SoundManager>().Play("GlueHit");
         Destroy(gameObject);
     }
 }
