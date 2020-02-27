@@ -151,7 +151,7 @@ public class Bow : MonoBehaviour
         }
 
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
-        sound.Play("BowDraw");
+        sound.Play("BowDraw", 0.85f, 1.15f);
         sound.Play("Rumble");
 
         //StartCoroutine(TimeDilationDown());
@@ -182,7 +182,7 @@ public class Bow : MonoBehaviour
         else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
 
         sound.Stop("Rumble");
-        sound.Play("BowFire");
+        sound.Play("BowFire", 0.85f, 1.15f);
 
         //StartCoroutine(Temp_FireDelay());
     }

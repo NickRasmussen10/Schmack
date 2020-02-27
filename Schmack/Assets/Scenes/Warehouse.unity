@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -262,7 +262,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 184141491}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 57.08356, y: 44.22855, z: -10}
+  m_LocalPosition: {x: 56.2726, y: 44.22855, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1021684326}
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 269944798}
   - component: {fileID: 269944797}
   m_Layer: 0
-  m_Name: Global Light 2D
+  m_Name: Global Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19004,6 +19004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 513111965}
   - component: {fileID: 513111964}
+  - component: {fileID: 513111966}
   m_Layer: 0
   m_Name: Point Light 2D
   m_TagString: Untagged
@@ -19064,6 +19065,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &513111966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513111963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b422ba99b4b2b488d38353c81397e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 0
+  rateOfChange: 5
 --- !u!114 &601692370 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2071916295888738644, guid: f5df6bdb4c2bac14780c6f23df942268,
@@ -19155,6 +19170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 882293705}
   - component: {fileID: 882293704}
+  - component: {fileID: 882293706}
   m_Layer: 0
   m_Name: Point Light 2D (3)
   m_TagString: Untagged
@@ -19215,6 +19231,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &882293706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882293703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b422ba99b4b2b488d38353c81397e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 0
+  rateOfChange: 5
 --- !u!1 &974331468
 GameObject:
   m_ObjectHideFlags: 0
@@ -19490,6 +19520,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2071916294935825822, guid: f5df6bdb4c2bac14780c6f23df942268,
+        type: 3}
+      propertyPath: m_Name
+      value: Arrow (0)
+      objectReference: {fileID: 0}
     - target: {fileID: 2071916295301809732, guid: f5df6bdb4c2bac14780c6f23df942268,
         type: 3}
       propertyPath: m_Name
@@ -19642,6 +19677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1308238102}
   - component: {fileID: 1308238101}
+  - component: {fileID: 1308238103}
   m_Layer: 0
   m_Name: Point Light 2D (1)
   m_TagString: Untagged
@@ -19702,6 +19738,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1308238103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308238100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b422ba99b4b2b488d38353c81397e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 0
+  rateOfChange: 5
 --- !u!114 &1317938785 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2071916294935825820, guid: f5df6bdb4c2bac14780c6f23df942268,
@@ -19873,7 +19923,7 @@ PrefabInstance:
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 57.08356
+      value: 56.2726
       objectReference: {fileID: 0}
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
@@ -19982,6 +20032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1608368874}
   - component: {fileID: 1608368873}
+  - component: {fileID: 1608368875}
   m_Layer: 0
   m_Name: Point Light 2D (2)
   m_TagString: Untagged
@@ -20042,6 +20093,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1608368875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608368872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b422ba99b4b2b488d38353c81397e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 0
+  rateOfChange: 5
 --- !u!1 &1620662587
 GameObject:
   m_ObjectHideFlags: 0

@@ -72,6 +72,8 @@ public class PlayerMovement : MonoBehaviour
     Animator anim_arms;
     Animator anim_spine;
 
+    SoundManager sound;
+
     private void Awake()
     {
         controls = new Controls();
@@ -87,6 +89,8 @@ public class PlayerMovement : MonoBehaviour
         anim_arms = GameObject.Find("arms").GetComponent<Animator>();
         anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+
+        sound = FindObjectOfType<SoundManager>();
 
         //set flow variables
         inFlow = false;
@@ -301,6 +305,11 @@ public class PlayerMovement : MonoBehaviour
                 velocity.x *= 1 / acceleration;
                 rb.velocity = velocity;
             }
+        }
+        //play walking sound, change to animation event later
+        else if(Mathf.Abs(inputLeft) > 0.05f && collPacket_ground.isColliding && !sound.IsPlaying("Walk"))
+        {
+            sound.Play("Walk", 0.9f, 1.1f);
         }
 
         //cap velocity between max speed and negative max speed
