@@ -141,7 +141,7 @@ public class CameraManager : MonoBehaviour
         inFlow = true;
         flerpVal = ppv_flow.weight;
         CinemachineVirtualCamera vcam = GetComponent<CinemachineVirtualCamera>();
-        while(flerpVal < 1.0f)
+        while(flerpVal < 1.0f && inFlow)
         {
             flerpVal += Time.deltaTime * 4.0f;
             if (flerpVal > 1.0f) flerpVal = 1.0f;
@@ -161,7 +161,7 @@ public class CameraManager : MonoBehaviour
         inFlow = false;
         flerpVal = ppv_noFlow.weight;
         CinemachineVirtualCamera vcam = GetComponent<CinemachineVirtualCamera>();
-        while(flerpVal < 1.0f)
+        while(flerpVal < 1.0f && !inFlow)
         {
             flerpVal += Time.deltaTime * 4.0f;
             if (flerpVal > 1.0f) flerpVal = 1.0f;

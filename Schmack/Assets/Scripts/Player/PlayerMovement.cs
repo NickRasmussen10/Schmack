@@ -205,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
     void TryFlow()
     {
         //if flow button is pressed and player is not in flow and player has a full flow bar
-        if (!inFlow && flowJuice == 1.0f)
+        if (!inFlow && flowJuice != 0.0f)
         {
             FlowChange();
         }
@@ -239,8 +239,8 @@ public class PlayerMovement : MonoBehaviour
     {
         inFlow = !inFlow;
 
-        if (inFlow) StartCoroutine(Flerp(true));
-        else StartCoroutine(Flerp(false));
+        if (inFlow) StartCoroutine(FlerpToFlow());
+        else StartCoroutine(FlerpToReality());
     }
 
     /// <summary>
@@ -248,29 +248,18 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="lerpUp"></param>
     /// <returns></returns>
-    IEnumerator Flerp(bool lerpUp)
+    IEnumerator FlerpToFlow()
     {
-        float lerpVal;
+        StopCoroutine(FlerpToReality());
 
-        //start at either flow (1.0f) or reality (0.0f) based on given bool value
-        if (lerpUp) lerpVal = 0.0f;
-        else lerpVal = 1.0f;
+        float lerpVal = Mathf.InverseLerp(acceleration_slow, acceleration_fast, acceleration);
 
         //if lerping up, while value is below 1     if lerping down, while value is above 0
-        while ((lerpUp && lerpVal < 1.0f) || (!lerpUp && lerpVal > 0.0f))
+        while (lerpVal < 1.0f && inFlow)
         {
-            //add to or subtract from value
-            if (lerpUp)
-            {
-                lerpVal += Time.deltaTime;
-                if (lerpVal > 1.0f) lerpVal = 1.0f;
-            }
-            else
-            {
-                lerpVal -= Time.deltaTime * 4.0f;
-                if (lerpVal < 0.0f) lerpVal = 0.0f;
-            }
-
+            lerpVal += Time.deltaTime;
+            if (lerpVal > 1.0f) lerpVal = 1.0f;
+         
             //lerp acceleration, maximum speed, and jump
             acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
             maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
@@ -278,7 +267,25 @@ public class PlayerMovement : MonoBehaviour
 
             yield return null;
         }
+    }
 
+    IEnumerator FlerpToReality()
+    {
+        StopCoroutine(FlerpToFlow());
+        float lerpVal = Mathf.InverseLerp(acceleration_slow, acceleration_fast, acceleration);
+        Debug.Log(lerpVal);
+
+        while(lerpVal > 0.0f && !inFlow)
+        {
+            lerpVal -= Time.deltaTime;
+            if (lerpVal < 0.0f) lerpVal = 0.0f;
+
+            acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
+            maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
+            jumpForce = Mathf.Lerp(jumpForce_slow, jumpForce_fast, lerpVal);
+
+            yield return null;
+        }
     }
 
     /// <summary>
