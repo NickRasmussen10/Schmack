@@ -295,6 +295,8 @@ public class PlayerMovement : MonoBehaviour
             direction.x *= -1;
         }
 
+        string[] walkSounds = new string[3] { "Walk1", "Walk2", "Walk3" };
+
         //if player is giving little to no input to the horizontal component of the left joystick
         if (Mathf.Abs(inputLeft) < 0.05f && collPacket_ground.isColliding)
         {
@@ -307,9 +309,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         //play walking sound, change to animation event later
-        else if(Mathf.Abs(inputLeft) > 0.05f && collPacket_ground.isColliding && !sound.IsPlaying("Walk"))
+        else if(Mathf.Abs(inputLeft) > 0.05f && collPacket_ground.isColliding && !sound.IsPlayingAny(walkSounds))
         {
-            sound.Play("Walk", 0.9f, 1.1f);
+            sound.PlayRandom(walkSounds, 0.9f, 1.1f);
         }
 
         //cap velocity between max speed and negative max speed

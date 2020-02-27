@@ -53,9 +53,36 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void PlayRandom(string[] names)
+    {
+        int index = UnityEngine.Random.Range(0, names.Length);
+        Sound s = Array.Find(sounds, sound => sound.name == names[index]);
+        if(s.source) s.source.Play();
+    }
+
+    public void PlayRandom(string[] names, float minPitch, float maxPitch)
+    {
+        int index = UnityEngine.Random.Range(0, names.Length);
+        Sound s = Array.Find(sounds, sound => sound.name == names[index]);
+        if (s.source)
+        {
+            s.source.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+            s.source.Play();
+        }
+    }
+
     public bool IsPlaying(string name)
     {
         return Array.Find(sounds, sound => sound.name == name).source.isPlaying;
+    }
+
+    public bool IsPlayingAny(string[] names)
+    {
+        foreach (string item in names)
+        {
+            if(Array.Find(sounds, sound => sound.name == item).source.isPlaying) return true;
+        }
+        return false;
     }
 
     public void Stop(string name)
