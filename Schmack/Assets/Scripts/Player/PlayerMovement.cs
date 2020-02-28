@@ -68,9 +68,10 @@ public class PlayerMovement : MonoBehaviour
 
     //Animators for each of the player's animatable child objects
     //NOTE: this implementation of animations will likely become obsolete with a blend tree based system
-    Animator anim_legs;
-    Animator anim_arms;
-    Animator anim_spine;
+    //Animator anim_legs;
+    //Animator anim_arms;
+    //Animator anim_spine;
+    Animator animator;
 
     SoundManager sound;
 
@@ -85,9 +86,10 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         //get component references
-        anim_legs = GameObject.Find("legs").GetComponent<Animator>();
-        anim_arms = GameObject.Find("arms").GetComponent<Animator>();
-        anim_spine = GameObject.Find("spine").GetComponent<Animator>();
+        //anim_legs = GameObject.Find("legs").GetComponent<Animator>();
+        //anim_arms = GameObject.Find("arms").GetComponent<Animator>();
+        //anim_spine = GameObject.Find("spine").GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
 
         sound = FindObjectOfType<SoundManager>();
@@ -373,26 +375,28 @@ public class PlayerMovement : MonoBehaviour
         bool isOnWall = collPacket_backLegs.isColliding ? true : false;
 
         //set onGround bool of legs
-        if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
-        else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+        //if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
+        //else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
+        //animation.SetBool("onGround", collPacket_ground.isColliding ? true : false);
 
         //set onGround bool of arms
-        if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
-        else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
+        //if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
+        //else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
 
         //set animators' speeds
-        float speed = Mathf.Abs(rb.velocity.x);
-        anim_legs.SetFloat("speed", speed);
-        anim_arms.SetFloat("speed", speed);
-        anim_spine.SetFloat("speed", speed);
+        //float speed = Mathf.Abs(rb.velocity.x);
+        //anim_legs.SetFloat("speed", speed);
+        //anim_arms.SetFloat("speed", speed);
+        //anim_spine.SetFloat("speed", speed);
+        animator.SetFloat("speed", Mathf.Abs(rb.velocity.x));
 
         //set onWall bool of legs
-        if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
-        else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
+        //if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
+        //else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
 
-        //set onWall bool of arms
-        if (isOnWall && !anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", true);
-        else if (!isOnWall && anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", false);
+        ////set onWall bool of arms
+        //if (isOnWall && !anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", true);
+        //else if (!isOnWall && anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", false);
     }
 
     /// <summary>
@@ -485,6 +489,8 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(WallStick());
         }
+
+        animator.SetBool("onWall", packet.isColliding);
     }
 
     /// <summary>
@@ -499,6 +505,8 @@ public class PlayerMovement : MonoBehaviour
             CancelWallStick();
             StartCoroutine(Rumble.BurstRumble(0.5f, 0.1f));
         }
+
+        animator.SetBool("onGround", packet.isColliding);
     }
 
     /// <summary>

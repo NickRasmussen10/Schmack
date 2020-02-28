@@ -68,3 +68,27 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 54331ab750248b942a8df9ddf9893d4b, type: 3}
+    name: GlueHit
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 6fd7a4b800da41c41b4e114a446ded91, type: 3}
+    name: Walk1
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 956e044f3917d4c4492ed78d020d29eb, type: 3}
+    name: Walk2
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: c539d37608a43cc4b8bb8efa1b9a1210, type: 3}
+    name: Walk3
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

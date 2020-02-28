@@ -49,7 +49,7 @@ public class Bow : MonoBehaviour
 
     Controls controls = null;
 
-    Animator anim;
+    Animator animator;
     SoundManager sound;
 
     private void Awake()
@@ -68,7 +68,7 @@ public class Bow : MonoBehaviour
 
         numArrows = maxArrows;
 
-        anim = GameObject.Find("arms").GetComponent<Animator>();
+        animator = FindObjectOfType<Player>().gameObject.GetComponent<Animator>();
         sound = FindObjectOfType<SoundManager>();
     }
 
@@ -106,8 +106,8 @@ public class Bow : MonoBehaviour
     protected void HandleInput()
     {
         direction = controls.Player.Aim.ReadValue<Vector2>();
-        if (direction.sqrMagnitude > 0.1f) anim.SetBool("aim", true);
-        else if (anim.GetBool("aim")) anim.SetBool("aim", false);
+        //if (direction.sqrMagnitude > 0.1f) anim.SetBool("aim", true);
+        //else if (anim.GetBool("aim")) anim.SetBool("aim", false);
 
         powerInput = controls.Player.Draw.ReadValue<float>();
 
@@ -143,12 +143,13 @@ public class Bow : MonoBehaviour
             state = State.drawn;
         }
 
-        if (!anim.GetBool("isDrawn"))
-        {
-            anim.SetTrigger("draw");
-            anim.SetBool("isDrawn", true);
-            anim.SetBool("isFired", false);
-        }
+        //if (!animator.GetBool("isDrawn"))
+        //{
+        //    anim.SetTrigger("draw");
+        //    anim.SetBool("isDrawn", true);
+        //    anim.SetBool("isFired", false);
+        //}
+        animator.SetTrigger("draw");
 
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
         sound.Play("BowDraw", 0.85f, 1.15f);
@@ -165,8 +166,9 @@ public class Bow : MonoBehaviour
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
-        anim.SetBool("isFired", true);
-        anim.SetBool("isDrawn", false);
+        //anim.SetBool("isFired", true);
+        //anim.SetBool("isDrawn", false);
+        animator.SetTrigger("fire");
 
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
