@@ -8,9 +8,14 @@ public class ColorRandomizer : MonoBehaviour
     [SerializeField] float waitTime = 1.0f;
     [SerializeField] float rateOfChange = 1.0f;
 
+    Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
+        animator.Play("clubLight", 0, Random.Range(0.0f, 1.0f));
+
         light = gameObject.GetComponent<UnityEngine.Experimental.Rendering.LWRP.Light2D>();
         StartCoroutine(LerpRandomizedColor());
     }
