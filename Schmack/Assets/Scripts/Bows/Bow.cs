@@ -87,7 +87,6 @@ public class Bow : MonoBehaviour
                 if (powerInput == 0) Fire();
                 break;
             case State.fired:
-                state = State.idle;
                 break;
             default:
                 break;
@@ -189,9 +188,8 @@ public class Bow : MonoBehaviour
         //StartCoroutine(Temp_FireDelay());
     }
 
-    IEnumerator Temp_FireDelay()
+    public void EnableFire()
     {
-        yield return new WaitForSeconds(0.35f);
         state = State.idle;
     }
 

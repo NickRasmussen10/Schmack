@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneSwitch : MonoBehaviour
+public static class SceneSwitch
 {
-    public void LoadScene(int sceneNumber)
+    public static void LoadScene(int sceneNumber)
     {
         SceneManager.LoadScene(sceneNumber);
 

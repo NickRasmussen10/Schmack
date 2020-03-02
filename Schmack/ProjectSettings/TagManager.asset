@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Enemy
   - Arrow
-  - Start
   - Interactable
   - BombArrow
   - SceneSwap
   - AudioManager
+  - GlobalLight
+  - Button
   layers:
   - Default
   - TransparentFX

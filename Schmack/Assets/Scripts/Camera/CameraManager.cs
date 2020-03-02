@@ -133,7 +133,7 @@ public class CameraManager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(2.0f);
-        FindObjectOfType<SceneSwitch>().LoadScene(2);
+        SceneSwitch.LoadScene(2);
     }
 
     IEnumerator FlerpToFlow()

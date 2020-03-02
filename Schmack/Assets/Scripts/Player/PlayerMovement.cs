@@ -116,6 +116,11 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimation();
     }
 
+    public void EnableFire()
+    {
+        GetComponentInChildren<Bow>().EnableFire();
+    }
+
     private void OnEnable()
     {
         controls.Enable();
@@ -261,7 +266,7 @@ public class PlayerMovement : MonoBehaviour
         {
             lerpVal += Time.deltaTime;
             if (lerpVal > 1.0f) lerpVal = 1.0f;
-         
+
             //lerp acceleration, maximum speed, and jump
             acceleration = Mathf.Lerp(acceleration_slow, acceleration_fast, lerpVal);
             maxSpeed = Mathf.Lerp(maxSpeed_slow, maxSpeed_fast, lerpVal);
@@ -275,9 +280,8 @@ public class PlayerMovement : MonoBehaviour
     {
         StopCoroutine(FlerpToFlow());
         float lerpVal = Mathf.InverseLerp(acceleration_slow, acceleration_fast, acceleration);
-        Debug.Log(lerpVal);
 
-        while(lerpVal > 0.0f && !inFlow)
+        while (lerpVal > 0.0f && !inFlow)
         {
             lerpVal -= Time.deltaTime;
             if (lerpVal < 0.0f) lerpVal = 0.0f;
@@ -304,8 +308,6 @@ public class PlayerMovement : MonoBehaviour
             direction.x *= -1;
         }
 
-        string[] walkSounds = new string[3] { "Walk1", "Walk2", "Walk3" };
-
         //if player is giving little to no input to the horizontal component of the left joystick
         if (Mathf.Abs(inputLeft) < 0.05f && collPacket_ground.isColliding)
         {
@@ -316,11 +318,6 @@ public class PlayerMovement : MonoBehaviour
                 velocity.x *= 1 / acceleration;
                 rb.velocity = velocity;
             }
-        }
-        //play walking sound, change to animation event later
-        else if(Mathf.Abs(inputLeft) > 0.05f && collPacket_ground.isColliding && !sound.IsPlayingAny(walkSounds))
-        {
-            sound.PlayRandom(walkSounds, 0.9f, 1.1f);
         }
 
         //cap velocity between max speed and negative max speed
@@ -550,6 +547,12 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(knockback);
         }
+    }
+
+    public void PlayWalkSound()
+    {
+        string[] walkSounds = new string[3] { "Walk1", "Walk2", "Walk3" };
+        sound.PlayRandom(walkSounds, 0.9f, 1.1f);
     }
 
     /// <summary>

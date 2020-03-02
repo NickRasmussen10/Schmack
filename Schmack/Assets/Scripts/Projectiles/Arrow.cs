@@ -68,6 +68,11 @@ public class Arrow : Projectile
             transform.parent = collision.gameObject.transform;
         }
 
+        else if(collision.gameObject.tag == "Button")
+        {
+            collision.gameObject.GetComponent<ShootButton>().Activate();
+        }
+
         Vector3 randomization = (Vector2)rb.velocity.normalized * Random.Range(-0.25f, 0.25f);
 
         //destroy arrow's rigid body
