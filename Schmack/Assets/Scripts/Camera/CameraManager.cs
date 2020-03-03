@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CameraManager : MonoBehaviour
 {
@@ -133,7 +134,7 @@ public class CameraManager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(2.0f);
-        SceneSwitch.LoadScene(2);
+        SceneManager.LoadScene(2);
     }
 
     IEnumerator FlerpToFlow()
