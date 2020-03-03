@@ -150,11 +150,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScreenUI
       objectReference: {fileID: 0}
-    - target: {fileID: 2071916295301809732, guid: f5df6bdb4c2bac14780c6f23df942268,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2071916295301809736, guid: f5df6bdb4c2bac14780c6f23df942268,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -258,11 +253,6 @@ PrefabInstance:
     - target: {fileID: 2071916295301809736, guid: f5df6bdb4c2bac14780c6f23df942268,
         type: 3}
       propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2071916295301809739, guid: f5df6bdb4c2bac14780c6f23df942268,
-        type: 3}
-      propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -445,31 +435,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: a2e8bab93ecf90245bffa803816b06eb, type: 3}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].name
-      value: ButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].pitch
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1102297327080111507, guid: 1c9cee7c4398d0445aa5ed7619163be0,
         type: 3}
       propertyPath: m_Name
@@ -494,11 +459,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7172196165138337591, guid: 52545a174b539a84dbc02cc73308018a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7253483687951526987, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}

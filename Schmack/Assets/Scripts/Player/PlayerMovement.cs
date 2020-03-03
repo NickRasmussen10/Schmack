@@ -361,7 +361,6 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
             CancelWallStick();
         }
-        sound.Play("Jump");
     }
 
 
@@ -482,16 +481,10 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 1.0f;
             movementLimiter = 1.0f;
             CancelWallStick();
-            sound.Stop("WallSlide");
         }
         else if (!collPacket_ground.isColliding)
         {
             StartCoroutine(WallStick());
-            sound.Play("WallSlide");
-        }
-        else
-        {
-            sound.Stop("WallSlide");
         }
 
         animator.SetBool("onWall", packet.isColliding);
@@ -508,7 +501,6 @@ public class PlayerMovement : MonoBehaviour
         {
             CancelWallStick();
             StartCoroutine(Rumble.BurstRumble(0.5f, 0.1f));
-            sound.Play("Land");
         }
 
         animator.SetBool("onGround", packet.isColliding);
