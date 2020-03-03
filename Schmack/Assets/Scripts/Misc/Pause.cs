@@ -11,6 +11,8 @@ public class Pause : MonoBehaviour
 
     float timeScaleSave;
 
+    [SerializeField] bool enableMenu = true;
+
     [SerializeField] Image background;
     [SerializeField] GameObject[] buttons;
 
@@ -49,7 +51,7 @@ public class Pause : MonoBehaviour
             Time.timeScale = timeScaleSave;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             isPaused = false;
-            FindObjectOfType<PlayerMovement>().enabled = true;
+            if (FindObjectOfType<PlayerMovement>()) FindObjectOfType<PlayerMovement>().enabled = true;
             foreach (GameObject button in buttons)
             {
                 button.SetActive(false);
@@ -61,7 +63,7 @@ public class Pause : MonoBehaviour
             Time.timeScale = 0.0f;
             Time.fixedDeltaTime = 0.0f;
             isPaused = true;
-            FindObjectOfType<PlayerMovement>().enabled = false;
+            if(FindObjectOfType<PlayerMovement>()) FindObjectOfType<PlayerMovement>().enabled = false;
             foreach (GameObject button in buttons)
             {
                 button.SetActive(true);
