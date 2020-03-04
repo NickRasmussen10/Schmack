@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inFlow) HandleFlow();
+        HandleFlow();
         JoystickMovement();
         HandleWallStick();
         SetPlayerState();
@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //if player is in flow and moving fast enough
-        if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
+        if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f && !inFlow)
         {
             //reset flow countdown
             StopCoroutine(FlowCountdown());
@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         //if player is in flow and is out of flow resource, end flow
-        if (flowJuice == 0)
+        if (flowJuice == 0 && inFlow)
         {
             FlowChange();
         }

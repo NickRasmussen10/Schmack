@@ -70,7 +70,8 @@ public class Arrow : Projectile
 
         else if(collision.gameObject.tag == "Button")
         {
-            collision.gameObject.GetComponent<ShootButton>().Activate();
+            Debug.Log("you idiot! you fool! you bumbling bafoon! you've disabled buttons for the target mini-game playtesting thing and forgotten! at last your hubris has become your undoing!");
+            //collision.gameObject.GetComponent<ShootButton>().Activate();
         }
 
         Vector3 randomization = (Vector2)rb.velocity.normalized * Random.Range(-0.25f, 0.25f);
@@ -83,5 +84,16 @@ public class Arrow : Projectile
 
         GameObject.FindObjectOfType<SoundManager>().Play("ArrowHit");
         GetComponent<Animator>().Play("wiggle");
+
+
+
+        ///Horrible, terrible, no good, very bad code that makes the targets mini-game work please god please delete this later
+        //using the button tag because it's inactive in the rest of the game and I'm a toddler who refuses to make a new tag for this
+        if (collision.gameObject.tag == "Button")
+        {
+            Debug.Log("the heck");
+            FindObjectOfType<TargetManager>().Delete(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }
