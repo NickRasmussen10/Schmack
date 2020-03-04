@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //if player is in flow and moving fast enough
-        if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f && !inFlow)
+        if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
         {
             //reset flow countdown
             StopCoroutine(FlowCountdown());
@@ -309,7 +309,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //if player is giving little to no input to the horizontal component of the left joystick
-        if (Mathf.Abs(inputLeft) < 0.05f && collPacket_ground.isColliding)
+        if (Mathf.Abs(inputLeft) < 0.05f && (collPacket_ground.isColliding || inFlow))
         {
             //apply friction
             if (acceleration != 0)
