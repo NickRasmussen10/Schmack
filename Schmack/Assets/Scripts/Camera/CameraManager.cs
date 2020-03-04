@@ -181,9 +181,9 @@ public class CameraManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        ppv_noFlow.weight = 1.0f;
-        ppv_flow.weight = 0.0f;
-        ppv_playerDamage.weight = 0.0f;
-        globalLight.intensity = 0.75f;
+        //ppv_noFlow.weight = 1.0f;
+        //ppv_flow.weight = 0.0f;
+        //ppv_playerDamage.weight = 0.0f;
+        //globalLight.intensity = 0.75f;
     }
 }
