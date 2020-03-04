@@ -14,7 +14,7 @@ public class ColorRandomizer : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        animator.Play("clubLight", 0, Random.Range(0.0f, 1.0f));
+        //animator.Play("clubLight", 0, Random.Range(0.0f, 1.0f));
 
         light = gameObject.GetComponent<UnityEngine.Experimental.Rendering.LWRP.Light2D>();
         StartCoroutine(LerpRandomizedColor());
