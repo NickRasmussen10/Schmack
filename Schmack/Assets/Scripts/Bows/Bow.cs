@@ -47,7 +47,7 @@ public class Bow : MonoBehaviour
     [SerializeField] GameObject GO_referencePoint = null;
     [SerializeField] GameObject bigArrow = null;
 
-    Controls controls = null;
+    Controls controls = null; 
 
     Animator animator;
     SoundManager sound;
@@ -87,6 +87,7 @@ public class Bow : MonoBehaviour
                 if (powerInput == 0) Fire();
                 break;
             case State.fired:
+                state = State.idle;
                 break;
             default:
                 break;

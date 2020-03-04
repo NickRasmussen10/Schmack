@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -33275,16 +33275,6 @@ PrefabInstance:
       propertyPath: flowSlider
       value: 
       objectReference: {fileID: 668915598}
-    - target: {fileID: 4047745595035239455, guid: 52545a174b539a84dbc02cc73308018a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.026
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047745595035239455, guid: 52545a174b539a84dbc02cc73308018a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7172196165138337591, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
       propertyPath: m_Name
@@ -33345,8 +33335,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1413748086, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
+    - target: {fileID: 7692048282872551125, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: bdc320858aebe6345a9270e5621b6a7e, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
 --- !u!1 &1928144949
 GameObject:

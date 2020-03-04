@@ -393,7 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flowTestMode: 0
   flowForgivenessTime: 20
-  flowDepreciationRate: 0.25
+  flowDepreciationRate: 1
   flowAppreciationRate: 0.1
   acceleration_fast: 120
   maxSpeed_fast: 15
@@ -668,11 +668,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Default Bow
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: rechargeTime
-      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
         type: 3}
@@ -1229,6 +1224,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1972964435043581825, guid: a4ec8b8b7b700944bbe0944509fff90e,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2240726291098078792, guid: a4ec8b8b7b700944bbe0944509fff90e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1399,11 +1399,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 2
       objectReference: {fileID: 0}
-    - target: {fileID: 8205212843625282594, guid: a4ec8b8b7b700944bbe0944509fff90e,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8531647922478280870, guid: a4ec8b8b7b700944bbe0944509fff90e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1454,8 +1449,7 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 11
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1972964435043581825, guid: a4ec8b8b7b700944bbe0944509fff90e, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ec8b8b7b700944bbe0944509fff90e, type: 3}
 --- !u!1 &8532634142251768059 stripped
 GameObject:

@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         bowScript = currentBow.GetComponent<Bow>();
 
         //UI
-        bowText = GameObject.Find("BowText").GetComponent<Text>();
+        if(GameObject.Find("BowText").GetComponent<Text>()) bowText = GameObject.Find("BowText").GetComponent<Text>();
         displayArrows[0] = GameObject.Find("Arrow (0)").GetComponent<Image>();
         displayArrows[1] = GameObject.Find("Arrow (1)").GetComponent<Image>();
         displayArrows[2] = GameObject.Find("Arrow (2)").GetComponent<Image>();
