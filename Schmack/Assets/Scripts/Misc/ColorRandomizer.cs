@@ -23,12 +23,6 @@ public class ColorRandomizer : MonoBehaviour
         StartCoroutine(LerpRandomizedColor());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator LerpRandomizedColor()
     {
         float lerpVal = 0.0f;
