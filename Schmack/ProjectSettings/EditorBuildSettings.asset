@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/CloseQuarters-Test - Copy.unity
     guid: ee4bbd156ce99e340bd237ed3cc6e8be
+  - enabled: 0
+    path: Assets/Scenes/ObstacleCourse.unity
+    guid: 605b0f1ddd238d648ae1fad17d3a9d2b
   m_configObjects: {}
