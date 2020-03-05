@@ -93,16 +93,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "Enemy")
-        {
-            //Vector2 knockback = (gameObject.transform.position - collision.gameObject.transform.position).normalized * collision.gameObject.GetComponent<Enemy>().GetKnockback();
-            //gameObject.GetComponent<PlayerMovement>().AddKnockback(knockback, false);
-            //TakeDamage(25);
-        }
-    }
-
     void GoToNextBow()
     {
         int bowIndex = -1;

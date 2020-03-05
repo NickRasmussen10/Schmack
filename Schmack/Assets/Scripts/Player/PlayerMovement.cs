@@ -67,10 +67,6 @@ public class PlayerMovement : MonoBehaviour
     float movementLimiter = 1.0f; //multiplier applied to player's horizontal input
 
     //Animators for each of the player's animatable child objects
-    //NOTE: this implementation of animations will likely become obsolete with a blend tree based system
-    //Animator anim_legs;
-    //Animator anim_arms;
-    //Animator anim_spine;
     Animator animator;
 
     SoundManager sound;
@@ -86,9 +82,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         //get component references
-        //anim_legs = GameObject.Find("legs").GetComponent<Animator>();
-        //anim_arms = GameObject.Find("arms").GetComponent<Animator>();
-        //anim_spine = GameObject.Find("spine").GetComponent<Animator>();
         animator = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
 
@@ -111,7 +104,6 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleFlow();
         JoystickMovement();
-        HandleWallStick();
         SetPlayerState();
         UpdateAnimation();
     }
@@ -335,7 +327,10 @@ public class PlayerMovement : MonoBehaviour
             direction.x = inputRight > 0 ? 1 : -1;
         }
         //update player's scale to reflect their direction
-        transform.localScale = direction;
+        if((Vector2)transform.localScale != direction) transform.localScale = direction;
+        //float bowX = FindObjectOfType<Bow>().direction.x;
+        //if ((bowX < 0 && direction.x > 0) || (bowX > 0 && direction.x < 0)) FindObjectOfType<Bow>().FlipDirection();
+        
     }
 
     void Movement(float direction)
@@ -369,52 +364,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     void UpdateAnimation()
     {
-        bool isOnWall = collPacket_backLegs.isColliding ? true : false;
-
-        //set onGround bool of legs
-        //if (collPacket_ground.isColliding && !anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", true);
-        //else if (!collPacket_ground.isColliding && anim_legs.GetBool("onGround")) anim_legs.SetBool("onGround", false);
-        //animation.SetBool("onGround", collPacket_ground.isColliding ? true : false);
-
-        //set onGround bool of arms
-        //if (collPacket_ground.isColliding && !anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", true);
-        //else if (!collPacket_ground.isColliding && anim_arms.GetBool("onGround")) anim_arms.SetBool("onGround", false);
-
-        //set animators' speeds
-        //float speed = Mathf.Abs(rb.velocity.x);
-        //anim_legs.SetFloat("speed", speed);
-        //anim_arms.SetFloat("speed", speed);
-        //anim_spine.SetFloat("speed", speed);
         animator.SetFloat("speed", Mathf.Abs(rb.velocity.x));
-
-        //set onWall bool of legs
-        //if (isOnWall && !anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", true);
-        //else if (!isOnWall && anim_legs.GetBool("onWall")) anim_legs.SetBool("onWall", false);
-
-        ////set onWall bool of arms
-        //if (isOnWall && !anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", true);
-        //else if (!isOnWall && anim_arms.GetBool("onWall")) anim_arms.SetBool("onWall", false);
-    }
-
-    /// <summary>
-    /// handles detection and application of wall stick
-    /// </summary>
-    void HandleWallStick()
-    {
-        //if player is directly in front of wall and is off the ground, run wall stick
-        //if (collPacket_backLegs.isColliding && !collPacket_ground.isColliding && wallStick == null)
-        //{
-        //    wallStick = StartCoroutine(WallStick());
-        //}
-
-        //if player leaves wall, cancel wall stick
-        //if (state != PlayerState.wallSticking && wallStick != null)
-        //{
-        //    CancelWallStick();
-
-        //    //dereference wall stick to prep for future use
-        //    wallStick = null;
-        //}
     }
 
 

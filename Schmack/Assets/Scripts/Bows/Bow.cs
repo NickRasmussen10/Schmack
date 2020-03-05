@@ -96,7 +96,6 @@ public class Bow : MonoBehaviour
         if (state != State.drawn)
         {
             if(bigArrowSprite.size.x > 0) bigArrowSprite.size = new Vector2(0, 0.75f);
-            //if(Time.timeScale != timeScaleMax) Time.timeScale = timeScaleMax;
         }
     }
 
@@ -105,35 +104,38 @@ public class Bow : MonoBehaviour
 
     protected void HandleInput()
     {
-        direction = controls.Player.Aim.ReadValue<Vector2>();
-        //if (direction.sqrMagnitude > 0.1f) anim.SetBool("aim", true);
-        //else if (anim.GetBool("aim")) anim.SetBool("aim", false);
+        //Vector2 directionInput = controls.Player.Aim.ReadValue<Vector2>();
+        //if (state != State.drawn && directionInput.sqrMagnitude >= 0.81f) direction = directionInput;
 
+        //powerInput = controls.Player.Draw.ReadValue<float>();
+
+        //if (direction.sqrMagnitude == 0)
+        //    direction = gameObject.transform.parent.localScale.x == -1 ? Vector2.left : Vector2.right;
+
+        Vector2 directionInput = controls.Player.Aim.ReadValue<Vector2>();
         powerInput = controls.Player.Draw.ReadValue<float>();
 
-        if (direction.sqrMagnitude == 0)
-            direction = gameObject.transform.parent.localScale.x == -1 ? Vector2.left : Vector2.right;
+        if (powerInput < 1.0f)
+            if (directionInput.sqrMagnitude > 0.0f) direction = directionInput;
+            else StartCoroutine(DelayAimReset());
+        else
+        {
+            if (directionInput.sqrMagnitude > 0.81f) direction = directionInput;
+        }
+
+
     }
 
-    //protected void HandleFiring()
-    //{
+    IEnumerator DelayAimReset()
+    {
+        yield return new WaitForSecondsRealtime(0.05f);
+        direction = gameObject.transform.parent.localScale.x == -1 ? Vector2.left : Vector2.right;
+    }
 
-    //    if (numArrows > 0)
-    //    {
-    //        if (powerInput == 1 && !isDrawnBack)
-    //        {
-    //            DrawBack();
-    //        }
-    //        else if (powerInput == 0 && isDrawnBack)
-    //        {
-    //            Fire();
-    //        }
-    //    }
-    //    else
-    //    {
-    //        isDrawnBack = false;
-    //    }
-    //}
+    public void FlipDirection()
+    {
+        direction.x *= -1;
+    }
 
     void DrawBack()
     {
@@ -143,20 +145,11 @@ public class Bow : MonoBehaviour
             state = State.drawn;
         }
 
-        //if (!animator.GetBool("isDrawn"))
-        //{
-        //    anim.SetTrigger("draw");
-        //    anim.SetBool("isDrawn", true);
-        //    anim.SetBool("isFired", false);
-        //}
         animator.SetTrigger("draw");
 
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
         sound.Play("BowDraw", 0.85f, 1.15f);
         sound.Play("Rumble");
-
-        //StartCoroutine(TimeDilationDown());
-
     }
 
     void Fire()
@@ -166,8 +159,6 @@ public class Bow : MonoBehaviour
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
-        //anim.SetBool("isFired", true);
-        //anim.SetBool("isDrawn", false);
         animator.SetTrigger("fire");
 
         Time.timeScale = timeScaleMax;
@@ -185,8 +176,6 @@ public class Bow : MonoBehaviour
 
         sound.Stop("Rumble");
         sound.Play("BowFire", 0.85f, 1.15f);
-
-        //StartCoroutine(Temp_FireDelay());
     }
 
     public void EnableFire()
