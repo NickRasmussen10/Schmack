@@ -13,8 +13,11 @@ public class ColorRandomizer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-        //animator.Play("clubLight", 0, Random.Range(0.0f, 1.0f));
+        if (GetComponent<Animator>())
+        {
+            animator = GetComponent<Animator>();
+            animator.Play("clubLight", 0, Random.Range(0.0f, 1.0f));
+        }
 
         light = gameObject.GetComponent<UnityEngine.Experimental.Rendering.LWRP.Light2D>();
         StartCoroutine(LerpRandomizedColor());

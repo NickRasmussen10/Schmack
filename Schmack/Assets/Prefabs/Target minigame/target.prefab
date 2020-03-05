@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 7178167995311718294}
   - component: {fileID: 7178167995311718295}
   - component: {fileID: 4184154051392991736}
-  - component: {fileID: 3291201839108757195}
   m_Layer: 11
   m_Name: target
   m_TagString: Button
@@ -198,17 +197,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bounceSize: 0.003
---- !u!114 &3291201839108757195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7178167995311718292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69b422ba99b4b2b488d38353c81397e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waitTime: 0
-  rateOfChange: 5
