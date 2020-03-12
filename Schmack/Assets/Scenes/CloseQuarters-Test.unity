@@ -33275,6 +33275,16 @@ PrefabInstance:
       propertyPath: flowSlider
       value: 
       objectReference: {fileID: 668915598}
+    - target: {fileID: 2757633320128017949, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: flowLossStill
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757633320128017949, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: flowLossMoving
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7172196165138337591, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
       propertyPath: m_Name
