@@ -52,6 +52,9 @@ public class Bow : MonoBehaviour
     Animator animator;
     SoundManager sound;
 
+    //hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate
+    bool powershot = false; //is the current held shot a powershot? 
+
     private void Awake()
     {
 
@@ -104,14 +107,6 @@ public class Bow : MonoBehaviour
 
     protected void HandleInput()
     {
-        //Vector2 directionInput = controls.Player.Aim.ReadValue<Vector2>();
-        //if (state != State.drawn && directionInput.sqrMagnitude >= 0.81f) direction = directionInput;
-
-        //powerInput = controls.Player.Draw.ReadValue<float>();
-
-        //if (direction.sqrMagnitude == 0)
-        //    direction = gameObject.transform.parent.localScale.x == -1 ? Vector2.left : Vector2.right;
-
         Vector2 directionInput = controls.Player.Aim.ReadValue<Vector2>();
         powerInput = controls.Player.Draw.ReadValue<float>();
 
@@ -143,6 +138,7 @@ public class Bow : MonoBehaviour
         {
             StartCoroutine(DisplayBigArrow());
             state = State.drawn;
+            powershot = false;
         }
 
         animator.SetTrigger("draw");
@@ -165,6 +161,9 @@ public class Bow : MonoBehaviour
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
         GameObject newArrow = Instantiate(pref_arrow, GO_referencePoint.transform.position, GO_referencePoint.transform.rotation);
+        if (powershot) newArrow.GetComponent<Arrow>().SetPowerShot(true);
+
+        if (powershot) newArrow.transform.localScale *= 1.75f;
 
         if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
         else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
@@ -211,6 +210,7 @@ public class Bow : MonoBehaviour
         {
             Time.timeScale = timeScaleMin;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            powershot = true;
         }
     }
 

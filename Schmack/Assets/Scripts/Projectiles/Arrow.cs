@@ -6,6 +6,9 @@ public class Arrow : Projectile
 {
     [SerializeField] TrailRenderer trail = null;
 
+    bool isPowerShot = false;
+    public void SetPowerShot(bool value) { isPowerShot = value; }
+
     // Start is called before the first frame update
     protected new virtual void Start()
     {
@@ -60,6 +63,7 @@ public class Arrow : Projectile
             //parent arrow to enemy and apply damage to enemy
             transform.parent = collision.gameObject.GetComponentsInChildren<Transform>()[1]; //have to parent arrow to root object so it moves with animations, DISGUSTIN'
             collision.gameObject.SendMessage("TakeDamage", 0.5f);
+            if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.5f);
         }
         //if arrow hits an interactable
         else if (collision.gameObject.tag == "Interactable")
@@ -76,8 +80,9 @@ public class Arrow : Projectile
 
         Vector3 randomization = (Vector2)rb.velocity.normalized * Random.Range(-0.25f, 0.25f);
 
-        //destroy arrow's rigid body
+        //destroy arrow's rigid body and arrow component
         Destroy(rb);
+        Destroy(this);
 
         //snap arrow to point of collision
         transform.position = collisionPoint + randomization;

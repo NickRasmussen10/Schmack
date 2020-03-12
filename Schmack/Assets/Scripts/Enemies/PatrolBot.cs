@@ -179,7 +179,7 @@ public class PatrolBot : MonoBehaviour
 
         //activeCoroutine = null;
 
-        StartCoroutine(Fire());
+        //StartCoroutine(Fire());
 
         while(state == State.attack)
         {

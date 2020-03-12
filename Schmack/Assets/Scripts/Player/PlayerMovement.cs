@@ -11,9 +11,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool flowTestMode = false;
 
     [Header("Flow")]
-    [SerializeField] float flowForgivenessTime = 1.0f; //how much time can the player stand still before they start losing flow
-    [SerializeField] float flowDepreciationRate = 1.0f; //how fast the flow drains when player is moving too slow
-    [SerializeField] float flowAppreciationRate = 1.0f; //how fast flow returns to the player when they are moving fast enough
+    [SerializeField] float flowGainPerShot = 1.0f;
+    [SerializeField] float flowLossMoving = 1.0f;
+    [SerializeField] float flowLossStill = 1.0f;
+
 
     [Header("Movement - Flow")]
     [SerializeField] float acceleration_fast = 8;
@@ -41,8 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     float flowJuice = 1.0f; //how much spendable flow the player has
     public bool inFlow = false;
-    float flowTimer = 0.0f; //keeps track of how long the player has been stalled for
-    float flowThreshold = 0.0f; //how slow the player needs to be going to lose flow
+    //float flowTimer = 0.0f; //keeps track of how long the player has been stalled for
 
     enum PlayerState
     {
@@ -89,10 +89,10 @@ public class PlayerMovement : MonoBehaviour
 
         //set flow variables
         inFlow = false;
+        flowSlider.value = flowJuice;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
-        flowThreshold = maxSpeed_slow * maxSpeed_slow * 0.5f;
 
         //set misc. player info
         state = PlayerState.idle;
@@ -102,7 +102,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleFlow();
         JoystickMovement();
         SetPlayerState();
         UpdateAnimation();
@@ -158,48 +157,94 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// Handles logic surrounding flow state, including switching states and managing states
     /// </summary>
-    void HandleFlow()
+    //void HandleFlow()
+    //{
+    //    //if player is in flow and it not moving fast enough, start countdown to losing flow
+    //    if (rb.velocity.sqrMagnitude < flowThreshold)
+    //    {
+    //        StartCoroutine(FlowCountdown());
+    //    }
+
+    //    //if player is in flow and moving fast enough
+    //    if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
+    //    {
+    //        //reset flow countdown
+    //        StopCoroutine(FlowCountdown());
+    //        flowTimer = flowForgivenessTime;
+    //        flowJuice += Time.deltaTime * flowAppreciationRate;
+    //        if (flowJuice > 1.0f) flowJuice = 1.0f;
+    //    }
+    //    //if flow forgiveness timer is up
+    //    else if (flowTimer == 0 && flowJuice > 0.0f && inFlow)
+    //    {
+    //        //depreciate flow
+    //        flowJuice -= Time.deltaTime * flowDepreciationRate;
+    //        if (flowJuice < 0.0f) flowJuice = 0.0f;
+    //    }
+
+    //    if (inFlow)
+    //    {
+    //        if(rb.velocity.sqrMagnitude >= flowThreshold)
+    //        {
+    //            StopCoroutine(FlowCountdown());
+    //            flowTimer = flowForgivenessTime;
+    //            flowJuice -= Time.deltaTime * flowAppreciationRate;
+    //        }
+    //        else
+    //        {
+
+    //        }
+    //    }
+
+
+    //    //if player is in flow and is out of flow resource, end flow
+    //    if (flowJuice == 0 && inFlow)
+    //    {
+    //        FlowChange();
+    //    }
+
+    //    flowSlider.value = flowJuice;
+
+
+    //    //flow testing mode
+    //    //if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
+    //    //if (flowTestMode && !inFlow)
+    //    //{
+    //    //    FlowChange();
+    //    //}
+    //}
+
+    IEnumerator HandleFlow()
     {
-        //if player is in flow and it not moving fast enough, start countdown to losing flow
-        if (rb.velocity.sqrMagnitude < flowThreshold)
+        float timer = 0.0f;
+
+        while (inFlow)
         {
-            StartCoroutine(FlowCountdown());
+            if(rb.velocity.sqrMagnitude == 0.0f)
+            {
+                timer += Time.deltaTime;
+                if (timer < 1.5f) flowJuice -= Time.deltaTime * flowLossStill; // <-- yucky magic number
+                flowSlider.value = flowJuice;
+            }
+            else
+            {
+                if (timer != 0.0f) timer = 0.0f;
+                flowJuice -= Time.deltaTime * flowLossMoving;
+                flowSlider.value = flowJuice;
+            }
+
+            if(flowJuice <= 0)
+            {
+                flowJuice = 0.0f;
+                FlowChange();
+            }
+            yield return null;
         }
 
-        //if player is in flow and moving fast enough
-        if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
-        {
-            //reset flow countdown
-            StopCoroutine(FlowCountdown());
-            flowTimer = flowForgivenessTime;
-            flowJuice += Time.deltaTime * flowAppreciationRate;
-            if (flowJuice > 1.0f) flowJuice = 1.0f;
-        }
-        //if flow forgiveness timer is up
-        else if (flowTimer == 0 && flowJuice > 0.0f && inFlow)
-        {
-            //depreciate flow
-            flowJuice -= Time.deltaTime * flowDepreciationRate;
-            if (flowJuice < 0.0f) flowJuice = 0.0f;
-        }
-
-
-        //if player is in flow and is out of flow resource, end flow
-        if (flowJuice == 0 && inFlow)
-        {
-            FlowChange();
-        }
-
-        flowSlider.value = flowJuice;
-
-
-        //flow testing mode
-        //if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
-        //if (flowTestMode && !inFlow)
-        //{
-        //    FlowChange();
-        //}
+        yield return null;
     }
+
+    public void AddFlow(float gain) { flowJuice += gain; flowSlider.value = flowJuice; }
 
     void TryFlow()
     {
@@ -219,15 +264,15 @@ public class PlayerMovement : MonoBehaviour
     /// Gives a delay of flowForgivenessTime seconds
     /// </summary>
     /// <returns></returns>
-    IEnumerator FlowCountdown()
-    {
-        while (flowTimer > 0)
-        {
-            flowTimer -= Time.deltaTime;
-            if (flowTimer < 0) flowTimer = 0;
-            yield return null;
-        }
-    }
+    //IEnumerator FlowCountdown()
+    //{
+    //    while (flowTimer > 0)
+    //    {
+    //        flowTimer -= Time.deltaTime;
+    //        if (flowTimer < 0) flowTimer = 0;
+    //        yield return null;
+    //    }
+    //}
 
 
 
@@ -238,7 +283,7 @@ public class PlayerMovement : MonoBehaviour
     {
         inFlow = !inFlow;
 
-        if (inFlow) StartCoroutine(FlerpToFlow());
+        if (inFlow) { StartCoroutine(FlerpToFlow()); StartCoroutine(HandleFlow()); }
         else StartCoroutine(FlerpToReality());
     }
 
