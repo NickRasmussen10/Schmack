@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float wallJumpLimiter = 1.0f; //how much force is taken away from the verticality of a wall jump
     [SerializeField] float WallJumpDimishRate = 0.25f;
     float wallJumpLimiterMin = 1.0f;
+    float wallStickDirectionSave = 0.0f;
 
     [Header("References :(")]
     [SerializeField] Slider flowSlider = null; //UI element for flow
@@ -322,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector2(0.0f, jumpForce));
         }
         else if (state == PlayerState.wallSticking)
-        {
+        { 
             //negate player's current momentum, apply force upwards and away from the wall
             rb.velocity = Vector2.zero;
             if (inFlow)
@@ -333,7 +334,8 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
-                wallJumpLimiter += WallJumpDimishRate;
+                if (wallStickDirectionSave == transform.localScale.x) wallJumpLimiter += WallJumpDimishRate;
+                wallStickDirectionSave = transform.localScale.x;
             }
             CancelWallStick();
         }

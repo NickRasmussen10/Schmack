@@ -3345,7 +3345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderID: Light
-  reciever: {fileID: 2110126648}
+  recievers: []
 --- !u!1 &970764264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3731,6 +3731,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4699493844344984544, guid: c6b12d1fd03c1c146a2cd5679837995d,
     type: 3}
   m_PrefabInstance: {fileID: 2955795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1185534234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 95423769950672742, guid: 52545a174b539a84dbc02cc73308018a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1886640561}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1199868055 stripped
 Transform:
@@ -33285,6 +33291,41 @@ PrefabInstance:
       propertyPath: flowLossMoving
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 2757633320128017949, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: horizontalForce
+      value: 1500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757633320128017949, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: WallJumpDimishRate
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757633320128017949, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: wallJumpLimiter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113550414997653366, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: rechargeTime
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4934228852730721799, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: recievers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6187645895505341573, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: recievers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6187645895505341573, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: recievers.Array.data[1]
+      value: 
+      objectReference: {fileID: 1185534234}
     - target: {fileID: 7172196165138337591, guid: 52545a174b539a84dbc02cc73308018a,
         type: 3}
       propertyPath: m_Name
@@ -33350,6 +33391,16 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bdc320858aebe6345a9270e5621b6a7e, type: 2}
+    - target: {fileID: 8378446052456934648, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: recievers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378446052456934648, guid: 52545a174b539a84dbc02cc73308018a,
+        type: 3}
+      propertyPath: recievers.Array.data[1]
+      value: 
+      objectReference: {fileID: 1185534234}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52545a174b539a84dbc02cc73308018a, type: 3}
 --- !u!1 &1928144949
@@ -33628,7 +33679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderID: Top
-  reciever: {fileID: 0}
+  recievers: []
 --- !u!61 &1996360664
 BoxCollider2D:
   m_ObjectHideFlags: 0
