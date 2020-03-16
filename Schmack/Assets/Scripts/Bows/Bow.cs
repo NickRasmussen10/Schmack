@@ -55,11 +55,6 @@ public class Bow : MonoBehaviour
     //hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate
     bool powershot = false; //is the current held shot a powershot? 
 
-    private void Awake()
-    {
-
-    }
-
     // Start is called before the first frame update
     protected void Start()
     {
@@ -67,7 +62,7 @@ public class Bow : MonoBehaviour
 
         Activate();
         timeScale = timeScaleMax;
-
+        StartCoroutine(BowRecharge());
 
         numArrows = maxArrows;
 
@@ -214,25 +209,36 @@ public class Bow : MonoBehaviour
         }
     }
 
-    void BowRecharge()
+    //void BowRecharge()
+    //{
+    //    if (numArrows < maxArrows)
+    //    {
+    //        numArrows++;
+    //    }
+    //}
+
+    IEnumerator BowRecharge()
     {
-        if (numArrows < maxArrows)
+        while (true)
         {
-            numArrows++;
+            if(numArrows < maxArrows)
+            {
+                yield return new WaitForSeconds(rechargeTime);
+                numArrows++;
+            }
+            yield return null;
         }
     }
 
     public void Activate()
     {
         gameObject.SetActive(true);
-        InvokeRepeating("BowRecharge", rechargeTime, rechargeTime);
         bigArrowSprite = bigArrow.GetComponent<SpriteRenderer>();
         state = State.idle;
     }
 
     public void Deactivate()
     {
-        CancelInvoke();
         gameObject.SetActive(false);
     }
 }
