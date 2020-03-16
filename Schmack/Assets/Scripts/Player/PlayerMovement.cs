@@ -154,66 +154,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Handles logic surrounding flow state, including switching states and managing states
-    /// </summary>
-    //void HandleFlow()
-    //{
-    //    //if player is in flow and it not moving fast enough, start countdown to losing flow
-    //    if (rb.velocity.sqrMagnitude < flowThreshold)
-    //    {
-    //        StartCoroutine(FlowCountdown());
-    //    }
-
-    //    //if player is in flow and moving fast enough
-    //    if (rb.velocity.sqrMagnitude >= flowThreshold && flowJuice < 1.0f)
-    //    {
-    //        //reset flow countdown
-    //        StopCoroutine(FlowCountdown());
-    //        flowTimer = flowForgivenessTime;
-    //        flowJuice += Time.deltaTime * flowAppreciationRate;
-    //        if (flowJuice > 1.0f) flowJuice = 1.0f;
-    //    }
-    //    //if flow forgiveness timer is up
-    //    else if (flowTimer == 0 && flowJuice > 0.0f && inFlow)
-    //    {
-    //        //depreciate flow
-    //        flowJuice -= Time.deltaTime * flowDepreciationRate;
-    //        if (flowJuice < 0.0f) flowJuice = 0.0f;
-    //    }
-
-    //    if (inFlow)
-    //    {
-    //        if(rb.velocity.sqrMagnitude >= flowThreshold)
-    //        {
-    //            StopCoroutine(FlowCountdown());
-    //            flowTimer = flowForgivenessTime;
-    //            flowJuice -= Time.deltaTime * flowAppreciationRate;
-    //        }
-    //        else
-    //        {
-
-    //        }
-    //    }
-
-
-    //    //if player is in flow and is out of flow resource, end flow
-    //    if (flowJuice == 0 && inFlow)
-    //    {
-    //        FlowChange();
-    //    }
-
-    //    flowSlider.value = flowJuice;
-
-
-    //    //flow testing mode
-    //    //if (Input.GetButton("Jump") && Input.GetButton("Flow") && Input.GetButton("SwapWeapon")) flowTestMode = !flowTestMode;
-    //    //if (flowTestMode && !inFlow)
-    //    //{
-    //    //    FlowChange();
-    //    //}
-    //}
-
     IEnumerator HandleFlow()
     {
         float timer = 0.0f;
@@ -223,7 +163,8 @@ public class PlayerMovement : MonoBehaviour
             if(rb.velocity.sqrMagnitude == 0.0f)
             {
                 timer += Time.deltaTime;
-                if (timer < 1.5f) flowJuice -= Time.deltaTime * flowLossStill; // <-- yucky magic number
+                if (timer > 0.5f) flowJuice -= Time.deltaTime * flowLossStill; // <-- yucky magic number
+                else flowJuice -= Time.deltaTime * flowLossMoving;
                 flowSlider.value = flowJuice;
             }
             else
@@ -259,22 +200,6 @@ public class PlayerMovement : MonoBehaviour
             FlowChange();
         }
     }
-
-    /// <summary>
-    /// Gives a delay of flowForgivenessTime seconds
-    /// </summary>
-    /// <returns></returns>
-    //IEnumerator FlowCountdown()
-    //{
-    //    while (flowTimer > 0)
-    //    {
-    //        flowTimer -= Time.deltaTime;
-    //        if (flowTimer < 0) flowTimer = 0;
-    //        yield return null;
-    //    }
-    //}
-
-
 
     /// <summary>
     /// handles swapping between vibe state and yuck state
