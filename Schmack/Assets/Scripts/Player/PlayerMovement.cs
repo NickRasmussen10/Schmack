@@ -323,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //negate player's current momentum, apply force upwards and away from the wall
             rb.velocity = Vector2.zero;
-            rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
+            rb.AddForce(new Vector2((inFlow ? horizontalForce : horizontalForce * 2f) * direction.x, jumpForce / (inFlow ? wallJumpLimiter : wallJumpLimiter * 1.25f)));
             CancelWallStick();
         }
     }
