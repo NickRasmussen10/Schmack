@@ -47,6 +47,8 @@ public class Bow : MonoBehaviour
     [SerializeField] GameObject GO_referencePoint = null;
     [SerializeField] GameObject bigArrow = null;
 
+    Coroutine recharge;
+
     Controls controls = null; 
 
     Animator animator;
@@ -62,7 +64,6 @@ public class Bow : MonoBehaviour
 
         Activate();
         timeScale = timeScaleMax;
-        StartCoroutine(BowRecharge());
 
         numArrows = maxArrows;
 
@@ -240,5 +241,31 @@ public class Bow : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
+    }
+
+    void GetCollisionReportGround(CollisionPacket packet)
+    {
+        if (packet.isColliding && recharge == null)
+        {
+            recharge = StartCoroutine(BowRecharge());
+        }
+        else if(!packet.isColliding && recharge != null)
+        {
+            StopCoroutine(recharge);
+            recharge = null;
+        }
+    }
+
+    void GetCollisionReportBackLegs(CollisionPacket packet)
+    {
+        if (packet.isColliding && recharge == null)
+        {
+            recharge = StartCoroutine(BowRecharge());
+        }
+        else if(!packet.isColliding && recharge != null)
+        {
+            StopCoroutine(recharge);
+            recharge = null;
+        }
     }
 }
