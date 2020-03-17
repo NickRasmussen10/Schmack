@@ -11,8 +11,7 @@ public class Player : MonoBehaviour
     /// </summary>
     /// 
     Text bowText = null;
-    [SerializeField] List<Image> displayArrows = new List<Image>();
-    [SerializeField] SpriteRenderer bigsad;
+    List<Image> displayArrows = new List<Image>();
 
     PlayerMovement playerMovement = null;
     [SerializeField] GameObject rotator = null;

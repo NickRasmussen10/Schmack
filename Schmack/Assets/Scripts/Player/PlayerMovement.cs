@@ -72,15 +72,12 @@ public class PlayerMovement : MonoBehaviour
 
     SoundManager sound;
 
-    private void Awake()
-    {
-        Inputs.controls.Player.Jump.performed += jump => Jump();
-        Inputs.controls.Player.Flow.performed += flow => TryFlow();
-    }
-
     // Start is called before the first frame update
     void Start()
     {
+        Inputs.controls.Player.Jump.performed += jump => Jump();
+        Inputs.controls.Player.Flow.performed += flow => TryFlow();
+
         //get component references
         animator = GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
