@@ -49,8 +49,6 @@ public class Bow : MonoBehaviour
 
     Coroutine recharge;
 
-    Controls controls = null; 
-
     Animator animator;
     SoundManager sound;
 
@@ -60,7 +58,6 @@ public class Bow : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
-        controls = transform.parent.gameObject.GetComponent<PlayerMovement>().controls;
 
         Activate();
         timeScale = timeScaleMax;
@@ -103,8 +100,8 @@ public class Bow : MonoBehaviour
 
     protected void HandleInput()
     {
-        Vector2 directionInput = controls.Player.Aim.ReadValue<Vector2>();
-        powerInput = controls.Player.Draw.ReadValue<float>();
+        Vector2 directionInput = Inputs.controls.Player.Aim.ReadValue<Vector2>();
+        powerInput = Inputs.controls.Player.Draw.ReadValue<float>();
 
         if (powerInput < 1.0f)
             if (directionInput.sqrMagnitude > 0.0f) direction = directionInput;
