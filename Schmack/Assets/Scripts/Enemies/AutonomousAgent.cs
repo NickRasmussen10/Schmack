@@ -5,6 +5,7 @@ using UnityEngine;
 public class AutonomousAgent : MonoBehaviour
 {
     [SerializeField] Transform target;
+    [SerializeField] float mass;
     [SerializeField] float maxSpeed;
     Rigidbody2D rb;
 
@@ -18,11 +19,11 @@ public class AutonomousAgent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.AddForce(Seek(target.position));
+        transform.Translate(Seek(target.position));
     }
 
     Vector3 Seek(Vector3 target)
     {
-        return (target - transform.position) * maxSpeed * Time.deltaTime;
+        return ((target - transform.position) * maxSpeed * Time.deltaTime) / mass;
     }
 }
