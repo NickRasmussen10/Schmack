@@ -38,8 +38,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 GetVelocity() { return rb.velocity; }
     public Vector2 GetDirection() { return rb.velocity.normalized; }
 
-    public Controls controls = null;
-
     float flowJuice = 1.0f; //how much spendable flow the player has
     public bool inFlow = false;
     //float flowTimer = 0.0f; //keeps track of how long the player has been stalled for
@@ -73,9 +71,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        controls = new Controls();
-        controls.Player.Jump.performed += jump => Jump();
-        controls.Player.Flow.performed += flow => TryFlow();
+        Inputs.controls.Player.Jump.performed += jump => Jump();
+        Inputs.controls.Player.Flow.performed += flow => TryFlow();
     }
 
     // Start is called before the first frame update
@@ -110,15 +107,6 @@ public class PlayerMovement : MonoBehaviour
     public void EnableFire()
     {
         GetComponentInChildren<Bow>().EnableFire();
-    }
-
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 
     /// <summary>
@@ -337,8 +325,8 @@ public class PlayerMovement : MonoBehaviour
     void JoystickMovement()
     {
         //add a force to the player based on horizontal movement of the left joystick, the player's currect acceleration, and the movement limiter factor
-        float inputLeft = controls.Player.Move.ReadValue<float>();
-        float inputRight = controls.Player.Aim.ReadValue<Vector2>().x;
+        float inputLeft = Inputs.controls.Player.Move.ReadValue<float>();
+        float inputRight = Inputs.controls.Player.Aim.ReadValue<Vector2>().x;
         rb.AddForce(new Vector2(inputLeft * acceleration * movementLimiter, 0.0f));
         if (!collPacket_backLegs.isColliding && ((direction.x > 0 && inputLeft < 0) || (direction.x < 0 && inputLeft > 0)))
         {

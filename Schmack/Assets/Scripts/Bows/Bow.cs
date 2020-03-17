@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class Bow : MonoBehaviour
 {
-    SpriteRenderer bigArrowSprite;
     bool fireOnRightTrigger = true;
 
     public Vector2 direction;
@@ -47,8 +46,6 @@ public class Bow : MonoBehaviour
     [SerializeField] GameObject GO_referencePoint = null;
     [SerializeField] GameObject bigArrow = null;
 
-    Controls controls = null; 
-
     Animator animator;
     SoundManager sound;
 
@@ -63,8 +60,6 @@ public class Bow : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
-        controls = transform.parent.gameObject.GetComponent<PlayerMovement>().controls;
-
         Activate();
         timeScale = timeScaleMax;
 
@@ -95,11 +90,6 @@ public class Bow : MonoBehaviour
             default:
                 break;
         }
-
-        if (state != State.drawn)
-        {
-            if(bigArrowSprite.size.x > 0) bigArrowSprite.size = new Vector2(0, 0.75f);
-        }
     }
 
 
@@ -107,8 +97,8 @@ public class Bow : MonoBehaviour
 
     protected void HandleInput()
     {
-        Vector2 directionInput = controls.Player.Aim.ReadValue<Vector2>();
-        powerInput = controls.Player.Draw.ReadValue<float>();
+        Vector2 directionInput = Inputs.controls.Player.Aim.ReadValue<Vector2>();
+        powerInput = Inputs.controls.Player.Draw.ReadValue<float>();
 
         if (powerInput < 1.0f)
             if (directionInput.sqrMagnitude > 0.0f) direction = directionInput;
@@ -136,7 +126,6 @@ public class Bow : MonoBehaviour
     {
         if (state != State.drawn)
         {
-            StartCoroutine(DisplayBigArrow());
             state = State.drawn;
             powershot = false;
         }
@@ -187,21 +176,6 @@ public class Bow : MonoBehaviour
         state = State.idle;
     }
 
-    IEnumerator DisplayBigArrow()
-    {
-        SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
-        Vector2 size = sr.size;
-        while (size.x < 2.5)
-        {
-            size.x += 0.15f;
-            if (size.x > 2.5f) size.x = 2.5f;
-            sr.size = size;
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-
-
     int frameDelay = 0; // I hate this, I wish it was a coroutine, but the coroutine was causing some pretty serious bugs
     void TimeDilationDown()
     {
@@ -226,7 +200,6 @@ public class Bow : MonoBehaviour
     {
         gameObject.SetActive(true);
         InvokeRepeating("BowRecharge", rechargeTime, rechargeTime);
-        bigArrowSprite = bigArrow.GetComponent<SpriteRenderer>();
         state = State.idle;
     }
 
