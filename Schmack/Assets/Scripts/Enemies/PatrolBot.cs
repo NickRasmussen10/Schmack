@@ -25,6 +25,7 @@ public class PatrolBot : MonoBehaviour
         dead
     }
     State state;
+    public bool IsDead() { return state == State.dead; }
 
     Coroutine activeCoroutine;
     CollisionPacket coll_ground;

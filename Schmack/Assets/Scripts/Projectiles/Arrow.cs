@@ -63,7 +63,7 @@ public class Arrow : Projectile
             //parent arrow to enemy and apply damage to enemy
             transform.parent = collision.gameObject.GetComponentsInChildren<Transform>()[1]; //have to parent arrow to root object so it moves with animations, DISGUSTIN'
             collision.gameObject.SendMessage("TakeDamage", 0.5f);
-            if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.5f);
+            if(!collision.gameObject.GetComponent<PatrolBot>().IsDead()) if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.15f); //patrolbot thing is ew yucky gross and i don't like it
         }
         //if arrow hits an interactable
         else if (collision.gameObject.tag == "Interactable")
