@@ -127,6 +127,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4184154051392991736, guid: fd463fa69b35594489decc0995374b36,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7178167995311718289, guid: fd463fa69b35594489decc0995374b36,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -295,6 +300,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScenePackage
       objectReference: {fileID: 0}
+    - target: {fileID: 1814205485309463184, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -41.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1814205485309463184, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -28.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3171184975352593523, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -353,12 +368,12 @@ PrefabInstance:
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -40.4
+      value: -40.5
       objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -19.93
+      value: -20.77
       objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223233, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
@@ -455,6 +470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1739885790}
+  mass: 1
   maxSpeed: 10
 --- !u!212 &1961338678
 SpriteRenderer:
