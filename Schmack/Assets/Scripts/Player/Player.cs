@@ -19,11 +19,11 @@ public class Player : MonoBehaviour
     [SerializeField] float maxHealth = 1.0f;
     float health;
 
-    [SerializeField] GameObject[] bows = null;
+    //[SerializeField] GameObject[] bows = null;
     public GameObject currentBow;
     Bow bowScript;
 
-    public SpriteRenderer bowSprite;
+    [HideInInspector] public SpriteRenderer bowSprite;
 
     CameraManager cameraManager;
 
@@ -33,14 +33,14 @@ public class Player : MonoBehaviour
         playerMovement = gameObject.GetComponent<PlayerMovement>();
         health = maxHealth;
 
-        currentBow = bows[0];
+        //currentBow = bows[0];
         bowScript = currentBow.GetComponent<Bow>();
 
         //UI
         if(GameObject.Find("BowText").GetComponent<Text>()) bowText = GameObject.Find("BowText").GetComponent<Text>();
-        displayArrows[0] = GameObject.Find("Arrow (0)").GetComponent<Image>();
-        displayArrows[1] = GameObject.Find("Arrow (1)").GetComponent<Image>();
-        displayArrows[2] = GameObject.Find("Arrow (2)").GetComponent<Image>();
+        displayArrows.Add(GameObject.Find("Arrow (0)").GetComponent<Image>());
+        displayArrows.Add(GameObject.Find("Arrow (1)").GetComponent<Image>());
+        displayArrows.Add(GameObject.Find("Arrow (2)").GetComponent<Image>());
 
         bowText.text = currentBow.name;
         cameraManager = FindObjectOfType<CameraManager>();
@@ -92,21 +92,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    void GoToNextBow()
-    {
-        int bowIndex = -1;
-        for(int i = 0; i < bows.Length; i++)
-        {
-            if (currentBow == bows[i]) bowIndex = i;
-        }
-        bowIndex++;
-        if (bowIndex == bows.Length) bowIndex = 0;
-        currentBow.SetActive(false);
-        currentBow = bows[bowIndex];
-        bowScript = currentBow.GetComponent<Bow>();
-        bowText.text = currentBow.name;
-        currentBow.SetActive(true);
-    }
+    //void GoToNextBow()
+    //{
+    //    int bowIndex = -1;
+    //    for(int i = 0; i < bows.Length; i++)
+    //    {
+    //        if (currentBow == bows[i]) bowIndex = i;
+    //    }
+    //    bowIndex++;
+    //    if (bowIndex == bows.Length) bowIndex = 0;
+    //    currentBow.SetActive(false);
+    //    currentBow = bows[bowIndex];
+    //    bowScript = currentBow.GetComponent<Bow>();
+    //    bowText.text = currentBow.name;
+    //    currentBow.SetActive(true);
+    //}
 
 
     public void TakeDamage(float damage)

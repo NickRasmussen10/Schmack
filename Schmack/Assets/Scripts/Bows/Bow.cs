@@ -41,11 +41,10 @@ public class Bow : MonoBehaviour
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
-    public float timeScale;
+    [HideInInspector] public float timeScale;
 
     [Header("Gross Yucky References")]
-    [SerializeField] GameObject GO_referencePoint = null;
-    [SerializeField] GameObject bigArrow = null;
+    [SerializeField] Transform referencePoint = null;
 
     Coroutine recharge;
 
@@ -88,11 +87,6 @@ public class Bow : MonoBehaviour
             default:
                 break;
         }
-
-        if (state != State.drawn)
-        {
-            if(bigArrowSprite.size.x > 0) bigArrowSprite.size = new Vector2(0, 0.75f);
-        }
     }
 
 
@@ -129,7 +123,6 @@ public class Bow : MonoBehaviour
     {
         if (state != State.drawn)
         {
-            StartCoroutine(DisplayBigArrow());
             state = State.drawn;
             powershot = false;
         }
@@ -153,7 +146,7 @@ public class Bow : MonoBehaviour
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
-        GameObject newArrow = Instantiate(pref_arrow, GO_referencePoint.transform.position, GO_referencePoint.transform.rotation);
+        GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
         if (powershot) newArrow.GetComponent<Arrow>().SetPowerShot(true);
 
         if (powershot) newArrow.transform.localScale *= 1.75f;
@@ -178,19 +171,6 @@ public class Bow : MonoBehaviour
     public void LoadNextArrow()
     {
         state = State.idle;
-    }
-
-    IEnumerator DisplayBigArrow()
-    {
-        SpriteRenderer sr = bigArrow.GetComponent<SpriteRenderer>();
-        Vector2 size = sr.size;
-        while (size.x < 2.5)
-        {
-            size.x += 0.15f;
-            if (size.x > 2.5f) size.x = 2.5f;
-            sr.size = size;
-            yield return new WaitForEndOfFrame();
-        }
     }
 
 
@@ -231,7 +211,6 @@ public class Bow : MonoBehaviour
     public void Activate()
     {
         gameObject.SetActive(true);
-        bigArrowSprite = bigArrow.GetComponent<SpriteRenderer>();
         state = State.idle;
     }
 
