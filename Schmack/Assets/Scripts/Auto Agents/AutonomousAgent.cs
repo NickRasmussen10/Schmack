@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class AutonomousAgent : MonoBehaviour
 {
-    [SerializeField] Transform target;
-    [SerializeField] float mass;
-    [SerializeField] float maxSpeed;
-    Rigidbody2D rb;
+    [SerializeField] protected float mass;
+    [SerializeField] protected float maxSpeed;
+    protected Rigidbody2D rb;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0.0f;
@@ -19,11 +18,11 @@ public class AutonomousAgent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Seek(target.position));
+
     }
 
-    Vector3 Seek(Vector3 target)
+    protected Vector3 Seek(Vector3 target)
     {
-        return ((target - transform.position) * maxSpeed * Time.deltaTime) / mass;
+        return ((target - transform.position).normalized * maxSpeed * Time.deltaTime) / mass;
     }
 }
