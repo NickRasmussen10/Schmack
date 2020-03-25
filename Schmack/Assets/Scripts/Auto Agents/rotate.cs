@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Leader : AutonomousAgent
+public class rotate : MonoBehaviour
 {
+    [SerializeField] float rotationSpeed;
 
     // Start is called before the first frame update
-    protected override void Start()
+    void Start()
     {
-        base.Start();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        transform.Rotate(0.0f, 0.0f, rotationSpeed);
     }
 }

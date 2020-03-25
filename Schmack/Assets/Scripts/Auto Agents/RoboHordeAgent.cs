@@ -7,7 +7,9 @@ public class RoboHordeAgent : AutonomousAgent
     [SerializeField] List<Transform> pathway = new List<Transform>();
     [SerializeField] Transform leader;
     [SerializeField] float lookAheadDistance = 1.0f;
-    int targetIndex = 0;
+    [SerializeField] Transform[] targets;
+    Transform target;
+    int pathIndex = 0;
 
     enum BotType
     {
@@ -20,6 +22,10 @@ public class RoboHordeAgent : AutonomousAgent
     protected override void Start()
     {
         base.Start();
+        if(role == BotType.follower)
+        {
+            target = targets[Random.Range(0, 2)];
+        }
     }
 
     // Update is called once per frame
@@ -28,22 +34,22 @@ public class RoboHordeAgent : AutonomousAgent
         switch (role)
         {
             case BotType.leader:
-                ApplyForce(GetSeekForce(pathway[targetIndex].position));
+                ApplyForce(GetSeekForce(pathway[pathIndex].position));
 
-                if ((pathway[targetIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
+                if ((pathway[pathIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
                 {
-                    if (targetIndex == pathway.Count - 1)
+                    if (pathIndex == pathway.Count - 1)
                     {
-                        targetIndex = 0;
+                        pathIndex = 0;
                     }
                     else
                     {
-                        targetIndex++;
+                        pathIndex++;
                     }
                 }
                 break;
             case BotType.follower:
-                ApplyForce(GetSeekForce(leader.position));
+                ApplyForce(GetSeekForce(target.position));
                 break;
             default:
                 break;
