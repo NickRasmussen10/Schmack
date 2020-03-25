@@ -417,6 +417,7 @@ public class PlayerMovement : MonoBehaviour
         collPacket_ground = packet;
         if (packet.isColliding)
         {
+            Debug.Log("the heck");
             CancelWallStick();
             StartCoroutine(Rumble.BurstRumble(0.5f, 0.1f));
             wallJumpLimiter = wallJumpLimiterMin;

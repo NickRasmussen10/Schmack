@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     List<Image> displayArrows = new List<Image>();
 
     PlayerMovement playerMovement = null;
-    [SerializeField] GameObject rotator = null;
+    //[SerializeField] GameObject rotator = null;
 
     [SerializeField] float maxHealth = 1.0f;
     float health;
@@ -66,12 +66,12 @@ public class Player : MonoBehaviour
 
         if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
         {
-            rotator.transform.right = Vector2.right;
+            //rotator.transform.right = Vector2.right;
         }
         else
         {
-            rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
-            if (transform.localScale.x == -1) rotator.transform.right *= -1;
+            //rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
+            //if (transform.localScale.x == -1) rotator.transform.right *= -1;
         }
 
         DisplayArrowCount();
