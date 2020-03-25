@@ -860,8 +860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e075335f2ad0cc4dac5295d797708d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 1.5
-  maxSpeed: 15
+  mass: 5
+  maxSpeed: 1
   pathway:
   - {fileID: 1739885790}
   - {fileID: 126896035}
@@ -931,7 +931,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 4034365535363331625, guid: 38d86a77226ffe04abd5ef08086d69eb,
     type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6037343, g: 1, b: 0.5943396, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -949,8 +949,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448049977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.1, y: -6.2, z: 0}
-  m_LocalScale: {x: 0.5007, y: 0.5007, z: 0.5007}
+  m_LocalPosition: {x: -26.98, y: -6.44, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.5007}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -1085,8 +1085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e075335f2ad0cc4dac5295d797708d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 1
-  maxSpeed: 10
+  mass: 15
+  maxSpeed: 0.5
   pathway:
   - {fileID: 1739885790}
   - {fileID: 126896035}

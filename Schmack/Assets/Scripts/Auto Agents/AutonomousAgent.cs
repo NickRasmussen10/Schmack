@@ -7,6 +7,8 @@ public class AutonomousAgent : MonoBehaviour
     [SerializeField] protected float mass;
     [SerializeField] protected float maxSpeed;
     protected Rigidbody2D rb;
+    protected Vector3 velocity;
+    protected Vector3 acceleration;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -16,13 +18,28 @@ public class AutonomousAgent : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-
+        //rb.MovePosition(transform.position + velocity);
+        velocity += acceleration;
+        Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
+        Mathf.Clamp(velocity.y, -maxSpeed, maxSpeed);
+        transform.Translate(velocity);
+        acceleration = Vector3.zero;
     }
 
-    protected Vector3 Seek(Vector3 target)
+    protected Vector3 GetSeekForce(Vector3 target)
     {
-        return ((target - transform.position).normalized * maxSpeed * Time.deltaTime) / mass;
+        return ((target - transform.position).normalized * maxSpeed) - velocity;
+    }
+
+    protected Vector3 GetFleeForce(Vector3 target)
+    {
+        return ((transform.position - target).normalized * maxSpeed) - velocity;
+    }
+
+    protected void ApplyForce(Vector3 force)
+    {
+        acceleration += force / mass;
     }
 }

@@ -23,12 +23,12 @@ public class RoboHordeAgent : AutonomousAgent
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         switch (role)
         {
             case BotType.leader:
-                transform.Translate(Seek(pathway[targetIndex].position));
+                ApplyForce(GetSeekForce(pathway[targetIndex].position));
 
                 if ((pathway[targetIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
                 {
@@ -43,10 +43,12 @@ public class RoboHordeAgent : AutonomousAgent
                 }
                 break;
             case BotType.follower:
-                transform.Translate(Seek(leader.position));
+                ApplyForce(GetSeekForce(leader.position));
                 break;
             default:
                 break;
         }
+
+        base.Update();
     }
 }
