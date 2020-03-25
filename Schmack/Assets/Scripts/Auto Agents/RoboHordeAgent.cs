@@ -24,7 +24,7 @@ public class RoboHordeAgent : AutonomousAgent
         base.Start();
         if(role == BotType.follower)
         {
-            target = targets[Random.Range(0, 2)];
+            target = targets[Random.Range(0, 3)];
         }
     }
 
