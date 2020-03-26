@@ -45,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
     public bool inFlow = false;
     //float flowTimer = 0.0f; //keeps track of how long the player has been stalled for
 
+    float scaleSave;
+
     enum PlayerState
     {
         idle,
@@ -94,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
         //set misc. player info
         state = PlayerState.idle;
         direction = new Vector2(1.0f, 1.0f);
+        scaleSave = transform.localScale.x;
     }
 
     // Update is called once per frame
@@ -285,7 +288,8 @@ public class PlayerMovement : MonoBehaviour
             direction.x = inputRight > 0 ? 1 : -1;
         }
         //update player's scale to reflect their direction
-        if((Vector2)transform.localScale != direction) transform.localScale = direction;
+        if(transform.localScale.x != (direction.x == 1 ? scaleSave : -scaleSave))
+            transform.localScale = new Vector3(direction.x == 1 ? scaleSave : -scaleSave, transform.localScale.y, transform.localScale.z);
         //float bowX = FindObjectOfType<Bow>().direction.x;
         //if ((bowX < 0 && direction.x > 0) || (bowX > 0 && direction.x < 0)) FindObjectOfType<Bow>().FlipDirection();
         
@@ -415,9 +419,9 @@ public class PlayerMovement : MonoBehaviour
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
+        Debug.Log(packet.isColliding);
         if (packet.isColliding)
         {
-            Debug.Log("the heck");
             CancelWallStick();
             StartCoroutine(Rumble.BurstRumble(0.5f, 0.1f));
             wallJumpLimiter = wallJumpLimiterMin;

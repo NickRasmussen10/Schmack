@@ -326,6 +326,16 @@ PrefabInstance:
       propertyPath: flowSlider
       value: 
       objectReference: {fileID: 8050153743069071386}
+    - target: {fileID: 2347794009650554132, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -5.2664146
+      objectReference: {fileID: 0}
+    - target: {fileID: 2347794009650554132, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.58742523
+      objectReference: {fileID: 0}
     - target: {fileID: 4512298347296408925, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
         type: 3}
       propertyPath: m_Name
@@ -339,7 +349,7 @@ PrefabInstance:
     - target: {fileID: 6163914500459292593, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 27.42
+      value: 33.34
       objectReference: {fileID: 0}
     - target: {fileID: 6163914500459292593, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
         type: 3}
@@ -649,7 +659,7 @@ PrefabInstance:
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 32.118
+      value: 38.038
       objectReference: {fileID: 0}
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
