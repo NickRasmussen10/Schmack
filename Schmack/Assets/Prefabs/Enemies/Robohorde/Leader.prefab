@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1798284100500674313}
   - component: {fileID: 1798284100500674312}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: rotator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1798284100949496748}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: target (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,9 +89,10 @@ GameObject:
   - component: {fileID: 1798284101356054603}
   - component: {fileID: 1798284101356054597}
   - component: {fileID: 1798284101356054600}
-  m_Layer: 0
+  - component: {fileID: -7983551841768772631}
+  m_Layer: 11
   m_Name: Leader
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -180,7 +181,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1798284101356054600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +205,32 @@ MonoBehaviour:
   lookAheadDistance: 1
   targets: []
   role: 0
+--- !u!61 &-7983551841768772631
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798284101356054601}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 2.44, y: 2.48}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1798284101458453504
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +240,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1798284101458453507}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: target (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1798284102235904783}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: target (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,12 +11,21 @@ public class RoboHordeAgent : AutonomousAgent
     Transform target;
     int pathIndex = 0;
 
+    float health = 0.5f;
+
     enum BotType
     {
         leader,
         follower
     }
     [SerializeField] BotType role;
+
+    enum State
+    {
+        patrolling, 
+        dead
+    }
+    State state;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -26,35 +35,62 @@ public class RoboHordeAgent : AutonomousAgent
         {
             target = targets[Random.Range(0, 3)];
         }
+        state = State.patrolling;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        switch (role)
+        switch (state)
         {
-            case BotType.leader:
-                ApplyForce(GetSeekForce(pathway[pathIndex].position));
-
-                if ((pathway[pathIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
+            case State.patrolling:
+                switch (role)
                 {
-                    if (pathIndex == pathway.Count - 1)
-                    {
-                        pathIndex = 0;
-                    }
-                    else
-                    {
-                        pathIndex++;
-                    }
+                    case BotType.leader:
+                        ApplyForce(GetSeekForce(pathway[pathIndex].position));
+
+                        if ((pathway[pathIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
+                        {
+                            if (pathIndex == pathway.Count - 1)
+                            {
+                                pathIndex = 0;
+                            }
+                            else
+                            {
+                                pathIndex++;
+                            }
+                        }
+                        break;
+                    case BotType.follower:
+                        ApplyForce(GetSeekForce(target.position));
+                        break;
+                    default:
+                        break;
                 }
+                base.Update();
                 break;
-            case BotType.follower:
-                ApplyForce(GetSeekForce(target.position));
+            case State.dead:
                 break;
             default:
                 break;
         }
+    }
 
-        base.Update();
+    public void TakeDamage(float damage)
+    {
+        Debug.Log("oof ouch owie");
+        health -= damage;
+        if (health <= 0.0f)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        state = State.dead;
+        acceleration = Vector3.zero;
+        velocity = Vector3.zero;
+        rb.gravityScale = 1.0f;
     }
 }
