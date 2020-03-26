@@ -397,7 +397,6 @@ public class PlayerMovement : MonoBehaviour
     void GetCollisionReportBackLegs(CollisionPacket packet)
     {
         collPacket_backLegs = packet;
-
         if (!packet.isColliding)
         {
             rb.gravityScale = 1.0f;
@@ -419,7 +418,6 @@ public class PlayerMovement : MonoBehaviour
     void GetCollisionReportGround(CollisionPacket packet)
     {
         collPacket_ground = packet;
-        Debug.Log(packet.isColliding);
         if (packet.isColliding)
         {
             CancelWallStick();
