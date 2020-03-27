@@ -26,9 +26,13 @@ public abstract class Enemy : MonoBehaviour
         
     }
 
-    void TakeDamage(float pDamage)
+    public virtual void TakeDamage(DamagePacket packet)
     {
-        health -= damage;
+        health -= packet.damage;
+        if (health <= 0.0f)
+        {
+            Die();
+        }
     }
 
     protected abstract void Die();

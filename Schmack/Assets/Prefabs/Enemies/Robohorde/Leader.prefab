@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 1798284101356054597}
   - component: {fileID: 1798284101356054600}
   - component: {fileID: -7983551841768772631}
+  - component: {fileID: 5369832591072497568}
   m_Layer: 11
   m_Name: Leader
   m_TagString: Enemy
@@ -195,8 +196,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 15
-  maxSpeed: 0.5
+  maxSpeed: 0.2
   pathway:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -231,6 +234,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5369832591072497568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798284101356054601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 178eceecd302d054baf162b82d7ef49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0.5
+  damage: 1
 --- !u!1 &1798284101458453504
 GameObject:
   m_ObjectHideFlags: 0
