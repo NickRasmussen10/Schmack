@@ -11,8 +11,6 @@ public class RoboHordeAgent : AutonomousAgent
     Transform target;
     int pathIndex = 0;
 
-    float health = 0.5f;
-
     enum BotType
     {
         leader,
@@ -76,27 +74,7 @@ public class RoboHordeAgent : AutonomousAgent
         }
     }
 
-    public void TakeDamage(DamagePacket packet)
-    {
-        health -= packet.damage;
-        if (packet.isPowerShot)
-        {
-            DamagePacket newPacket;
-            newPacket.damage = packet.damage;
-            newPacket.isPowerShot = false;
-            Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, 10.0f, LayerMask.GetMask("enemies"));
-            foreach (Collider2D enemy in nearby)
-            {
-                enemy.SendMessage("TakeDamage", newPacket);
-            }
-        }
-        if (health <= 0.0f)
-        {
-            Die();
-        }
-    }
-
-    void Die()
+    public void Die()
     {
         state = State.dead;
         acceleration = Vector3.zero;

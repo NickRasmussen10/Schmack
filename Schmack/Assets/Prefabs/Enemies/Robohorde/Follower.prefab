@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5881030237546902833}
   - component: {fileID: 5881030237546902832}
   - component: {fileID: -9052591588481845714}
+  - component: {fileID: 8148491843335277534}
   m_Layer: 11
   m_Name: Follower
   m_TagString: Enemy
@@ -117,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 3
-  maxSpeed: 0.4
+  maxSpeed: 0.19
   pathway:
   - {fileID: 0}
   - {fileID: 0}
@@ -156,3 +157,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8148491843335277534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5881030237546902835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 178eceecd302d054baf162b82d7ef49f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  damage: 0.5

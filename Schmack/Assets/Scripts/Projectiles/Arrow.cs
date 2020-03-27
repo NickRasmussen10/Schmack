@@ -66,7 +66,7 @@ public class Arrow : Projectile
             DamagePacket packet;
             packet.damage = 0.5f;
             packet.isPowerShot = isPowerShot;
-            collision.gameObject.SendMessage("TakeDamage", packet);
+            collision.gameObject.GetComponent<Enemy>().SendMessage("TakeDamage", packet);
             if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.15f); //patrolbot thing is ew yucky gross and i don't like it
         }
 
