@@ -297,7 +297,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Movement(float direction)
     {
-        rb.AddForce(new Vector2(direction * acceleration * movementLimiter, 0.0f));
+        rb.AddForce(new Vector2(direction * acceleration * movementLimiter, 0.0f)); 
     }
 
 
