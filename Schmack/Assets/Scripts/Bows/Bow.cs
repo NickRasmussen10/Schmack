@@ -28,6 +28,7 @@ public class Bow : MonoBehaviour
     [SerializeField] GameObject pref_arrow = null;
     [SerializeField] int maxArrows = 3;
     [SerializeField] float rechargeTime = 1.0f;
+    [SerializeField] float timeToPowershot = 1.0f; // this field is implemented independant of game's timescale feature
 
 
     [Header("Firing - Flow")]
@@ -40,8 +41,10 @@ public class Bow : MonoBehaviour
 
     [Header("Gross Yucky References")]
     [SerializeField] Transform referencePoint = null;
+    [SerializeField] SpriteRenderer[] powerShotEffects;
 
     Coroutine recharge;
+    Coroutine powershotTimer;
 
     Animator animator;
     SoundManager sound;
@@ -52,14 +55,13 @@ public class Bow : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
-
         Activate();
-        
-
         numArrows = maxArrows;
 
         animator = FindObjectOfType<Player>().gameObject.GetComponent<Animator>();
         sound = FindObjectOfType<SoundManager>();
+
+        SetPowershotEffects(false);
     }
 
     // Update is called once per frame
@@ -119,6 +121,7 @@ public class Bow : MonoBehaviour
         {
             state = State.drawn;
             powershot = false;
+            powershotTimer = StartCoroutine(ChargePowershot());
         }
 
         animator.SetTrigger("draw");
@@ -132,14 +135,17 @@ public class Bow : MonoBehaviour
     {
         state = State.fired;
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
+        StopCoroutine(powershotTimer);
 
         numArrows--;
         animator.SetTrigger("fire");
 
+        SetPowershotEffects(false);
+
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
         if (powershot) newArrow.GetComponent<Arrow>().SetPowerShot(true);
 
-        if (powershot) newArrow.transform.localScale *= 1.75f;
+        if (powershot) newArrow.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
 
         if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
         else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
@@ -151,6 +157,29 @@ public class Bow : MonoBehaviour
 
         sound.Stop("Rumble");
         sound.Play("BowFire", 0.85f, 1.15f);
+    }
+
+    IEnumerator ChargePowershot()
+    {
+        float timer = 0.0f;
+        while (timer < timeToPowershot)
+        {
+            timer += Time.unscaledDeltaTime;
+            if(timer >= timeToPowershot)
+            {
+                powershot = true;
+                SetPowershotEffects(true);
+            }
+            yield return null;
+        }
+    }
+
+    void SetPowershotEffects(bool isOn)
+    {
+        foreach (SpriteRenderer spriteRenderer in powerShotEffects)
+        {
+            spriteRenderer.enabled = isOn;
+        }
     }
 
     public void EnableFire()

@@ -135,12 +135,15 @@ public class Player : MonoBehaviour
         cameraManager.SendMessage("CallDisplayDeath", transform.position);
     }
 
+
+    //this method is called from an animation event
     void TimeDilationDown()
     {
         Time.timeScale = timeScaleMin;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
 
+    //this method is called from an animation event
     void TimeDilationUp()
     {
         Time.timeScale = timeScaleMax;
