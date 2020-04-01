@@ -8,7 +8,7 @@ public class RoboHordeAgent : AutonomousAgent
     [SerializeField] Transform leader;
     [SerializeField] float lookAheadDistance = 1.0f;
     [SerializeField] Transform[] targets;
-    Transform target;
+    [SerializeField] Transform target;
     int pathIndex = 0;
 
     enum BotType
@@ -31,7 +31,7 @@ public class RoboHordeAgent : AutonomousAgent
         base.Start();
         if(role == BotType.follower)
         {
-            target = targets[Random.Range(0, 3)];
+            target = targets[Random.Range(0, targets.Length)];
         }
         state = State.patrolling;
     }
