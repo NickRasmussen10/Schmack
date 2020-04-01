@@ -38,11 +38,6 @@ public class Bow : MonoBehaviour
     [SerializeField] float noFlow_shotPower = 1500.0f;
     [SerializeField] float noFlow_knockbackForce = 700.0f;
 
-    [Header("Timescaling")]
-    [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
-    [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
-    [HideInInspector] public float timeScale;
-
     [Header("Gross Yucky References")]
     [SerializeField] Transform referencePoint = null;
 
@@ -59,7 +54,7 @@ public class Bow : MonoBehaviour
     {
 
         Activate();
-        timeScale = timeScaleMax;
+        
 
         numArrows = maxArrows;
 
@@ -78,7 +73,6 @@ public class Bow : MonoBehaviour
                 if (powerInput > 0.9f && numArrows > 0) DrawBack();
                 break;
             case State.drawn:
-                TimeDilationDown();
                 if (powerInput == 0) Fire();
                 break;
             case State.fired:
@@ -137,14 +131,10 @@ public class Bow : MonoBehaviour
     void Fire()
     {
         state = State.fired;
-        frameDelay = 0;
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
 
         numArrows--;
         animator.SetTrigger("fire");
-
-        Time.timeScale = timeScaleMax;
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
         if (powershot) newArrow.GetComponent<Arrow>().SetPowerShot(true);
@@ -171,20 +161,6 @@ public class Bow : MonoBehaviour
     public void LoadNextArrow()
     {
         state = State.idle;
-    }
-
-
-
-    int frameDelay = 0; // I hate this, I wish it was a coroutine, but the coroutine was causing some pretty serious bugs
-    void TimeDilationDown()
-    {
-        frameDelay++;
-        if(frameDelay == 10)
-        {
-            Time.timeScale = timeScaleMin;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            powershot = true;
-        }
     }
 
     //void BowRecharge()

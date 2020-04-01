@@ -26,6 +26,11 @@ public class Player : MonoBehaviour
     [HideInInspector] public SpriteRenderer bowSprite;
     [SerializeField] Transform IKTarget;
 
+    [Header("Timescaling")]
+    [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
+    [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
+    [HideInInspector] public float timeScale;
+
     CameraManager cameraManager;
 
     // Start is called before the first frame update
@@ -45,6 +50,8 @@ public class Player : MonoBehaviour
 
         bowText.text = currentBow.name;
         cameraManager = FindObjectOfType<CameraManager>();
+
+        timeScale = timeScaleMax;
     }
 
     // Update is called once per frame
@@ -65,7 +72,7 @@ public class Player : MonoBehaviour
             bowScript.inFlow = playerMovement.inFlow;
         }
 
-        IKTarget.position = transform.position + (Vector3)Inputs.controls.Player.Aim.ReadValue<Vector2>() * 5.0f;
+        IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) +  (Vector3)Inputs.controls.Player.Aim.ReadValue<Vector2>() * 5.0f;
 
         if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
         {
@@ -126,5 +133,17 @@ public class Player : MonoBehaviour
         health = -1;
         gameObject.GetComponent<PlayerMovement>().enabled = false;
         cameraManager.SendMessage("CallDisplayDeath", transform.position);
+    }
+
+    void TimeDilationDown()
+    {
+        Time.timeScale = timeScaleMin;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+
+    void TimeDilationUp()
+    {
+        Time.timeScale = timeScaleMax;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
 }
