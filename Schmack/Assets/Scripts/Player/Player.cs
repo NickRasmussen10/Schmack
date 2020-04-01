@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     Bow bowScript;
 
     [HideInInspector] public SpriteRenderer bowSprite;
+    [SerializeField] Transform IKTarget;
 
     CameraManager cameraManager;
 
@@ -63,6 +64,8 @@ public class Player : MonoBehaviour
         {
             bowScript.inFlow = playerMovement.inFlow;
         }
+
+        IKTarget.position = transform.position + (Vector3)Inputs.controls.Player.Aim.ReadValue<Vector2>() * 5.0f;
 
         if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
         {
