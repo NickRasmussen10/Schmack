@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public SpriteRenderer bowSprite;
     [SerializeField] Transform IKTarget;
+    [SerializeField] GameObject[] IKObjects = new GameObject[2];
 
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
@@ -72,7 +73,7 @@ public class Player : MonoBehaviour
             bowScript.inFlow = playerMovement.inFlow;
         }
 
-        IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) +  (Vector3)Inputs.controls.Player.Aim.ReadValue<Vector2>() * 5.0f;
+        HandleIK();
 
         if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
         {
@@ -119,6 +120,7 @@ public class Player : MonoBehaviour
     //}
 
 
+
     public void TakeDamage(float damage)
     {
         if (health < 0) return;
@@ -135,6 +137,34 @@ public class Player : MonoBehaviour
         cameraManager.SendMessage("CallDisplayDeath", transform.position);
     }
 
+    /// <summary>
+    /// handles the activation and deactivation of arm inverse kinematics based on aim and draw back input
+    /// also handles moving IK target to reflect player's aim
+    /// </summary>
+    void HandleIK()
+    {
+        Vector2 directionInput = Inputs.controls.Player.Aim.ReadValue<Vector2>();
+        float powerInput = Inputs.controls.Player.Draw.ReadValue<float>();
+        
+        if(directionInput.sqrMagnitude > 0.81f || powerInput == 1.0f)
+        {
+            IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) + (Vector3)bowScript.direction * 5.0f;
+        }
+        else
+        {
+            IKTarget.position = transform.localScale.x < 0 ? transform.position + new Vector3(0.0f, 0.51f, 0.0f) + Vector3.left : transform.position + new Vector3(0.0f, 0.51f, 0.0f) + Vector3.right;
+        }
+
+        if (powerInput < 1.0f && directionInput.sqrMagnitude < 0.5f)
+        {
+            SetIKActive(false);
+        }
+        else
+        {
+            SetIKActive(true);
+        }
+    }
+
 
     //this method is called from an animation event
     void TimeDilationDown()
@@ -149,4 +179,14 @@ public class Player : MonoBehaviour
         Time.timeScale = timeScaleMax;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
+
+    void SetIKActive(bool isActive)
+    {
+        foreach (GameObject IKObject in IKObjects)
+        {
+            IKObject.SetActive(isActive);
+        }
+    }
+
+    bool GetIKActive() { return IKObjects[0].activeSelf; }
 }

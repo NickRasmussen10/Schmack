@@ -897,6 +897,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 217233141981151952, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
         type: 3}
+      propertyPath: flowLossMoving
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 217233141981151952, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
+        type: 3}
+      propertyPath: flowLossStill
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 217233141981151952, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
+        type: 3}
       propertyPath: flowSlider
       value: 
       objectReference: {fileID: 8050153743069071386}
@@ -1120,6 +1130,16 @@ PrefabInstance:
       propertyPath: IKTarget
       value: 
       objectReference: {fileID: 1816003638}
+    - target: {fileID: 7768850317720025202, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
+        type: 3}
+      propertyPath: IKObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 466307704}
+    - target: {fileID: 7768850317720025202, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
+        type: 3}
+      propertyPath: IKObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 228457366}
     - target: {fileID: 8852363652598354652, guid: 35c3409d8d7afe047b3bda4e5097fd3f,
         type: 3}
       propertyPath: powerShotEffects.Array.size

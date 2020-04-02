@@ -107,7 +107,7 @@ public class Bow : MonoBehaviour
     IEnumerator DelayAimReset()
     {
         yield return new WaitForSecondsRealtime(0.05f);
-        direction = gameObject.transform.parent.localScale.x == -1 ? Vector2.left : Vector2.right;
+        direction = gameObject.transform.parent.localScale.x < 0 ? Vector2.left : Vector2.right;
     }
 
     public void FlipDirection()
