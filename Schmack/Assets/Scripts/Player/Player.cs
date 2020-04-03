@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            IKTarget.position = transform.localScale.x < 0 ? transform.position + new Vector3(0.0f, 0.51f, 0.0f) + Vector3.left : transform.position + new Vector3(0.0f, 0.51f, 0.0f) + Vector3.right;
+            IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) + (transform.localScale.x < 0 ? Vector3.left : Vector3.right);
         }
 
         if (powerInput < 1.0f && directionInput.sqrMagnitude < 0.5f)
