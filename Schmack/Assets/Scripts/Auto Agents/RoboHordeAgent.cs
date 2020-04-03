@@ -11,12 +11,12 @@ public class RoboHordeAgent : AutonomousAgent
     [SerializeField] Transform target;
     int pathIndex = 0;
 
-    enum BotType
+    public enum BotType
     {
         leader,
         follower
     }
-    [SerializeField] BotType role;
+    public BotType role;
 
     enum State
     {
@@ -32,6 +32,7 @@ public class RoboHordeAgent : AutonomousAgent
         if(role == BotType.follower)
         {
             target = targets[Random.Range(0, targets.Length)];
+            //target = leader;
         }
         state = State.patrolling;
     }
@@ -60,7 +61,19 @@ public class RoboHordeAgent : AutonomousAgent
                         }
                         break;
                     case BotType.follower:
+                        //if((transform.position - leader.position).sqrMagnitude < 10.0f)
+                        //{
+                        //    ApplyForce(GetFleeForce(leader.position));
+                        //}
+                        //else
+                        //{
+                        //    ApplyForce(GetSeekForce(leader.position) * 1.25f);
+                        //}
                         ApplyForce(GetSeekForce(target.position));
+                        if((leader.position - transform.position).sqrMagnitude < 5.0f)
+                        {
+                            ApplyForce(GetFleeForce(leader.position));
+                        }
                         break;
                     default:
                         break;
@@ -71,6 +84,17 @@ public class RoboHordeAgent : AutonomousAgent
                 break;
             default:
                 break;
+        }
+    }
+
+    public void ApplyFlocking(List<Transform> horde)
+    {
+        foreach (Transform t in horde)
+        {
+            if (t != transform)
+            {
+                ApplyForce((GetFleeForce(t.position) / (t.position - transform.position).sqrMagnitude) * 0.25f);
+            }
         }
     }
 
