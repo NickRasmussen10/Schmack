@@ -86,6 +86,8 @@ public class Player : MonoBehaviour
         }
 
         DisplayArrowCount();
+
+        Debug.Log(GetIKActive());
     }
 
     void DisplayArrowCount()
@@ -186,6 +188,16 @@ public class Player : MonoBehaviour
         {
             IKObject.SetActive(isActive);
         }
+    }
+
+    void ToggleIKOn()
+    {
+        SetIKActive(true);
+    }
+
+    void ToggleIKOff()
+    {
+        SetIKActive(false);
     }
 
     bool GetIKActive() { return IKObjects[0].activeSelf; }

@@ -291,7 +291,6 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector3(direction.x == 1 ? scaleSave : -scaleSave, transform.localScale.y, transform.localScale.z);
         //float bowX = FindObjectOfType<Bow>().direction.x;
         //if ((bowX < 0 && direction.x > 0) || (bowX > 0 && direction.x < 0)) FindObjectOfType<Bow>().FlipDirection();
-        
     }
 
     void Movement(float direction)
