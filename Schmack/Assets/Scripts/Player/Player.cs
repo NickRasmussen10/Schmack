@@ -86,8 +86,6 @@ public class Player : MonoBehaviour
         }
 
         DisplayArrowCount();
-
-        Debug.Log(GetIKActive());
     }
 
     void DisplayArrowCount()
