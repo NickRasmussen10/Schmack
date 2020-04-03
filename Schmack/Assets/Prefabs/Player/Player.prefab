@@ -70,7 +70,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -282051972136139899, guid: 8de562de25dc8664982fbe609c6d8204,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 6920893199290891698}
   - component: {fileID: 6512308449961720178}
   m_Layer: 0
-  m_Name: quiver_1
+  m_Name: strap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,11 +220,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838302613249823693}
   m_LocalRotation: {x: -0, y: -0, z: 0.23919712, w: 0.9709711}
-  m_LocalPosition: {x: -0.39, y: 1.42, z: 0}
-  m_LocalScale: {x: 0.99407995, y: 0.91073626, z: 0.97192013}
+  m_LocalPosition: {x: 0.26875067, y: -0.2817547, z: -3.6836112}
+  m_LocalScale: {x: 0.43090266, y: 0.39477578, z: 0.43090254}
   m_Children: []
-  m_Father: {fileID: 6163914500459292593}
-  m_RootOrder: 9
+  m_Father: {fileID: 7780276197816729358}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 27.678001}
 --- !u!212 &6512308449961720178
 SpriteRenderer:
@@ -263,7 +263,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 3767613404566940908, guid: e83f2132baf018c418bcdadc2ffddfb1,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -407,7 +407,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -6151353103089586174, guid: 8de562de25dc8664982fbe609c6d8204,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -619,7 +619,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 4749265526643376741, guid: 8de562de25dc8664982fbe609c6d8204,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -880,7 +880,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -7917404531447434871, guid: 15d535fa7b1cb254f9978e757e44d811,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1007,8 +1007,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4512298347296408925}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.2557}
+  m_LocalPosition: {x: -0.85291, y: 0.36282, z: -1.5674}
+  m_LocalScale: {x: 0.4334688, y: 0.4334688, z: 0.4433518}
   m_Children:
   - {fileID: 3182435780719824544}
   - {fileID: 1940737842171540859}
@@ -1019,8 +1019,6 @@ Transform:
   - {fileID: 3346002968793417789}
   - {fileID: 7675589998957988747}
   - {fileID: 1328419670352913670}
-  - {fileID: 6920893199290891698}
-  - {fileID: 1258478208463316634}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1039,6 +1037,13 @@ MonoBehaviour:
   maxHealth: 1
   currentBow: {fileID: 4799903648738247372}
   bowSprite: {fileID: 0}
+  IKTarget: {fileID: 0}
+  IKObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  timeScaleMin: 0.1
+  timeScaleMax: 1
+  timeScale: 0
 --- !u!114 &217233141981151952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1535,6 +1540,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7686764008842315550}
+  - {fileID: 7780276197816729358}
   m_Father: {fileID: 6163914500459292593}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1575,7 +1581,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 9127391650462210791, guid: 8de562de25dc8664982fbe609c6d8204,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1771,7 +1777,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 4
   m_Sprite: {fileID: 7139481107358243679, guid: 8de562de25dc8664982fbe609c6d8204,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1878,7 +1884,7 @@ GameObject:
   - component: {fileID: 1258478208463316634}
   - component: {fileID: 744560285003016328}
   m_Layer: 0
-  m_Name: quiver_0
+  m_Name: canister
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1892,11 +1898,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7414119152908114417}
   m_LocalRotation: {x: -0, y: -0, z: 0.29869854, w: 0.95434755}
-  m_LocalPosition: {x: -0.92, y: 1.97, z: 0}
-  m_LocalScale: {x: 0.8722864, y: 0.8722864, z: 0.85284156}
+  m_LocalPosition: {x: 0.039012205, y: -0.043346837, z: -3.6836112}
+  m_LocalScale: {x: 0.37810898, y: 0.37810898, z: 0.37810883}
   m_Children: []
-  m_Father: {fileID: 6163914500459292593}
-  m_RootOrder: 10
+  m_Father: {fileID: 7780276197816729358}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 34.759003}
 --- !u!212 &744560285003016328
 SpriteRenderer:
@@ -1935,7 +1941,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 7610712714267260426, guid: e83f2132baf018c418bcdadc2ffddfb1,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2050,7 +2056,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 4837067996794410295, guid: 15d535fa7b1cb254f9978e757e44d811,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2168,6 +2174,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8161724345516258401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7780276197816729358}
+  m_Layer: 0
+  m_Name: quiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7780276197816729358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8161724345516258401}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.80297637, y: 2.0501792, z: -18.346992}
+  m_LocalScale: {x: 2.3069715, y: 2.3069715, z: 2.2555447}
+  m_Children:
+  - {fileID: 6920893199290891698}
+  - {fileID: 1258478208463316634}
+  m_Father: {fileID: 3182435780719824544}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8283044368718699162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2307,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: -8036784765645651717, guid: 15d535fa7b1cb254f9978e757e44d811,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
