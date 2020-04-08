@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     List<Image> displayArrows = new List<Image>();
 
     PlayerMovement playerMovement = null;
-    //[SerializeField] GameObject rotator = null;
+    [SerializeField] GameObject rotator = null;
 
     [SerializeField] float maxHealth = 1.0f;
     float health;
@@ -75,17 +75,22 @@ public class Player : MonoBehaviour
 
         HandleIK();
 
-        if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
-        {
-            //rotator.transform.right = Vector2.right;
-        }
-        else
-        {
-            //rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
-            //if (transform.localScale.x == -1) rotator.transform.right *= -1;
-        }
+        //if (GetComponent<Rigidbody2D>().velocity.x > 2.0f && bowScript.state != Bow.State.drawn)
+        //{
+        //    rotator.transform.right = Vector2.right;
+        //}
+        //else
+        //{
+        //    rotator.transform.right = (rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position;
+        //    if (transform.localScale.x == -1) rotator.transform.right *= -1;
+        //}
 
         DisplayArrowCount();
+    }
+
+    private void LateUpdate()
+    {
+        rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
     }
 
     void DisplayArrowCount()
@@ -154,7 +159,7 @@ public class Player : MonoBehaviour
         {
             IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) + (transform.localScale.x < 0 ? Vector3.left : Vector3.right);
         }
-
+        
         if (powerInput < 1.0f && directionInput.sqrMagnitude < 0.5f)
         {
             SetIKActive(false);
