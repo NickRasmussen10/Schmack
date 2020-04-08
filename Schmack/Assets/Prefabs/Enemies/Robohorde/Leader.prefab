@@ -88,9 +88,9 @@ GameObject:
   - component: {fileID: 1798284101356054602}
   - component: {fileID: 1798284101356054603}
   - component: {fileID: 1798284101356054597}
-  - component: {fileID: 1798284101356054600}
   - component: {fileID: -7983551841768772631}
   - component: {fileID: 5369832591072497568}
+  - component: {fileID: -604732906593321316}
   m_Layer: 11
   m_Name: Leader
   m_TagString: Enemy
@@ -183,31 +183,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1798284101356054600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798284101356054601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e075335f2ad0cc4dac5295d797708d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mass: 15
-  maxSpeed: 0.2
-  pathway:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  leader: {fileID: 0}
-  lookAheadDistance: 1
-  targets: []
-  role: 0
 --- !u!61 &-7983551841768772631
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -248,6 +223,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0.5
   damage: 1
+--- !u!114 &-604732906593321316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798284101356054601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea3acf8d2f22ee4b8989eb789c629d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mass: 15
+  maxSpeed: 0.2
+  lookAheadDistance: 1
+  pathway: []
 --- !u!1 &1798284101458453504
 GameObject:
   m_ObjectHideFlags: 0

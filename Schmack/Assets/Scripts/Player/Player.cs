@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
         
         if(directionInput.sqrMagnitude > 0.81f || powerInput == 1.0f)
         {
-            IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) + (Vector3)bowScript.direction * 5.0f;
+            IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) + (Vector3)bowScript.direction * 10.0f;
         }
         else
         {

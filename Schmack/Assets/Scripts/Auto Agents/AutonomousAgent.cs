@@ -20,11 +20,9 @@ public class AutonomousAgent : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        //rb.MovePosition(transform.position + velocity);
         velocity += acceleration;
         Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
         Mathf.Clamp(velocity.y, -maxSpeed, maxSpeed);
-        //transform.Translate(velocity);
         rb.MovePosition(rb.position + (Vector2)velocity);
         acceleration = Vector3.zero;
     }

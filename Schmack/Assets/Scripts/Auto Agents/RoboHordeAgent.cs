@@ -4,87 +4,27 @@ using UnityEngine;
 
 public class RoboHordeAgent : AutonomousAgent
 {
-    [SerializeField] List<Transform> pathway = new List<Transform>();
-    [SerializeField] Transform leader;
-    [SerializeField] float lookAheadDistance = 1.0f;
-    [SerializeField] Transform[] targets;
-    [SerializeField] Transform target;
+    [SerializeField] protected float lookAheadDistance = 1.0f;
     int pathIndex = 0;
 
-    public enum BotType
-    {
-        leader,
-        follower
-    }
-    public BotType role;
-
-    enum State
+    protected enum State
     {
         patrolling, 
         dead
     }
-    State state;
+    protected State state;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        if(role == BotType.follower)
-        {
-            target = targets[Random.Range(0, targets.Length)];
-            //target = leader;
-        }
         state = State.patrolling;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        switch (state)
-        {
-            case State.patrolling:
-                switch (role)
-                {
-                    case BotType.leader:
-                        ApplyForce(GetSeekForce(pathway[pathIndex].position));
-
-                        if ((pathway[pathIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
-                        {
-                            if (pathIndex == pathway.Count - 1)
-                            {
-                                pathIndex = 0;
-                            }
-                            else
-                            {
-                                pathIndex++;
-                            }
-                        }
-                        break;
-                    case BotType.follower:
-                        //if((transform.position - leader.position).sqrMagnitude < 10.0f)
-                        //{
-                        //    ApplyForce(GetFleeForce(leader.position));
-                        //}
-                        //else
-                        //{
-                        //    ApplyForce(GetSeekForce(leader.position) * 1.25f);
-                        //}
-                        ApplyForce(GetSeekForce(target.position));
-                        if((leader.position - transform.position).sqrMagnitude < 5.0f)
-                        {
-                            ApplyForce(GetFleeForce(leader.position));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                base.Update();
-                break;
-            case State.dead:
-                break;
-            default:
-                break;
-        }
+        base.Update();
     }
 
     public void ApplyFlocking(List<Transform> horde)

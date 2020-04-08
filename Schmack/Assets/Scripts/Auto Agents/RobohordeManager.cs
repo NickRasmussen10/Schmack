@@ -11,15 +11,14 @@ public class RobohordeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RoboHordeAgent[] horde = GetComponentsInChildren<RoboHordeAgent>();
-        foreach (RoboHordeAgent agent in horde)
+        RoboHordeAgent[] followers = GetComponentsInChildren<Follower>();
+        leader = GetComponentInChildren<Leader>();
+
+        foreach (Follower follower in followers)
         {
-            if (agent.role == RoboHordeAgent.BotType.leader) leader = agent;
-            else
-            {
-                followerTransforms.Add(agent.gameObject.transform);
-                followerAgents.Add(agent);
-            }
+            followerTransforms.Add(follower.gameObject.transform);
+            followerAgents.Add(follower);
+            follower.leader = leader.transform;
         }
     }
 
