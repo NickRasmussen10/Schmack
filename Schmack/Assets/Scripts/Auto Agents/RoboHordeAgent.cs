@@ -93,7 +93,7 @@ public class RoboHordeAgent : AutonomousAgent
         {
             if (t != transform)
             {
-                ApplyForce((GetFleeForce(t.position) / (t.position - transform.position).sqrMagnitude) * 0.25f);
+                ApplyForce((GetFleeForce(t.position) / (t.position - transform.position).sqrMagnitude) * 0.1f);
             }
         }
     }
