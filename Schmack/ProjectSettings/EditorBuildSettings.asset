@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Warehouse.unity
     guid: 88fa7e4c2e83a09408b56d5bc9b50657
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ObstacleCourse - Copy.unity
     guid: 089ab07ad2cf019459aa62f755440d82
   - enabled: 0
@@ -29,7 +29,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/CloseQuarters-Test - Copy.unity
     guid: ee4bbd156ce99e340bd237ed3cc6e8be
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/ObstacleCourse.unity
     guid: 605b0f1ddd238d648ae1fad17d3a9d2b
   m_configObjects: {}
