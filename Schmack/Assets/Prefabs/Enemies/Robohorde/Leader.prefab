@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 15
-  maxSpeed: 0.2
+  maxSpeed: 10
   lookAheadDistance: 1
   pathway: []
 --- !u!1 &1798284101458453504

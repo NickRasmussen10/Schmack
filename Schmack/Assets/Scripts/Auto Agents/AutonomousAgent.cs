@@ -21,6 +21,7 @@ public class AutonomousAgent : MonoBehaviour
     protected virtual void Update()
     {
         velocity += acceleration;
+        velocity *= Time.deltaTime;
         Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
         Mathf.Clamp(velocity.y, -maxSpeed, maxSpeed);
         rb.MovePosition(rb.position + (Vector2)velocity);

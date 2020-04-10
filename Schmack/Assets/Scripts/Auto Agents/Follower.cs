@@ -14,9 +14,7 @@ public class Follower : RoboHordeAgent
 
     // Update is called once per frame
     protected override void Update()
-    {
-        base.Update();
-
+    { 
         switch (state)
         {
             case State.patrolling:
@@ -31,5 +29,6 @@ public class Follower : RoboHordeAgent
             default:
                 break;
         }
+        base.Update();
     }
 }
