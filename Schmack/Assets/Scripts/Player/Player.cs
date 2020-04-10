@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
         Vector2 directionInput = Inputs.controls.Player.Aim.ReadValue<Vector2>();
         float powerInput = Inputs.controls.Player.Draw.ReadValue<float>();
 
-
+        
         
         if(directionInput.sqrMagnitude > 0.81f || powerInput == 1.0f)
         {
@@ -173,10 +173,10 @@ public class Player : MonoBehaviour
             SetIKActive(true);
         }
 
-        //if (powerInput == 1.0f && IKObjects[1].activeSelf)
-        //{
-        //    IKObjects[1].SetActive(false);
-        //}
+        if (powerInput == 1.0f && IKObjects[1].activeSelf)
+        {
+            IKObjects[1].SetActive(false);
+        }
     }
 
 
