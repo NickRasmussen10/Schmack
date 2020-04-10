@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -19185,30 +19185,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3748448287572391406, guid: 340e04acef3d9004b9742b887fdf32ff,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 24
-      objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.51667
+      value: 10039.618
       objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 28.437
-      objectReference: {fileID: 0}
-    - target: {fileID: 5706536920048540128, guid: 340e04acef3d9004b9742b887fdf32ff,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5706536920048540128, guid: 340e04acef3d9004b9742b887fdf32ff,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
+      value: -430.3378
       objectReference: {fileID: 0}
     - target: {fileID: 8050153743040831425, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
@@ -19218,11 +19203,6 @@ PrefabInstance:
     - target: {fileID: 8050153743040831425, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8050153743497968610, guid: 340e04acef3d9004b9742b887fdf32ff,
-        type: 3}
-      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8050153744561424996, guid: 340e04acef3d9004b9742b887fdf32ff,

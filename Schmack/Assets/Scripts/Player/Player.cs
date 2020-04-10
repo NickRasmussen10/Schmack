@@ -150,6 +150,8 @@ public class Player : MonoBehaviour
     {
         Vector2 directionInput = Inputs.controls.Player.Aim.ReadValue<Vector2>();
         float powerInput = Inputs.controls.Player.Draw.ReadValue<float>();
+
+
         
         if(directionInput.sqrMagnitude > 0.81f || powerInput == 1.0f)
         {
@@ -159,6 +161,8 @@ public class Player : MonoBehaviour
         {
             IKTarget.position = transform.position + new Vector3(0.0f, 0.51f, 0.0f) + (transform.localScale.x < 0 ? Vector3.left : Vector3.right);
         }
+
+        
         
         if (powerInput < 1.0f && directionInput.sqrMagnitude < 0.5f)
         {
@@ -168,6 +172,11 @@ public class Player : MonoBehaviour
         {
             SetIKActive(true);
         }
+
+        //if (powerInput == 1.0f && IKObjects[1].activeSelf)
+        //{
+        //    IKObjects[1].SetActive(false);
+        //}
     }
 
 
