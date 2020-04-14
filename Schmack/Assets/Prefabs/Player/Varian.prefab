@@ -413,12 +413,12 @@ MonoBehaviour:
   flowGainPerShot: 1
   flowLossMoving: 0.25
   flowLossStill: 0.1
-  acceleration_fast: 120
+  acceleration_fast: 130
   maxSpeed_fast: 15
-  jumpForce_fast: 1400
-  acceleration_slow: 80
-  maxSpeed_slow: 10
-  jumpForce_slow: 1000
+  jumpForce_fast: 1500
+  acceleration_slow: 120
+  maxSpeed_slow: 12
+  jumpForce_slow: 1200
   stickTime: 0.15
   horizontalForce: 2000
   wallJumpLimiter: 1
@@ -2066,31 +2066,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
         type: 3}
-      propertyPath: powerShotEffects.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: rechargeTime
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: timeToPowershot
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: flow_knockbackForce
-      value: 1400
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: noFlow_knockbackForce
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113550415075015882, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
       propertyPath: referencePoint
       value: 
       objectReference: {fileID: 948313346537147612}
@@ -2158,21 +2133,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5338963972345774948, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5338963972345774948, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5338963972345774948, guid: 91751f1444ec0644280a3a1b77fe8d03,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91751f1444ec0644280a3a1b77fe8d03, type: 3}

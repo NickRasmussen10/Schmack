@@ -44,19 +44,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0}
-  isDrawnBack: 0
-  fire: 0
   inFlow: 0
+  state: 0
   numArrows: 0
   pref_arrow: {fileID: 8531209161466179176, guid: ca304c9bf998f5d4c932acc3788f46a9,
     type: 3}
   maxArrows: 3
-  rechargeTime: 1
+  rechargeTime: 0.1
+  timeToPowershot: 0.5
   flow_shotPower: 1500
-  flow_knockbackForce: 700
+  flow_knockbackForce: 1400
   noFlow_shotPower: 1500
-  noFlow_knockbackForce: 700
-  timeScaleMin: 0.1
-  timeScaleMax: 1
-  timeScale: 0
-  GO_referencePoint: {fileID: 0}
+  noFlow_knockbackForce: 1200
+  referencePoint: {fileID: 0}
+  powerShotEffects:
+  - {fileID: 0}
+  - {fileID: 0}
