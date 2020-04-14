@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
 
     private void LateUpdate()
     {
-        rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
+        //rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
     }
 
     void DisplayArrowCount()

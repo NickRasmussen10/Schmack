@@ -235,6 +235,11 @@ public class Bow : MonoBehaviour
             StopCoroutine(recharge);
             recharge = null;
         }
+
+        if(numArrows < maxArrows)
+        {
+            numArrows++;
+        }
     }
 
     void GetCollisionReportBackLegs(CollisionPacket packet)
