@@ -93,6 +93,18 @@ public class Player : MonoBehaviour
         //rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
     }
 
+    private void OnAnimatorMove()
+    {
+        Debug.Log("it's called");
+        rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
+        Debug.Log(rotator.transform.up);
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
+    }
+
     void DisplayArrowCount()
     {
         for(int i = 1; i <= displayArrows.Count; i++)
