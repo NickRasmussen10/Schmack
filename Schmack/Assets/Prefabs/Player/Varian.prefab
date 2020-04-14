@@ -1943,7 +1943,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.52, y: 0.60916424}
+  m_Size: {x: 0.36, y: 0.60916424}
   m_EdgeRadius: 0
 --- !u!114 &3199458892604470126
 MonoBehaviour:
@@ -2188,7 +2188,7 @@ PrefabInstance:
     - target: {fileID: 6731807725861163358, guid: 3c11f1edec5bac04b9f85614f0552071,
         type: 3}
       propertyPath: m_Size.x
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c11f1edec5bac04b9f85614f0552071, type: 3}

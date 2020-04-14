@@ -321,7 +321,12 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 rb.AddForce(new Vector2(horizontalForce * direction.x, jumpForce / wallJumpLimiter));
-                if (wallStickDirectionSave == transform.localScale.x) wallJumpLimiter += WallJumpDimishRate;
+                if (wallStickDirectionSave == transform.localScale.x)
+                {
+                    Debug.Log("adding wall jump limiter");
+                    wallJumpLimiter += WallJumpDimishRate;
+                    Debug.Log(wallJumpLimiter);
+                }
                 wallStickDirectionSave = transform.localScale.x;
             }
             CancelWallStick();
