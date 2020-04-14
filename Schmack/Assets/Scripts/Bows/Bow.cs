@@ -142,6 +142,9 @@ public class Bow : MonoBehaviour
 
         SetPowershotEffects(false);
 
+        Time.timeScale = 1.0f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
         if (powershot) newArrow.GetComponent<Arrow>().SetPowerShot(true);
 
