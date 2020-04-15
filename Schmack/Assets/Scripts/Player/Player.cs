@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Cinemachine;
 
 public class Player : MonoBehaviour
@@ -150,9 +151,10 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        health = -1;
-        gameObject.GetComponent<PlayerMovement>().enabled = false;
-        cameraManager.SendMessage("CallDisplayDeath", transform.position);
+        //health = -1;
+        //gameObject.GetComponent<PlayerMovement>().enabled = false;
+        //cameraManager.SendMessage("CallDisplayDeath", transform.position);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     /// <summary>
