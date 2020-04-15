@@ -30,6 +30,9 @@ public class RoboHordeAgent : AutonomousAgent
             case State.patrolling:
                 base.Update();
                 break;
+            case State.attacking:
+                base.Update();
+                break;
             case State.dead:
                 break;
             default:

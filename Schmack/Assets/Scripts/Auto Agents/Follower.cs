@@ -51,8 +51,22 @@ public class Follower : RoboHordeAgent
         target = player;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && state == State.attacking)
+        {
+            collision.gameObject.SendMessage("TakeDamage", 0.05f);
+            target = leader_agent.gameObject.transform;
+            state = State.patrolling;
+        }
+    }
+
     public void Push(Vector3 force)
     {
         rb.AddForce(force, ForceMode2D.Impulse);
     }
+
+    public bool IsAttacking() { return state == State.attacking; }
+    public bool IsDead() { return state == State.dead; }
+    public bool IsPatrolling() { return state == State.patrolling; }
 }

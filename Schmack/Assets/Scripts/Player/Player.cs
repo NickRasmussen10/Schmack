@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     {
         if(health<=0.5f)
         {
-            bowSprite.color = Color.red;
+            //bowSprite.color = Color.red;
         }
 
         if(health == 0)

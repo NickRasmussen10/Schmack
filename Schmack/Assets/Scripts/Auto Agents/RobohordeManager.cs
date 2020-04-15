@@ -66,35 +66,37 @@ public class RobohordeManager : MonoBehaviour
             float[] distances = new float[3];
             for(int i = 0; i < distances.Length; i++) { distances[i] = float.MinValue; }
 
-            foreach (Transform follower in followerTransforms)
+            foreach (Follower follower in followerAgents)
             {
-                float distance = (leaderTransform.position - follower.position).sqrMagnitude;
-                if(distance > distances[0])
+                if (follower.IsPatrolling())
                 {
-                    furthest[2] = furthest[1];
-                    furthest[1] = furthest[0];
-                    furthest[0] = follower.GetComponent<Follower>();
+                    float distance = (leaderTransform.position - follower.gameObject.transform.position).sqrMagnitude;
+                    if (distance > distances[0])
+                    {
+                        furthest[2] = furthest[1];
+                        furthest[1] = furthest[0];
+                        furthest[0] = follower;
 
-                    distances[2] = distances[1];
-                    distances[1] = distances[0];
-                    distances[0] = distance;
-                }
-                else if(distance > distances[1])
-                {
-                    furthest[2] = furthest[1];
-                    furthest[1] = follower.GetComponent<Follower>();
+                        distances[2] = distances[1];
+                        distances[1] = distances[0];
+                        distances[0] = distance;
+                    }
+                    else if (distance > distances[1])
+                    {
+                        furthest[2] = furthest[1];
+                        furthest[1] = follower;
 
-                    distances[2] = distances[1];
-                    distances[1] = distance;
-                }
-                else if(distance > distances[2])
-                {
-                    furthest[2] = follower.GetComponent<Follower>();
-                    distances[2] = distance;
+                        distances[2] = distances[1];
+                        distances[1] = distance;
+                    }
+                    else if (distance > distances[2])
+                    {
+                        furthest[2] = follower;
+                        distances[2] = distance;
+                    }
                 }
             }
-
-            Debug.Log(furthest[0]);
+            
 
             foreach (Follower follower in furthest)
             {
