@@ -40512,7 +40512,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.9179881, b: 0.6179246, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -41070,7 +41070,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.91764706, g: 0.73333335, b: 0.015686275, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -41175,7 +41175,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.28235295, g: 1, b: 0, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -41280,7 +41280,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 0, g: 0.93333334, b: 1, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -42434,7 +42434,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.033018887, b: 0.033018887, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -43405,16 +43405,16 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.92772037, b: 0.5613208, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
-  m_PointLightInnerAngle: 8.629997
-  m_PointLightOuterAngle: 56.78
-  m_PointLightInnerRadius: 8.120752
-  m_PointLightOuterRadius: 26.793966
+  m_PointLightInnerAngle: 33.370003
+  m_PointLightOuterAngle: 77.16
+  m_PointLightInnerRadius: 4.0819216
+  m_PointLightOuterRadius: 26.803577
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
@@ -43434,8 +43434,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946768900}
-  m_LocalRotation: {x: 0, y: 0, z: 0.999988, w: 0.00489299}
-  m_LocalPosition: {x: 40.6, y: 87.6, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.99997956, w: -0.0063936505}
+  m_LocalPosition: {x: 33.2, y: 87.5, z: 1}
   m_LocalScale: {x: 0.73693, y: 0.73693, z: 0.73693}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43719,7 +43719,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.92772037, b: 0.5613208, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -155792,16 +155792,16 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.92772037, b: 0.5613208, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
-  m_PointLightInnerAngle: 8.629997
+  m_PointLightInnerAngle: 21.4
   m_PointLightOuterAngle: 56.78
   m_PointLightInnerRadius: 8.120752
-  m_PointLightOuterRadius: 26.793966
+  m_PointLightOuterRadius: 27.738335
   m_PointLightDistance: 3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
@@ -155821,7 +155821,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390749930}
-  m_LocalRotation: {x: 0, y: 0, z: 0.999988, w: 0.00489299}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9999937, w: -0.0035564685}
   m_LocalPosition: {x: 4, y: 88, z: 1}
   m_LocalScale: {x: 0.73693, y: 0.73693, z: 0.73693}
   m_Children: []
@@ -156052,7 +156052,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.9179881, b: 0.6179246, a: 1}
   m_Intensity: 3
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
@@ -156334,7 +156334,7 @@ MonoBehaviour:
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 0.9426704, b: 0.6839622, a: 1}
   m_Intensity: 1
-  m_LightVolumeOpacity: 0
+  m_LightVolumeOpacity: 0.2
   m_ApplyToSortingLayers: 0000000093ac3cca49bceb29
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
