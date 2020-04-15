@@ -20,17 +20,20 @@ public class Leader : RoboHordeAgent
         switch (state)
         {
             case State.patrolling:
-                ApplyForce(GetSeekForce(pathway[targetIndex].position));
-
-                if ((pathway[targetIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
+                if (pathway[targetIndex] != null)
                 {
-                    if (targetIndex == pathway.Count - 1)
+                    ApplyForce(GetSeekForce(pathway[targetIndex].position));
+
+                    if ((pathway[targetIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
                     {
-                        targetIndex = 0;
-                    }
-                    else
-                    {
-                        targetIndex++;
+                        if (targetIndex == pathway.Count - 1)
+                        {
+                            targetIndex = 0;
+                        }
+                        else
+                        {
+                            targetIndex++;
+                        }
                     }
                 }
                 break;

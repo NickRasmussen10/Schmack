@@ -33,8 +33,6 @@ public class RobohordeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -66,12 +64,12 @@ public class RobohordeManager : MonoBehaviour
         {
             Follower[] furthest = new Follower[3];
             float[] distances = new float[3];
-            for(int i = 0; i < distances.Length; i++) { distances[i] = float.MaxValue; }
+            for(int i = 0; i < distances.Length; i++) { distances[i] = float.MinValue; }
 
             foreach (Transform follower in followerTransforms)
             {
                 float distance = (leaderTransform.position - follower.position).sqrMagnitude;
-                if(distance < distances[0])
+                if(distance > distances[0])
                 {
                     furthest[2] = furthest[1];
                     furthest[1] = furthest[0];
@@ -81,7 +79,7 @@ public class RobohordeManager : MonoBehaviour
                     distances[1] = distances[0];
                     distances[0] = distance;
                 }
-                else if(distance < distances[1])
+                else if(distance > distances[1])
                 {
                     furthest[2] = furthest[1];
                     furthest[1] = follower.GetComponent<Follower>();
@@ -89,7 +87,7 @@ public class RobohordeManager : MonoBehaviour
                     distances[2] = distances[1];
                     distances[1] = distance;
                 }
-                else if(distance < distances[2])
+                else if(distance > distances[2])
                 {
                     furthest[2] = follower.GetComponent<Follower>();
                     distances[2] = distance;

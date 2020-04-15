@@ -25,6 +25,8 @@ public class AutonomousAgent : MonoBehaviour
         Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
         Mathf.Clamp(velocity.y, -maxSpeed, maxSpeed);
         rb.MovePosition(rb.position + (Vector2)velocity);
+        //if(rb.velocity.sqrMagnitude < maxSpeed * maxSpeed)
+        //    rb.AddForce(velocity * 10);
         acceleration = Vector3.zero;
     }
 
