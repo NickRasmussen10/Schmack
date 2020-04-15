@@ -7,12 +7,12 @@ public class RoboHordeAgent : AutonomousAgent
     [SerializeField] protected float lookAheadDistance = 1.0f;
     int pathIndex = 0;
 
-    protected enum State
+    public enum State
     {
         patrolling, 
         dead
     }
-    protected State state;
+    public State state;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -24,7 +24,16 @@ public class RoboHordeAgent : AutonomousAgent
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update();
+        switch (state)
+        {
+            case State.patrolling:
+                base.Update();
+                break;
+            case State.dead:
+                break;
+            default:
+                break;
+        }
     }
 
     public void ApplyFlocking(List<Transform> horde)

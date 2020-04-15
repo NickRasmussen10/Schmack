@@ -2,9 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct DamagePacket
+{
+    public float damage;
+    public bool isPowerShot;
+    public float powerShotRadius;
+}
+
+
 public class Arrow : Projectile
 {
     [SerializeField] TrailRenderer trail = null;
+    [SerializeField] float powerShotEffectRadius = 1.0f;
 
     bool isPowerShot = false;
     public void SetPowerShot(bool value) { isPowerShot = value; }
@@ -66,8 +75,9 @@ public class Arrow : Projectile
             DamagePacket packet;
             packet.damage = 0.5f;
             packet.isPowerShot = isPowerShot;
+            packet.powerShotRadius = powerShotEffectRadius;
             collision.gameObject.GetComponent<Enemy>().SendMessage("TakeDamage", packet);
-            if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.15f); //patrolbot thing is ew yucky gross and i don't like it
+            if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.15f);
         }
 
         //if arrow hits an interactable

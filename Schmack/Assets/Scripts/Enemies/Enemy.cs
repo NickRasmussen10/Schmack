@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct DamagePacket
-{
-    public float damage;
-    public bool isPowerShot;
-}
-
 public abstract class Enemy : MonoBehaviour
 { 
     [SerializeField] protected float maxHealth = 1.0f;

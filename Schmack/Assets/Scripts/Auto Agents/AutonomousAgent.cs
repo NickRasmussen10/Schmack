@@ -7,8 +7,8 @@ public class AutonomousAgent : MonoBehaviour
     [SerializeField] protected float mass;
     [SerializeField] protected float maxSpeed;
     protected Rigidbody2D rb;
-    protected Vector3 velocity;
-    protected Vector3 acceleration;
+    public Vector3 velocity;
+    public Vector3 acceleration;
 
     // Start is called before the first frame update
     protected virtual void Start()

@@ -235,10 +235,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea3acf8d2f22ee4b8989eb789c629d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 15
-  maxSpeed: 10
+  mass: 20
+  maxSpeed: 75
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
   lookAheadDistance: 1
-  pathway: []
+  state: 0
+  pathway:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1798284101458453504
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,7 +28,8 @@ public class Robohorde_Enemy : Enemy
             DamagePacket newPacket;
             newPacket.damage = packet.damage;
             newPacket.isPowerShot = false;
-            Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, 3.0f, LayerMask.GetMask("enemies"));
+            newPacket.powerShotRadius = 0.0f;
+            Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, packet.powerShotRadius, LayerMask.GetMask("enemies"));
             foreach (Collider2D enemy in nearby)
             {
                 enemy.SendMessage("TakeDamage", newPacket);

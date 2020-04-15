@@ -157,7 +157,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b663abb5bfb4992498186a6844311f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 50
-  maxSpeed: 0.5
-  lookAheadDistance: 1
+  mass: 10
+  maxSpeed: 100
+  velocity: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
+  lookAheadDistance: 3
+  state: 0
   leader: {fileID: 0}
