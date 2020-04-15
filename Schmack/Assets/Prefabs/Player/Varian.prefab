@@ -1469,7 +1469,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8226249715758113147}
-  - component: {fileID: 242167931}
   m_Layer: 8
   m_Name: IK_rightTarget
   m_TagString: Untagged
@@ -1491,55 +1490,6 @@ Transform:
   m_Father: {fileID: 2319794099503835930}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &242167931
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3431263767072998776}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0595567da4d7cb548bd5defe2a605188, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 3.11, y: 3.12}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &3499961470691260686
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,12 +2035,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ca792e90b420d948950a93183391801, type: 3}
---- !u!4 &5125660351923468929 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5335381376571320898, guid: 7ca792e90b420d948950a93183391801,
-    type: 3}
-  m_PrefabInstance: {fileID: 948313346744455363}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &2601961942459752793 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2969300897773990298, guid: 7ca792e90b420d948950a93183391801,
@@ -2100,6 +2044,12 @@ SpriteRenderer:
 --- !u!212 &8683455413834224281 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8478238812651061850, guid: 7ca792e90b420d948950a93183391801,
+    type: 3}
+  m_PrefabInstance: {fileID: 948313346744455363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5125660351923468929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5335381376571320898, guid: 7ca792e90b420d948950a93183391801,
     type: 3}
   m_PrefabInstance: {fileID: 948313346744455363}
   m_PrefabAsset: {fileID: 0}

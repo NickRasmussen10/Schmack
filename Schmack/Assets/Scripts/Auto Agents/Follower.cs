@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Follower : RoboHordeAgent
 {
-    public Transform leader;
+    public Transform target;
     RoboHordeAgent leader_agent;
 
     // Start is called before the first frame update
@@ -12,7 +12,8 @@ public class Follower : RoboHordeAgent
     {
         base.Start();
 
-        leader_agent = leader.gameObject.GetComponent<Leader>();
+        //target == leader, assigned by robohorde mananger
+        leader_agent = target.gameObject.GetComponent<Leader>();
     }
 
     // Update is called once per frame
@@ -23,14 +24,17 @@ public class Follower : RoboHordeAgent
         switch (state)
         {
             case State.patrolling:
-                if ((leader.position - transform.position).sqrMagnitude < lookAheadDistance)
+                if ((target.position - transform.position).sqrMagnitude < lookAheadDistance)
                 {
-                    ApplyForce(GetFleeForce(leader.position));
+                    ApplyForce(GetFleeForce(target.position));
                 }
                 else
                 {
-                    ApplyForce(GetSeekForce(leader.position + leader.gameObject.GetComponent<AutonomousAgent>().velocity * 10));
+                    ApplyForce(GetSeekForce(target.position + leader_agent.velocity * 10));
                 }
+                break;
+            case State.attacking:
+                ApplyForce(GetSeekForce(target.position));
                 break;
             case State.dead:
                 break;
@@ -39,5 +43,16 @@ public class Follower : RoboHordeAgent
         }
 
         base.Update();
+    }
+
+    public void Attack(Transform player)
+    {
+        state = State.attacking;
+        target = player;
+    }
+
+    public void Push(Vector3 force)
+    {
+        rb.AddForce(force, ForceMode2D.Impulse);
     }
 }

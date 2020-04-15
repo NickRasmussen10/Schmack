@@ -10,6 +10,7 @@ public class RoboHordeAgent : AutonomousAgent
     public enum State
     {
         patrolling, 
+        attacking,
         dead
     }
     public State state;
