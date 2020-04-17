@@ -15558,6 +15558,36 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8951798563656532878, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: sounds.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951798563656532878, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: sounds.Array.data[8].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3325eecf4840938479f62077bbc8d0ab, type: 3}
+    - target: {fileID: 8951798563656532878, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: sounds.Array.data[8].name
+      value: ClubMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951798563656532878, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: sounds.Array.data[8].volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951798563656532878, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: sounds.Array.data[8].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8951798563656532878, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: sounds.Array.data[8].loop
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 340e04acef3d9004b9742b887fdf32ff, type: 3}
 --- !u!1 &513111963
