@@ -607,6 +607,16 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2071916295750558315, guid: f5df6bdb4c2bac14780c6f23df942268,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071916295750558315, guid: f5df6bdb4c2bac14780c6f23df942268,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2071916295888738647, guid: f5df6bdb4c2bac14780c6f23df942268,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -626,6 +636,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -20.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071916296452814798, guid: f5df6bdb4c2bac14780c6f23df942268,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071916296452814798, guid: f5df6bdb4c2bac14780c6f23df942268,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071916296452814798, guid: f5df6bdb4c2bac14780c6f23df942268,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2628591487790988894, guid: f5df6bdb4c2bac14780c6f23df942268,
         type: 3}
@@ -709,17 +734,17 @@ PrefabInstance:
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.12333
+      value: 20.123333
       objectReference: {fileID: 0}
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 78.227005
+      value: 78.227
       objectReference: {fileID: 0}
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.999999
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 4343363199140054829, guid: c20ad686330bc9441aab1f4986af154b,
         type: 3}
@@ -835,36 +860,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].clip
-      value: 
-      objectReference: {fileID: 8300000, guid: 3325eecf4840938479f62077bbc8d0ab, type: 3}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].name
-      value: ClubMusic
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].volume
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102297327080111506, guid: 1c9cee7c4398d0445aa5ed7619163be0,
-        type: 3}
-      propertyPath: sounds.Array.data[8].loop
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1102297327080111507, guid: 1c9cee7c4398d0445aa5ed7619163be0,
         type: 3}
