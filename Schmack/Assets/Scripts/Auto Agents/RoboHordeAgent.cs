@@ -57,5 +57,6 @@ public class RoboHordeAgent : AutonomousAgent
         acceleration = Vector3.zero;
         velocity = Vector3.zero;
         rb.gravityScale = 1.0f;
+        Destroy(GetComponent<BoxCollider2D>());
     }
 }
