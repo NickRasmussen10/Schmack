@@ -164,7 +164,7 @@ MonoBehaviour:
   innerVelocity: {x: 0, y: 0, z: 0}
   outerVelocity: {x: 0, y: 0, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
-  lookAheadDistance: 3
+  lookAheadDistance: 5
   state: 0
   target: {fileID: 0}
 --- !u!1 &8071082178897724991

@@ -165,6 +165,7 @@ public class Bow : MonoBehaviour
 
         if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
         else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
+        
 
         arrows.Add(newArrow);
 

@@ -219,8 +219,6 @@ public class Player : MonoBehaviour
                 lerpVal += lerpVal / 50; //lazy version of "exponential" growth
                 if (lerpVal > 1.0f) lerpVal = 1.0f;
 
-                Debug.Log(Time.timeScale);
-
                 Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
                 Time.fixedDeltaTime = 0.02f * Time.timeScale;
                 yield return null;

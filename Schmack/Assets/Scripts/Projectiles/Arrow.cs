@@ -77,7 +77,7 @@ public class Arrow : Projectile
             packet.isPowerShot = isPowerShot;
             packet.powerShotRadius = powerShotEffectRadius;
             collision.gameObject.GetComponent<Enemy>().SendMessage("TakeDamage", packet);
-            if(isPowerShot) FindObjectOfType<PlayerMovement>().AddFlow(0.15f);
+            FindObjectOfType<PlayerMovement>().AddFlow(0.15f);
         }
 
         //if arrow hits an interactable
