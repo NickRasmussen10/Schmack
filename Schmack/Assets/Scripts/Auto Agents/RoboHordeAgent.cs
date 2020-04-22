@@ -46,7 +46,7 @@ public class RoboHordeAgent : AutonomousAgent
         {
             if (t != transform)
             {
-                ApplyForce((GetFleeForce(t.position) / (t.position - transform.position).sqrMagnitude) * 0.75f);
+                ApplyInnerForce((GetFleeForce(t.position) / (t.position - transform.position).sqrMagnitude) * 0.75f);
             }
         }
     }
@@ -55,7 +55,7 @@ public class RoboHordeAgent : AutonomousAgent
     {
         state = State.dead;
         acceleration = Vector3.zero;
-        velocity = Vector3.zero;
+        innerVelocity = Vector3.zero;
         rb.gravityScale = 1.0f;
         Destroy(GetComponent<BoxCollider2D>());
     }

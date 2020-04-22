@@ -159,7 +159,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 10
   maxSpeed: 100
-  velocity: {x: 0, y: 0, z: 0}
+  friction: 1
+  innerVelocity: {x: 0, y: 0, z: 0}
+  outerVelocity: {x: 0, y: 0, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
   lookAheadDistance: 3
   state: 0

@@ -14,6 +14,7 @@ public class Follower : RoboHordeAgent
 
         //target == leader, assigned by robohorde mananger
         leader_agent = target.gameObject.GetComponent<Leader>();
+        //StartCoroutine(PhysicsTest());
     }
 
     // Update is called once per frame
@@ -26,15 +27,15 @@ public class Follower : RoboHordeAgent
             case State.patrolling:
                 if ((target.position - transform.position).sqrMagnitude < lookAheadDistance)
                 {
-                    ApplyForce(GetFleeForce(target.position));
+                    ApplyInnerForce(GetFleeForce(target.position));
                 }
                 else
                 {
-                    ApplyForce(GetSeekForce(target.position + leader_agent.velocity * 10));
+                    ApplyInnerForce(GetSeekForce(target.position + leader_agent.innerVelocity * 10));
                 }
                 break;
             case State.attacking:
-                ApplyForce(GetSeekForce(target.position));
+                ApplyInnerForce(GetSeekForce(target.position));
                 break;
             case State.dead:
                 break;
@@ -43,6 +44,17 @@ public class Follower : RoboHordeAgent
         }
 
         base.Update();
+    }
+
+    //had to write a coroutine to test new physics because unity inputs are like hard now
+    IEnumerator PhysicsTest()
+    {
+        ApplyForce(new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f), 0.0f));
+        while (true)
+        {
+            yield return new WaitForSeconds(30.0f);
+            ApplyForce(new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f), 0.0f));
+        }
     }
 
     public void Attack(Transform player)

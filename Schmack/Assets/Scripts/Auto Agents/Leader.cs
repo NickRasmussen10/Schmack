@@ -22,7 +22,7 @@ public class Leader : RoboHordeAgent
             case State.patrolling:
                 if (pathway[targetIndex] != null)
                 {
-                    ApplyForce(GetSeekForce(pathway[targetIndex].position));
+                    ApplyInnerForce(GetSeekForce(pathway[targetIndex].position));
 
                     if ((pathway[targetIndex].position - transform.position).sqrMagnitude < lookAheadDistance)
                     {
