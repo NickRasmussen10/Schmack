@@ -7,6 +7,10 @@ public class RobohordeSpawner : MonoBehaviour
     [SerializeField] GameObject pref_robohorde;
     [SerializeField] float spawnRate = 5.0f;
     [SerializeField] float visionRange = 1.0f;
+
+    public float direction = 1.0f;
+
+    [SerializeField] Transform[] pathway;
     Transform player;
 
     Coroutine c_spawn;
@@ -40,7 +44,8 @@ public class RobohordeSpawner : MonoBehaviour
         {
             if(Random.Range(0, 3) == 0)
             {
-                Instantiate(pref_robohorde, transform.position, Quaternion.identity);
+                //this got out of hand and I'm sorry
+                Instantiate(pref_robohorde, transform.position + (Vector3)((direction == 1.0f ? Vector2.right : Vector2.left) * 5.0f), Quaternion.identity).GetComponent<RobohordeManager>().SetPath(pathway);
             }
             yield return new WaitForSeconds(spawnRate);
         }

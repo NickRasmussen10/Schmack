@@ -8,7 +8,7 @@ public class RobohordeManager : MonoBehaviour
     [SerializeField] float attackRate = 1.0f;
 
     Transform leaderTransform;
-    RoboHordeAgent leaderAgent;
+    Leader leaderAgent;
     List<Transform> followerTransforms = new List<Transform>();
     List<RoboHordeAgent> followerAgents = new List<RoboHordeAgent>();
 
@@ -56,6 +56,11 @@ public class RobohordeManager : MonoBehaviour
             StopCoroutine(c_attack);
             c_attack = null;
         }
+    }
+
+    public void SetPath(Transform[] path)
+    {
+        leaderAgent.SetPath(path);
     }
 
     IEnumerator Attack()

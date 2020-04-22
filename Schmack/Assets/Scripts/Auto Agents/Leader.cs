@@ -44,4 +44,22 @@ public class Leader : RoboHordeAgent
         }
         base.Update();
     }
+
+    public void SetPath(Transform[] newPath)
+    {
+        pathway.Clear();
+        pathway.AddRange(newPath);
+        int closestIndex = 0;
+        float closest = float.MaxValue;
+        for (int i = 0; i < pathway.Count; i++)
+        {
+            float distance = (transform.position - pathway[i].position).sqrMagnitude;
+            if(distance < closest)
+            {
+                closest = distance;
+                closestIndex = i;
+            }
+        }
+        targetIndex = closestIndex;
+    }
 }
