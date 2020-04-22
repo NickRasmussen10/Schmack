@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     [Header("Timescaling")]
     [SerializeField] float timeScaleMin = 0.1f; //the slowest the game will go on bow drawback
     [SerializeField] float timeScaleMax = 1.0f; //the fastest the game will go otherwise (1.0f is normal)
+    [SerializeField] float timeDialtionTime = 2.0f;
+    [SerializeField] float timeLerpMultiplier = 1.0f;
     [HideInInspector] public float timeScale;
 
     CameraManager cameraManager;
@@ -198,8 +200,32 @@ public class Player : MonoBehaviour
     //this method is called from an animation event
     void TimeDilationDown()
     {
+        StartCoroutine(TimeDilation());
+    }
+
+    IEnumerator TimeDilation()
+    {
         Time.timeScale = timeScaleMin;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        yield return new WaitForSecondsRealtime(timeDialtionTime);
+
+        if(Time.timeScale != 1.0f)
+        {
+            float lerpVal = 0.0f;
+            while(lerpVal < 1.0f)
+            {
+                lerpVal += Time.unscaledDeltaTime * timeLerpMultiplier;
+                lerpVal += lerpVal / 50; //lazy version of "exponential" growth
+                if (lerpVal > 1.0f) lerpVal = 1.0f;
+
+                Debug.Log(Time.timeScale);
+
+                Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+                yield return null;
+            }
+        }
     }
 
     //this method is called from an animation event

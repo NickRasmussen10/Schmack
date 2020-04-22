@@ -7,6 +7,8 @@ public class Follower : RoboHordeAgent
     public Transform target;
     RoboHordeAgent leader_agent;
 
+    BoxCollider2D boxCollider;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -14,6 +16,7 @@ public class Follower : RoboHordeAgent
 
         //target == leader, assigned by robohorde mananger
         leader_agent = target.gameObject.GetComponent<Leader>();
+        boxCollider = GetComponent<BoxCollider2D>();
         //StartCoroutine(PhysicsTest());
     }
 
@@ -29,6 +32,7 @@ public class Follower : RoboHordeAgent
                 {
                     ApplyInnerForce(GetFleeForce(target.position));
                 }
+                if (boxCollider.size != Vector2.one) boxCollider.size = Vector2.one;
                 else
                 {
                     ApplyInnerForce(GetSeekForce(target.position + leader_agent.innerVelocity * 10));
@@ -36,6 +40,7 @@ public class Follower : RoboHordeAgent
                 break;
             case State.attacking:
                 ApplyInnerForce(GetSeekForce(target.position));
+                if (boxCollider.size != Vector2.one * 2) boxCollider.size = Vector2.one * 2;
                 break;
             case State.dead:
                 break;

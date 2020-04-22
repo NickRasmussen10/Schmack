@@ -15412,6 +15412,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScenePackage
       objectReference: {fileID: 0}
+    - target: {fileID: 2598935371099774570, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: timeDialtionTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2598935371099774570, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: timeLerpMultiplier
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3171184975352593523, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.x
