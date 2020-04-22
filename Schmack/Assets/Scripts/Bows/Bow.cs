@@ -83,6 +83,19 @@ public class Bow : MonoBehaviour
             default:
                 break;
         }
+
+
+        ///Dear future me:
+        ///I hope this comment finds you in good health. I'd like to sincerely apologise for the code here.
+        ///It was late and I was desperate to fix this timeScale issue and I turned to dishonorable means. 
+        ///Is it effective? Yes. Is it scalable? No. Will it cuase issues later? Well you're reading this so
+        ///yikes bud, sorry about that. 
+        ///                 Get fucked. -Nick
+        if(powerInput <= 0.5f && Time.timeScale != 1.0f)
+        {
+            Time.timeScale = 1.0f;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        }
     }
 
 
