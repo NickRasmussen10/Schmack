@@ -17,6 +17,7 @@ public class Bow : MonoBehaviour
     {
         idle,
         drawn,
+        powerShot,
         fired
     }
 
@@ -48,9 +49,7 @@ public class Bow : MonoBehaviour
 
     Animator animator;
     SoundManager sound;
-
-    //hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate hate
-    bool powershot = false; //is the current held shot a powershot? 
+    
 
     // Start is called before the first frame update
     protected void Start()
@@ -75,9 +74,14 @@ public class Bow : MonoBehaviour
                 if (powerInput > 0.9f && numArrows > 0) DrawBack();
                 break;
             case State.drawn:
-                if (powerInput == 0) Fire();
+                if (powerInput == 0) Fire(false);
+                break;
+            case State.powerShot:
+                if (powerInput == 0) Fire(true);
                 break;
             case State.fired:
+                animator.SetBool("drawn", false);
+                animator.SetBool("fired", false);
                 state = State.idle;
                 break;
             default:
@@ -133,25 +137,24 @@ public class Bow : MonoBehaviour
         if (state != State.drawn)
         {
             state = State.drawn;
-            powershot = false;
             powershotTimer = StartCoroutine(ChargePowershot());
         }
 
-        animator.SetTrigger("draw");
+        animator.SetBool("drawn", true);
 
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
         sound.Play("BowDraw", 0.85f, 1.15f);
         sound.Play("Rumble");
     }
 
-    void Fire()
+    void Fire(bool isPowershot)
     {
         state = State.fired;
         StartCoroutine(Rumble.BurstRumble(1.0f, 0.1f));
         StopCoroutine(powershotTimer);
 
         numArrows--;
-        animator.SetTrigger("fire");
+        animator.SetBool("fired", true);
 
         SetPowershotEffects(false);
 
@@ -159,18 +162,17 @@ public class Bow : MonoBehaviour
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
-        if (powershot) newArrow.GetComponent<Arrow>().SetPowerShot(true);
-
-        if (powershot) newArrow.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
-
-        if (inFlow) newArrow.GetComponent<Arrow>().AddForce(direction * flow_shotPower);
-        else newArrow.GetComponent<Arrow>().AddForce(direction * noFlow_shotPower);
+        if (isPowershot)
+        {
+            newArrow.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
+            newArrow.GetComponent<Arrow>().SetPowerShot(true);
+        }
+        newArrow.GetComponent<Arrow>().AddForce(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
         
 
         arrows.Add(newArrow);
 
-        if (inFlow) gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * flow_knockbackForce, true);
-        else gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * noFlow_knockbackForce, true);
+        gameObject.transform.parent.GetComponent<PlayerMovement>().AddKnockback(-direction * (inFlow ? flow_knockbackForce : noFlow_knockbackForce), true);
 
         sound.Stop("Rumble");
         sound.Play("BowFire", 0.85f, 1.15f);
@@ -179,12 +181,12 @@ public class Bow : MonoBehaviour
     IEnumerator ChargePowershot()
     {
         float timer = 0.0f;
-        while (timer < timeToPowershot)
+        while (timer < timeToPowershot && state == State.drawn)
         {
             timer += Time.unscaledDeltaTime;
             if(timer >= timeToPowershot)
             {
-                powershot = true;
+                state = State.powerShot;
                 SetPowershotEffects(true);
             }
             yield return null;
@@ -202,11 +204,8 @@ public class Bow : MonoBehaviour
     public void EnableFire()
     {
         state = State.idle;
-    }
-
-    public void LoadNextArrow()
-    {
-        state = State.idle;
+        animator.SetBool("drawn", false);
+        animator.SetBool("fired", false);
     }
 
     //void BowRecharge()
