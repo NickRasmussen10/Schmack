@@ -49,7 +49,7 @@ public class Bow : MonoBehaviour
 
     Animator animator;
     SoundManager sound;
-    
+
 
     // Start is called before the first frame update
     protected void Start()
@@ -71,13 +71,14 @@ public class Bow : MonoBehaviour
         switch (state)
         {
             case State.idle:
-                if (powerInput > 0.9f && numArrows > 0) DrawBack();
+                if (powerInput > 0.5f && numArrows > 0) DrawBack();
+                if (powerShotEffects[0].enabled) SetPowershotEffects(false);
                 break;
             case State.drawn:
-                if (powerInput == 0) Fire(false);
+                if (powerInput < 0.5f) Fire(false);
                 break;
             case State.powerShot:
-                if (powerInput == 0) Fire(true);
+                if (powerInput < 0.5f) Fire(true);
                 break;
             case State.fired:
                 animator.SetBool("drawn", false);
@@ -95,7 +96,7 @@ public class Bow : MonoBehaviour
         ///Is it effective? Yes. Is it scalable? No. Will it cuase issues later? Well you're reading this so
         ///yikes bud, sorry about that. 
         ///                 Get fucked. -Nick
-        if(powerInput <= 0.5f && Time.timeScale != 1.0f)
+        if (powerInput <= 0.5f && Time.timeScale != 1.0f)
         {
             Time.timeScale = 1.0f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -134,11 +135,9 @@ public class Bow : MonoBehaviour
 
     void DrawBack()
     {
-        if (state != State.drawn)
-        {
-            state = State.drawn;
-            powershotTimer = StartCoroutine(ChargePowershot());
-        }
+
+        state = State.drawn;
+        powershotTimer = StartCoroutine(ChargePowershot());
 
         animator.SetBool("drawn", true);
 
@@ -168,7 +167,7 @@ public class Bow : MonoBehaviour
             newArrow.GetComponent<Arrow>().SetPowerShot(true);
         }
         newArrow.GetComponent<Arrow>().AddForce(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
-        
+
 
         arrows.Add(newArrow);
 
@@ -181,10 +180,10 @@ public class Bow : MonoBehaviour
     IEnumerator ChargePowershot()
     {
         float timer = 0.0f;
-        while (timer < timeToPowershot && state == State.drawn)
+        while (timer < timeToPowershot)
         {
             timer += Time.unscaledDeltaTime;
-            if(timer >= timeToPowershot)
+            if (timer >= timeToPowershot && state == State.drawn)
             {
                 state = State.powerShot;
                 SetPowershotEffects(true);
@@ -208,19 +207,11 @@ public class Bow : MonoBehaviour
         animator.SetBool("fired", false);
     }
 
-    //void BowRecharge()
-    //{
-    //    if (numArrows < maxArrows)
-    //    {
-    //        numArrows++;
-    //    }
-    //}
-
     IEnumerator BowRecharge()
     {
         while (true)
         {
-            if(numArrows < maxArrows)
+            if (numArrows < maxArrows)
             {
                 yield return new WaitForSeconds(rechargeTime);
                 numArrows++;
@@ -246,13 +237,13 @@ public class Bow : MonoBehaviour
         {
             recharge = StartCoroutine(BowRecharge());
         }
-        else if(!packet.isColliding && recharge != null)
+        else if (!packet.isColliding && recharge != null)
         {
             StopCoroutine(recharge);
             recharge = null;
         }
 
-        if(numArrows < maxArrows)
+        if (numArrows < maxArrows)
         {
             numArrows++;
         }
@@ -264,7 +255,7 @@ public class Bow : MonoBehaviour
         {
             recharge = StartCoroutine(BowRecharge());
         }
-        else if(!packet.isColliding && recharge != null)
+        else if (!packet.isColliding && recharge != null)
         {
             StopCoroutine(recharge);
             recharge = null;
