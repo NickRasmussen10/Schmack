@@ -10,11 +10,14 @@ public class AutonomousAgent : MonoBehaviour
     protected Rigidbody2D rb;
     public Vector3 innerVelocity;
     public Vector3 outerVelocity = Vector2.zero;
-    public Vector3 acceleration;
+    public Vector3 innerAcceleration;
+    public Vector3 outerAcceleration;
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        innerAcceleration = Vector3.zero;
+        outerAcceleration = Vector3.zero;
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0.0f;
     }
@@ -22,17 +25,21 @@ public class AutonomousAgent : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        innerVelocity += acceleration;
-        innerVelocity *= Time.deltaTime;
+        if (Inputs.controls.Player.Draw.ReadValue<float>() == 1) ApplyForce(Vector2.up); 
+        innerVelocity += innerAcceleration * Time.deltaTime;
+        outerVelocity += outerAcceleration * Time.deltaTime;
         Mathf.Clamp(innerVelocity.x, -maxSpeed, maxSpeed);
         Mathf.Clamp(innerVelocity.y, -maxSpeed, maxSpeed);
         rb.MovePosition(rb.position + (Vector2)innerVelocity + (Vector2)outerVelocity);
 
         if (outerVelocity.sqrMagnitude > 0) outerVelocity *= friction;
 
+        Debug.Log(outerVelocity);
+
         //if(rb.velocity.sqrMagnitude < maxSpeed * maxSpeed)
         //    rb.AddForce(velocity * 10);
-        acceleration = Vector3.zero;
+        innerAcceleration = Vector3.zero;
+        outerAcceleration = Vector3.zero;
     }
 
     protected Vector3 GetSeekForce(Vector3 target)
@@ -47,12 +54,21 @@ public class AutonomousAgent : MonoBehaviour
 
     protected void ApplyInnerForce(Vector3 force)
     {
-        acceleration += force / mass;
+        innerAcceleration += force / mass;
     }
     
     public void ApplyForce(Vector3 force)
     {
-        Debug.Log(force);
-        outerVelocity += force;
+        outerAcceleration += force / mass;
+    }
+
+    public virtual void Die()
+    {
+        innerVelocity = Vector3.zero;
+        innerAcceleration = Vector3.zero;
+        outerVelocity = Vector3.zero;
+        outerAcceleration = Vector3.zero;
+        rb.gravityScale = 1.0f;
+        Destroy(GetComponent<BoxCollider2D>());
     }
 }

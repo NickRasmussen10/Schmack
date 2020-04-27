@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -9052591588481845714}
   - component: {fileID: 8148491843335277534}
   - component: {fileID: -1333804525353087910}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Follower
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -158,12 +158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b663abb5bfb4992498186a6844311f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 10
-  maxSpeed: 100
-  friction: 1
+  mass: 0.5
+  maxSpeed: 0.15
+  friction: 0.99
   innerVelocity: {x: 0, y: 0, z: 0}
   outerVelocity: {x: 0, y: 0, z: 0}
-  acceleration: {x: 0, y: 0, z: 0}
+  innerAcceleration: {x: 0, y: 0, z: 0}
+  outerAcceleration: {x: 0, y: 0, z: 0}
   lookAheadDistance: 5
   state: 0
   target: {fileID: 0}
@@ -177,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2677924411347974647}
   - component: {fileID: 4048222957895977680}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Point Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

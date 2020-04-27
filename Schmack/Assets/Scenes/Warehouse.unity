@@ -2090,6 +2090,11 @@ PrefabInstance:
       propertyPath: timeLerpMultiplier
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 2766111996562171452, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: timeToPowershot
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3171184975352593523, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.x
