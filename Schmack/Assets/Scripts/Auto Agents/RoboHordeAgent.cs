@@ -51,12 +51,9 @@ public class RoboHordeAgent : AutonomousAgent
         }
     }
 
-    public void Die()
+    public override void Die()
     {
         state = State.dead;
-        acceleration = Vector3.zero;
-        innerVelocity = Vector3.zero;
-        rb.gravityScale = 1.0f;
-        Destroy(GetComponent<BoxCollider2D>());
+        base.Die();
     }
 }
