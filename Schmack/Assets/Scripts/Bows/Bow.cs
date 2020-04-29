@@ -161,7 +161,7 @@ public class Bow : MonoBehaviour
         Debug.Log(Time.timeScale);
 
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
-        if (true)
+        if (isPowershot)
         {
             newArrow.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
             newArrow.GetComponent<Arrow>().SetPowerShot(true);
