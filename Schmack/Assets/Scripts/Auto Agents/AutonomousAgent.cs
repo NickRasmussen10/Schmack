@@ -34,8 +34,6 @@ public class AutonomousAgent : MonoBehaviour
 
         if (outerVelocity.sqrMagnitude > 0) outerVelocity *= friction;
 
-        Debug.Log(outerVelocity);
-
         //if(rb.velocity.sqrMagnitude < maxSpeed * maxSpeed)
         //    rb.AddForce(velocity * 10);
         innerAcceleration = Vector3.zero;

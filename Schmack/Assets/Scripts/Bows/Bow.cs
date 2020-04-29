@@ -167,6 +167,7 @@ public class Bow : MonoBehaviour
             newArrow.GetComponent<Arrow>().SetPowerShot(true);
         }
         newArrow.GetComponent<Arrow>().AddForce(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
+        Debug.Log(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
 
 
         arrows.Add(newArrow);
