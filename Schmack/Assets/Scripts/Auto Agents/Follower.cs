@@ -18,6 +18,7 @@ public class Follower : RoboHordeAgent
         //target == leader, assigned by robohorde mananger
         leader_agent = target.gameObject.GetComponent<Leader>();
         boxCollider = GetComponent<BoxCollider2D>();
+        state = State.patrolling;
     }
 
     // Update is called once per frame
@@ -38,7 +39,7 @@ public class Follower : RoboHordeAgent
                 }
                 break;
             case State.attacking:
-                if ((target.position - transform.position).sqrMagnitude > attackRange * attackRange) ReturnToLeader();
+                if ((target.position - transform.position).sqrMagnitude > attackRange * attackRange) { Debug.Log("no wait go back"); ReturnToLeader(); }
                 ApplyInnerForce(GetSeekForce(target.position));
                 
                 break;

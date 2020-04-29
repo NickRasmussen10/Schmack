@@ -132,6 +132,7 @@ public class RobohordeManager : MonoBehaviour
             
             foreach (Follower follower in furthest)
             {
+                Debug.Log(player);
                 follower.Attack(player);
                 follower.Push((leaderTransform.position - follower.transform.position).normalized * 10);
             }

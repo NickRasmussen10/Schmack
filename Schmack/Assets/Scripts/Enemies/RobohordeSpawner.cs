@@ -54,7 +54,7 @@ public class RobohordeSpawner : MonoBehaviour
         for(int i = 0; i < manager.hordeSize; i++)
         {
             yield return new WaitForSeconds(0.075f);
-            manager.SpawnFollower(new Vector3(direction * 20, 0.0f, 0.0f));
+            manager.SpawnFollower(new Vector3(direction * Random.Range(15, 25), Random.Range(-5.0f, 5.0f), 0.0f));
         }
 
         manager.EnableAttack();
