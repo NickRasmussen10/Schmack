@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Follower : RoboHordeAgent
 {
+    [SerializeField] float attackRange = 1.0f;
     public Transform target;
     RoboHordeAgent leader_agent;
 
@@ -37,6 +38,7 @@ public class Follower : RoboHordeAgent
                 }
                 break;
             case State.attacking:
+                if ((target.position - transform.position).sqrMagnitude > attackRange * attackRange) ReturnToLeader();
                 ApplyInnerForce(GetSeekForce(target.position));
                 
                 break;
@@ -68,10 +70,15 @@ public class Follower : RoboHordeAgent
         if (collision.gameObject.tag == "Player" && state == State.attacking)
         {
             collision.gameObject.SendMessage("TakeDamage", 0.05f);
-            target = leader_agent.gameObject.transform;
-            boxCollider.size = Vector2.one;
-            state = State.returning;
+            ReturnToLeader();
         }
+    }
+
+    public void ReturnToLeader()
+    {
+        target = leader_agent.gameObject.transform;
+        boxCollider.size = Vector2.one;
+        state = State.returning;
     }
 
     public void Push(Vector3 force)

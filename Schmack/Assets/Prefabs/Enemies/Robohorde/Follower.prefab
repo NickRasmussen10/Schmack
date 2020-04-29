@@ -167,6 +167,7 @@ MonoBehaviour:
   outerAcceleration: {x: 0, y: 0, z: 0}
   lookAheadDistance: 5
   state: 0
+  attackRange: 10
   target: {fileID: 0}
 --- !u!1 &8071082178897724991
 GameObject:
