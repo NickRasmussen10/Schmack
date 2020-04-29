@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(Time.timeScale);
         if(health<=0.5f)
         {
             //bowSprite.color = Color.red;
@@ -96,12 +97,6 @@ public class Player : MonoBehaviour
         //rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
     }
 
-    //private void OnAnimatorMove()
-    //{
-        
-    //    rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
-    //    Debug.Log(rotator.transform.up);
-    //}
 
     private void OnAnimatorIK(int layerIndex)
     {
@@ -149,6 +144,11 @@ public class Player : MonoBehaviour
         health -= damage;
         if (health < 0) health = 0;
         cameraManager.SendMessage("CallDisplayDamage", 5.0f);
+    }
+
+    void FireArrow()
+    {
+        bowScript.FireArrow();
     }
 
     private void Die()
@@ -210,20 +210,23 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(timeDialtionTime);
 
-        if(Time.timeScale != 1.0f)
-        {
-            float lerpVal = 0.0f;
-            while(lerpVal < 1.0f)
-            {
-                lerpVal += Time.unscaledDeltaTime * timeLerpMultiplier;
-                lerpVal += lerpVal / 50; //lazy version of "exponential" growth
-                if (lerpVal > 1.0f) lerpVal = 1.0f;
+        Time.timeScale = timeScaleMax;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
-                Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
-                Time.fixedDeltaTime = 0.02f * Time.timeScale;
-                yield return null;
-            }
-        }
+        //if(Time.timeScale != 1.0f)
+        //{
+        //    float lerpVal = 0.0f;
+        //    while(lerpVal < 1.0f)
+        //    {
+        //        lerpVal += Time.unscaledDeltaTime * timeLerpMultiplier;
+        //        lerpVal += lerpVal / 50; //lazy version of "exponential" growth
+        //        if (lerpVal > 1.0f) lerpVal = 1.0f;
+
+        //        Time.timeScale = Mathf.Lerp(timeScaleMin, timeScaleMax, lerpVal);
+        //        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        //        yield return null;
+        //    }
+        //}
     }
 
     //this method is called from an animation event

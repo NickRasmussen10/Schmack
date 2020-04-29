@@ -158,6 +158,7 @@ public class Bow : MonoBehaviour
 
         Time.timeScale = 1.0f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        Debug.Log(Time.timeScale);
 
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
         if (true)
@@ -175,7 +176,7 @@ public class Bow : MonoBehaviour
         sound.Play("BowFire", 0.85f, 1.15f);
     }
 
-    void FireArrow()
+    public void FireArrow()
     {
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
         if (true)

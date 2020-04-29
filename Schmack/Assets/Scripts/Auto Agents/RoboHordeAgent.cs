@@ -64,7 +64,6 @@ public class RoboHordeAgent : AutonomousAgent
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log(gameObject);
         if(collision.gameObject.layer == LayerMask.NameToLayer("environment"))
         {
             GetComponent<BoxCollider2D>().isTrigger = false;
