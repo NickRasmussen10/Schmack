@@ -58,6 +58,7 @@ public class RoboHordeAgent : AutonomousAgent
     public override void Die()
     {
         state = State.dead;
+        GetComponent<BoxCollider2D>().size = Vector2.one / 2;
         base.Die();
     }
 }

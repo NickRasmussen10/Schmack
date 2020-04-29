@@ -25,7 +25,7 @@ public class AutonomousAgent : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (Inputs.controls.Player.Draw.ReadValue<float>() == 1) ApplyForce(Vector2.up); 
+        //if (Inputs.controls.Player.Draw.ReadValue<float>() == 1) ApplyForce(Vector2.up); 
         innerVelocity += innerAcceleration * Time.deltaTime;
         outerVelocity += outerAcceleration * Time.deltaTime;
         Mathf.Clamp(innerVelocity.x, -maxSpeed, maxSpeed);

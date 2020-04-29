@@ -23,6 +23,8 @@ public class Arrow : Projectile
     {
         base.Start();
 
+        layermask = 1 << 9 | 1 << 11 | 1 << 12 | 1 << 15 | 1 << 16;
+
         //start facing in direction of velocity
         transform.right = -rb.velocity;
         Instantiate(trail, transform);
@@ -66,6 +68,7 @@ public class Arrow : Projectile
     /// <param name="collisionPoint">the exact point at which the projectile hit the collider</param>
     protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
+        Debug.Log("the heck");
         //if arrow hits an enemy
         if (collision.gameObject.tag == "Enemy")
         {
@@ -78,6 +81,7 @@ public class Arrow : Projectile
             packet.powerShotRadius = powerShotEffectRadius;
             collision.gameObject.GetComponent<Enemy>().SendMessage("TakeDamage", packet);
             FindObjectOfType<PlayerMovement>().AddFlow(0.15f);
+            Debug.Log("the heck");
         }
 
         //if arrow hits an interactable

@@ -71,14 +71,14 @@ public class Bow : MonoBehaviour
         switch (state)
         {
             case State.idle:
-                if (powerInput > 0.5f && numArrows > 0) DrawBack();
+                if (powerInput > 0.9f && numArrows > 0) DrawBack();
                 if (powerShotEffects[0].enabled) SetPowershotEffects(false);
                 break;
             case State.drawn:
-                if (powerInput < 0.5f) Fire(false);
+                if (powerInput < 0.9f) Fire(false);
                 break;
             case State.powerShot:
-                if (powerInput < 0.5f) Fire(true);
+                if (powerInput < 0.9f) Fire(true);
                 break;
             case State.fired:
                 animator.SetBool("drawn", false);
@@ -138,7 +138,6 @@ public class Bow : MonoBehaviour
 
         state = State.drawn;
         powershotTimer = StartCoroutine(ChargePowershot());
-
         animator.SetBool("drawn", true);
 
         if (Rumble.rumble != 0.1f) Rumble.SetRumble(0.1f);
@@ -167,8 +166,6 @@ public class Bow : MonoBehaviour
             newArrow.GetComponent<Arrow>().SetPowerShot(true);
         }
         newArrow.GetComponent<Arrow>().AddForce(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
-        Debug.Log(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
-
 
         arrows.Add(newArrow);
 

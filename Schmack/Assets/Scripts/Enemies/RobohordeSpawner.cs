@@ -11,7 +11,9 @@ public class RobohordeSpawner : MonoBehaviour
     public float direction = 1.0f;
 
     [SerializeField] Transform[] pathway;
+    GameObject roboHorde;
     Transform player;
+    Animator animator;
 
     Coroutine c_spawn;
 
@@ -19,6 +21,7 @@ public class RobohordeSpawner : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -40,14 +43,11 @@ public class RobohordeSpawner : MonoBehaviour
 
     IEnumerator Spawn()
     {
-        while (true)
-        {
-            if(Random.Range(0, 3) == 0)
-            {
-                //this got out of hand and I'm sorry
-                Instantiate(pref_robohorde, transform.position + (Vector3)((direction == 1.0f ? Vector2.right : Vector2.left) * 5.0f), Quaternion.identity).GetComponent<RobohordeManager>().SetPath(pathway);
-            }
-            yield return new WaitForSeconds(spawnRate);
-        }
+        yield return new WaitForSeconds(Random.Range(1.0f, 5.0f));
+        animator.SetBool("isOpen", true);
+        yield return new WaitForSeconds(1.0f);
+        Instantiate(pref_robohorde, transform.position + (Vector3)((direction == 1.0f ? Vector2.right : Vector2.left) * 5.0f), Quaternion.identity).GetComponent<RobohordeManager>().SetPath(pathway);
+        yield return new WaitForSeconds(1.0f);
+        animator.SetBool("isOpen", false);
     }
 }
