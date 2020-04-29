@@ -6,6 +6,12 @@ public class RobohordeManager : MonoBehaviour
 {
     [SerializeField] float visionRange = 10.0f;
     [SerializeField] float attackRate = 1.0f;
+    public float hordeSize = 20;
+    [SerializeField] GameObject pref_leader;
+    [SerializeField] GameObject pref_follower;
+
+    bool attackEnabled = false;
+    public void EnableAttack() { attackEnabled = true; }
 
     Transform leaderTransform;
     Leader leaderAgent;
@@ -18,16 +24,16 @@ public class RobohordeManager : MonoBehaviour
 
     private void Awake()
     {
-        RoboHordeAgent[] followers = GetComponentsInChildren<Follower>();
+        //RoboHordeAgent[] followers = GetComponentsInChildren<Follower>();
         leaderAgent = GetComponentInChildren<Leader>();
         leaderTransform = leaderAgent.gameObject.transform;
 
-        foreach (Follower follower in followers)
-        {
-            followerTransforms.Add(follower.gameObject.transform);
-            followerAgents.Add(follower);
-            follower.target = leaderTransform;
-        }
+        //foreach (Follower follower in followers)
+        //{
+        //    followerTransforms.Add(follower.gameObject.transform);
+        //    followerAgents.Add(follower);
+        //    follower.target = leaderTransform;
+        //}
     }
 
     // Start is called before the first frame update
@@ -43,18 +49,20 @@ public class RobohordeManager : MonoBehaviour
         {
             agent.ApplyFlocking(followerTransforms);
         }
-
-        if((player.position - leaderTransform.position).sqrMagnitude < visionRange * visionRange)
+        if (leaderTransform != null)
         {
-            if(c_attack == null)
+            if (attackEnabled && followerAgents.Count != 0 && (player.position - leaderTransform.position).sqrMagnitude < visionRange * visionRange)
             {
-                c_attack = StartCoroutine(Attack());
+                if (c_attack == null)
+                {
+                    c_attack = StartCoroutine(Attack());
+                }
             }
-        }
-        else if(c_attack != null)
-        {
-            StopCoroutine(c_attack);
-            c_attack = null;
+            else if (c_attack != null)
+            {
+                StopCoroutine(c_attack);
+                c_attack = null;
+            }
         }
     }
 
@@ -63,13 +71,33 @@ public class RobohordeManager : MonoBehaviour
         leaderAgent.SetPath(path);
     }
 
+    public void SpawnLeader(Vector3 force)
+    {
+        if (leaderAgent == null)
+        {
+            leaderAgent = Instantiate(pref_leader, transform).GetComponent<Leader>();
+            leaderTransform = leaderAgent.gameObject.transform;
+        }
+        leaderAgent.ApplyForce(force);
+
+    }
+
+    public void SpawnFollower(Vector3 force)
+    {
+        Follower follower = Instantiate(pref_follower, transform).GetComponent<Follower>();
+        follower.target = leaderTransform;
+        followerAgents.Add(follower);
+        followerTransforms.Add(follower.gameObject.transform);
+        follower.ApplyForce(force);
+    }
+
     IEnumerator Attack()
     {
         while (true)
         {
             Follower[] furthest = new Follower[3];
             float[] distances = new float[3];
-            for(int i = 0; i < distances.Length; i++) { distances[i] = float.MinValue; }
+            for (int i = 0; i < distances.Length; i++) { distances[i] = float.MinValue; }
 
             foreach (Follower follower in followerAgents)
             {
@@ -102,7 +130,6 @@ public class RobohordeManager : MonoBehaviour
                 }
             }
             
-
             foreach (Follower follower in furthest)
             {
                 follower.Attack(player);

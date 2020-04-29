@@ -12,14 +12,21 @@ public class AutonomousAgent : MonoBehaviour
     public Vector3 outerVelocity = Vector2.zero;
     public Vector3 innerAcceleration;
     public Vector3 outerAcceleration;
-
-    // Start is called before the first frame update
-    protected virtual void Start()
+    
+    protected virtual void Awake()
     {
+        innerVelocity = Vector3.zero;
+        outerVelocity = Vector3.zero;
         innerAcceleration = Vector3.zero;
         outerAcceleration = Vector3.zero;
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0.0f;
+    }
+
+    // Start is called before the first frame update
+    protected virtual void Start()
+    {
+        
     }
 
     // Update is called once per frame
@@ -33,9 +40,7 @@ public class AutonomousAgent : MonoBehaviour
         rb.MovePosition(rb.position + (Vector2)innerVelocity + (Vector2)outerVelocity);
 
         if (outerVelocity.sqrMagnitude > 0) outerVelocity *= friction;
-
-        //if(rb.velocity.sqrMagnitude < maxSpeed * maxSpeed)
-        //    rb.AddForce(velocity * 10);
+        
         innerAcceleration = Vector3.zero;
         outerAcceleration = Vector3.zero;
     }
@@ -58,6 +63,7 @@ public class AutonomousAgent : MonoBehaviour
     public void ApplyForce(Vector3 force)
     {
         outerAcceleration += force / mass;
+        outerVelocity += outerAcceleration * Time.deltaTime;
     }
 
     public virtual void Die()

@@ -68,7 +68,6 @@ public class Arrow : Projectile
     /// <param name="collisionPoint">the exact point at which the projectile hit the collider</param>
     protected override void TriggerHit(Collider2D collision, Vector3 collisionPoint)
     {
-        Debug.Log("the heck");
         //if arrow hits an enemy
         if (collision.gameObject.tag == "Enemy")
         {
@@ -81,7 +80,6 @@ public class Arrow : Projectile
             packet.powerShotRadius = powerShotEffectRadius;
             collision.gameObject.GetComponent<Enemy>().SendMessage("TakeDamage", packet);
             FindObjectOfType<PlayerMovement>().AddFlow(0.15f);
-            Debug.Log("the heck");
         }
 
         //if arrow hits an interactable

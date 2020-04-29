@@ -61,4 +61,12 @@ public class RoboHordeAgent : AutonomousAgent
         GetComponent<BoxCollider2D>().size = Vector2.one / 2;
         base.Die();
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("environment"))
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+        }
+    }
 }

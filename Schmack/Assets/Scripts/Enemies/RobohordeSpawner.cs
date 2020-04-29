@@ -5,6 +5,7 @@ using UnityEngine;
 public class RobohordeSpawner : MonoBehaviour
 {
     [SerializeField] GameObject pref_robohorde;
+    [SerializeField] Transform spawnPoint;
     [SerializeField] float spawnRate = 5.0f;
     [SerializeField] float visionRange = 1.0f;
 
@@ -45,9 +46,18 @@ public class RobohordeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(1.0f, 5.0f));
         animator.SetBool("isOpen", true);
-        yield return new WaitForSeconds(1.0f);
-        Instantiate(pref_robohorde, transform.position + (Vector3)((direction == 1.0f ? Vector2.right : Vector2.left) * 5.0f), Quaternion.identity).GetComponent<RobohordeManager>().SetPath(pathway);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.75f);
+        roboHorde = Instantiate(pref_robohorde, spawnPoint.position, Quaternion.identity);
+        RobohordeManager manager = roboHorde.GetComponent<RobohordeManager>();
+        manager.SetPath(pathway);
+        manager.SpawnLeader(new Vector3(direction * 50, 0.0f, 0.0f));
+        for(int i = 0; i < manager.hordeSize; i++)
+        {
+            yield return new WaitForSeconds(0.075f);
+            manager.SpawnFollower(new Vector3(direction * 20, 0.0f, 0.0f));
+        }
+
+        manager.EnableAttack();
         animator.SetBool("isOpen", false);
     }
 }

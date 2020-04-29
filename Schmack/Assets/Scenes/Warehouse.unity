@@ -529,6 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 5
   visionRange: 30
   direction: -1
@@ -1670,6 +1671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 1
   visionRange: 30
   direction: -1
@@ -2154,15 +2156,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4739896670885503378, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -52.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4739896670885503378, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 47.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.12333
+      value: -52.346664
       objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 78.227005
+      value: 51.537
       objectReference: {fileID: 0}
     - target: {fileID: 5706536919573223232, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
@@ -19332,6 +19344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 5
   visionRange: 30
   direction: 1
@@ -19437,6 +19450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 5
   visionRange: 30
   direction: 1
@@ -19622,6 +19636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 5
   visionRange: 30
   direction: -1
@@ -19894,6 +19909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 5
   visionRange: 30
   direction: -1
@@ -20817,6 +20833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pref_robohorde: {fileID: 4328701129228256119, guid: 7b9e79775e119eb4fa3e199abbc42400,
     type: 3}
+  spawnPoint: {fileID: 0}
   spawnRate: 5
   visionRange: 30
   direction: 1
@@ -21456,11 +21473,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3237062700987264147, guid: a856663a56ce28345908e08140c934e5,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 172052009a9a88a4f9591fdd679b420b, type: 2}
     - target: {fileID: 7733306412013668472, guid: a856663a56ce28345908e08140c934e5,
         type: 3}
       propertyPath: m_LocalPosition.x
