@@ -160,7 +160,7 @@ public class Bow : MonoBehaviour
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
 
         GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
-        if (isPowershot)
+        if (true)
         {
             newArrow.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
             newArrow.GetComponent<Arrow>().SetPowerShot(true);
@@ -173,6 +173,20 @@ public class Bow : MonoBehaviour
 
         sound.Stop("Rumble");
         sound.Play("BowFire", 0.85f, 1.15f);
+    }
+
+    void FireArrow()
+    {
+        GameObject newArrow = Instantiate(pref_arrow, referencePoint.position, referencePoint.rotation);
+        if (true)
+        {
+            newArrow.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.5f);
+            newArrow.GetComponent<Arrow>().SetPowerShot(true);
+        }
+        newArrow.GetComponent<Arrow>().AddForce(direction * (inFlow ? flow_shotPower : noFlow_shotPower));
+
+        arrows.Add(newArrow);
+
     }
 
     IEnumerator ChargePowershot()

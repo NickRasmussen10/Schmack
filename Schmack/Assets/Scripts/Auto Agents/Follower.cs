@@ -7,7 +7,7 @@ public class Follower : RoboHordeAgent
     [SerializeField] float attackRange = 1.0f;
     public Transform target;
     RoboHordeAgent leader_agent;
-    AudioSource audio;
+    AudioSource audioSource;
 
     BoxCollider2D boxCollider;
 
@@ -16,7 +16,7 @@ public class Follower : RoboHordeAgent
     {
         base.Start();
 
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         //target == leader, assigned by robohorde mananger
         leader_agent = target.gameObject.GetComponent<Leader>();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -64,7 +64,7 @@ public class Follower : RoboHordeAgent
     public void Attack(Transform player)
     {
         state = State.attacking;
-        audio.Play();
+        audioSource.Play();
         boxCollider.size = Vector2.one * 2;
         target = player;
     }
@@ -75,13 +75,13 @@ public class Follower : RoboHordeAgent
         {
             collision.gameObject.SendMessage("TakeDamage", 0.05f);
             ReturnToLeader();
-            audio.Stop();
+            audioSource.Stop();
         }
     }
 
     public override void Die()
     {
-        audio.Stop();
+        audioSource.Stop();
         base.Die();
     }
 
