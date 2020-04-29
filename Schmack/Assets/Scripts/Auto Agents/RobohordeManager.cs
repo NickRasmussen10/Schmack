@@ -22,6 +22,8 @@ public class RobohordeManager : MonoBehaviour
 
     Coroutine c_attack;
 
+    RaycastHit2D raycastHit;
+
     private void Awake()
     {
         //RoboHordeAgent[] followers = GetComponentsInChildren<Follower>();
@@ -53,7 +55,8 @@ public class RobohordeManager : MonoBehaviour
         {
             if (attackEnabled && followerAgents.Count != 0 && (player.position - leaderTransform.position).sqrMagnitude < visionRange * visionRange)
             {
-                if (c_attack == null)
+                raycastHit = Physics2D.Raycast(leaderTransform.position, (player.position - leaderTransform.position).normalized, Vector3.Distance(player.position, leaderTransform.position), LayerMask.GetMask("environment"));
+                if (raycastHit.collider == null && c_attack == null)
                 {
                     c_attack = StartCoroutine(Attack());
                 }

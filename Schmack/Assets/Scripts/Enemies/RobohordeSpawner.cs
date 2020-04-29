@@ -51,7 +51,7 @@ public class RobohordeSpawner : MonoBehaviour
         RobohordeManager manager = roboHorde.GetComponent<RobohordeManager>();
         manager.SetPath(pathway);
         manager.SpawnLeader(new Vector3(direction * 50, 0.0f, 0.0f));
-        for(int i = 0; i < manager.hordeSize; i++)
+        for (int i = 0; i < manager.hordeSize; i++)
         {
             yield return new WaitForSeconds(0.075f);
             manager.SpawnFollower(new Vector3(direction * Random.Range(15, 25), Random.Range(-5.0f, 5.0f), 0.0f));
