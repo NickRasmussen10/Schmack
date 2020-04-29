@@ -17,7 +17,6 @@ public class Follower : RoboHordeAgent
         //target == leader, assigned by robohorde mananger
         leader_agent = target.gameObject.GetComponent<Leader>();
         boxCollider = GetComponent<BoxCollider2D>();
-        //StartCoroutine(PhysicsTest());
     }
 
     // Update is called once per frame
@@ -32,7 +31,6 @@ public class Follower : RoboHordeAgent
                 {
                     ApplyInnerForce(GetFleeForce(target.position));
                 }
-                if (boxCollider.size != Vector2.one) boxCollider.size = Vector2.one;
                 else
                 {
                     ApplyInnerForce(GetSeekForce(target.position + leader_agent.innerVelocity * 10));
@@ -40,7 +38,14 @@ public class Follower : RoboHordeAgent
                 break;
             case State.attacking:
                 ApplyInnerForce(GetSeekForce(target.position));
-                if (boxCollider.size != Vector2.one * 2) boxCollider.size = Vector2.one * 2;
+                
+                break;
+            case State.returning:
+                ApplyInnerForce(GetSeekForce(target.position));
+                if((transform.position - target.position).sqrMagnitude < 3)
+                {
+                    state = State.patrolling;
+                }
                 break;
             case State.dead:
                 break;
@@ -51,20 +56,10 @@ public class Follower : RoboHordeAgent
         base.Update();
     }
 
-    //had to write a coroutine to test new physics because unity inputs are like hard now
-    IEnumerator PhysicsTest()
-    {
-        ApplyForce(new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f), 0.0f));
-        while (true)
-        {
-            yield return new WaitForSeconds(30.0f);
-            ApplyForce(new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-0.2f, 0.2f), 0.0f));
-        }
-    }
-
     public void Attack(Transform player)
     {
         state = State.attacking;
+        boxCollider.size = Vector2.one * 2;
         target = player;
     }
 
@@ -74,7 +69,8 @@ public class Follower : RoboHordeAgent
         {
             collision.gameObject.SendMessage("TakeDamage", 0.05f);
             target = leader_agent.gameObject.transform;
-            state = State.patrolling;
+            boxCollider.size = Vector2.one;
+            state = State.returning;
         }
     }
 

@@ -11,6 +11,7 @@ public class RoboHordeAgent : AutonomousAgent
     {
         patrolling, 
         attacking,
+        returning,
         dead
     }
     public State state;
@@ -31,6 +32,9 @@ public class RoboHordeAgent : AutonomousAgent
                 base.Update();
                 break;
             case State.attacking:
+                base.Update();
+                break;
+            case State.returning:
                 base.Update();
                 break;
             case State.dead:
