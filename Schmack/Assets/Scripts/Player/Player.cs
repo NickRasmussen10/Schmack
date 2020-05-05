@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         }
 
         if (health >= 1.0f && GetHearts() != 3) SetHearts(3);
-        else if (health >= 0.6f && GetHearts() != 2) SetHearts(2);
+        else if (health >= 0.66f && GetHearts() != 2) SetHearts(2);
         else if (GetHearts() != 1) SetHearts(1);
 
         if(bowScript.inFlow != playerMovement.inFlow)
@@ -123,7 +123,7 @@ public class Player : MonoBehaviour
     {
         for(int i = 0; i < hearts.Count; i++)
         {
-            if (i <= numHearts) hearts[i].enabled = true;
+            if (i <= numHearts - 1) hearts[i].enabled = true;
             else hearts[i].enabled = false;
         }
     }
