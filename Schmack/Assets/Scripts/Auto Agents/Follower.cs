@@ -73,7 +73,7 @@ public class Follower : RoboHordeAgent
     {
         if (collision.gameObject.tag == "Player" && state == State.attacking)
         {
-            collision.gameObject.SendMessage("TakeDamage", 0.05f);
+            collision.gameObject.SendMessage("TakeDamage", 0.3f);
             ReturnToLeader();
             audioSource.Stop();
         }

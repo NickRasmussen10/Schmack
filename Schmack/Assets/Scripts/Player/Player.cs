@@ -13,12 +13,15 @@ public class Player : MonoBehaviour
     /// 
     Text bowText = null;
     List<Image> displayArrows = new List<Image>();
+    List<Image> hearts = new List<Image>();
 
     PlayerMovement playerMovement = null;
     [SerializeField] GameObject rotator = null;
 
     [SerializeField] float maxHealth = 1.0f;
     float health;
+
+    public int score;
 
     //[SerializeField] GameObject[] bows = null;
     public GameObject currentBow;
@@ -52,6 +55,10 @@ public class Player : MonoBehaviour
         displayArrows.Add(GameObject.Find("Arrow (1)").GetComponent<Image>());
         displayArrows.Add(GameObject.Find("Arrow (2)").GetComponent<Image>());
 
+        hearts.Add(GameObject.Find("heart (0)").GetComponent<Image>());
+        hearts.Add(GameObject.Find("heart (1)").GetComponent<Image>());
+        hearts.Add(GameObject.Find("heart (2)").GetComponent<Image>());
+
         bowText.text = currentBow.name;
         cameraManager = FindObjectOfType<CameraManager>();
 
@@ -61,7 +68,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Time.timeScale);
+        Debug.Log(health);
+        bowText.text = "Score: " + score;
         if(health<=0.5f)
         {
             //bowSprite.color = Color.red;
@@ -71,6 +79,10 @@ public class Player : MonoBehaviour
         {
             Die();
         }
+
+        if (health >= 1.0f && GetHearts() != 3) SetHearts(3);
+        else if (health >= 0.6f && GetHearts() != 2) SetHearts(2);
+        else if (GetHearts() != 1) SetHearts(1);
 
         if(bowScript.inFlow != playerMovement.inFlow)
         {
@@ -95,6 +107,25 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         //rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
+    }
+
+    int GetHearts()
+    {
+        int numHearts = 0;
+        foreach (Image heart in hearts)
+        {
+            if (heart.enabled) numHearts++;
+        }
+        return numHearts;
+    }
+
+    void SetHearts(int numHearts)
+    {
+        for(int i = 0; i < hearts.Count; i++)
+        {
+            if (i <= numHearts) hearts[i].enabled = true;
+            else hearts[i].enabled = false;
+        }
     }
 
 
