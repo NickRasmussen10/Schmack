@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     float wallStickDirectionSave = 0.0f;
 
     [Header("References :(")]
-    [SerializeField] Slider flowSlider = null; //UI element for flow
+    [SerializeField] Image flowSlider = null; //UI element for flow
 
     Rigidbody2D rb;
     public Vector2 GetVelocity() { return rb.velocity; }
@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
 
         //set flow variables
         inFlow = false;
-        flowSlider.value = flowJuice;
+        flowSlider.fillAmount = flowJuice;
         acceleration = acceleration_slow;
         maxSpeed = maxSpeed_slow;
         jumpForce = jumpForce_slow;
@@ -156,13 +156,13 @@ public class PlayerMovement : MonoBehaviour
                 timer += Time.deltaTime;
                 if (timer > 0.5f) flowJuice -= Time.deltaTime * flowLossStill; // <-- yucky magic number
                 else flowJuice -= Time.deltaTime * flowLossMoving;
-                flowSlider.value = flowJuice;
+                flowSlider.fillAmount = flowJuice;
             }
             else
             {
                 if (timer != 0.0f) timer = 0.0f;
                 flowJuice -= Time.deltaTime * flowLossMoving;
-                flowSlider.value = flowJuice;
+                flowSlider.fillAmount = flowJuice;
             }
 
             if(flowJuice <= 0)
@@ -176,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
-    public void AddFlow(float gain) { flowJuice += gain; flowSlider.value = flowJuice; }
+    public void AddFlow(float gain) { flowJuice += gain; flowSlider.fillAmount = flowJuice; }
 
     void TryFlow()
     {

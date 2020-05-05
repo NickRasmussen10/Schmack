@@ -11,9 +11,8 @@ public class Player : MonoBehaviour
     /// Temp UI stuff
     /// </summary>
     /// 
-    Text bowText = null;
+    Text scoreText = null;
     List<Image> displayArrows = new List<Image>();
-    List<Image> hearts = new List<Image>();
 
     PlayerMovement playerMovement = null;
     [SerializeField] GameObject rotator = null;
@@ -40,6 +39,8 @@ public class Player : MonoBehaviour
 
     CameraManager cameraManager;
 
+    Slider healthbar;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,16 +51,13 @@ public class Player : MonoBehaviour
         bowScript = currentBow.GetComponent<Bow>();
 
         //UI
-        if(GameObject.Find("BowText").GetComponent<Text>()) bowText = GameObject.Find("BowText").GetComponent<Text>();
+        if(GameObject.Find("ScoreText").GetComponent<Text>()) scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
+        healthbar = GameObject.Find("Health Bar").GetComponent<Slider>();
         displayArrows.Add(GameObject.Find("Arrow (0)").GetComponent<Image>());
         displayArrows.Add(GameObject.Find("Arrow (1)").GetComponent<Image>());
         displayArrows.Add(GameObject.Find("Arrow (2)").GetComponent<Image>());
 
-        hearts.Add(GameObject.Find("heart (0)").GetComponent<Image>());
-        hearts.Add(GameObject.Find("heart (1)").GetComponent<Image>());
-        hearts.Add(GameObject.Find("heart (2)").GetComponent<Image>());
-
-        bowText.text = currentBow.name;
+        scoreText.text = currentBow.name;
         cameraManager = FindObjectOfType<CameraManager>();
 
         timeScale = timeScaleMax;
@@ -68,8 +66,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(health);
-        bowText.text = "Score: " + score;
+        scoreText.text = "Score: " + score;
+        healthbar.value = health;
         if(health<=0.5f)
         {
             //bowSprite.color = Color.red;
@@ -79,10 +77,6 @@ public class Player : MonoBehaviour
         {
             Die();
         }
-
-        if (health >= 1.0f && GetHearts() != 3) SetHearts(3);
-        else if (health >= 0.66f && GetHearts() != 2) SetHearts(2);
-        else if (GetHearts() != 1) SetHearts(1);
 
         if(bowScript.inFlow != playerMovement.inFlow)
         {
@@ -107,25 +101,6 @@ public class Player : MonoBehaviour
     private void LateUpdate()
     {
         //rotator.transform.up = ((rotator.transform.position + (Vector3)bowScript.direction) - rotator.transform.position) * -1;
-    }
-
-    int GetHearts()
-    {
-        int numHearts = 0;
-        foreach (Image heart in hearts)
-        {
-            if (heart.enabled) numHearts++;
-        }
-        return numHearts;
-    }
-
-    void SetHearts(int numHearts)
-    {
-        for(int i = 0; i < hearts.Count; i++)
-        {
-            if (i <= numHearts - 1) hearts[i].enabled = true;
-            else hearts[i].enabled = false;
-        }
     }
 
 
