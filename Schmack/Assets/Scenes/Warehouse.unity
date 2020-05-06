@@ -1095,6 +1095,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &157763509 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8320128496229391128, guid: 340e04acef3d9004b9742b887fdf32ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 509259922}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b14192b2f7612794295f6963bae7d485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &182426332
 GameObject:
   m_ObjectHideFlags: 0
@@ -4205,6 +4217,16 @@ PrefabInstance:
       propertyPath: background
       value: 
       objectReference: {fileID: 585047520}
+    - target: {fileID: 8320128496484460956, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 157763509}
+    - target: {fileID: 8320128496484460956, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Restart
+      objectReference: {fileID: 0}
     - target: {fileID: 8320128496484460958, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_IsActive
@@ -4220,6 +4242,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8320128497644535567, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_Text
+      value: Quit
+      objectReference: {fileID: 0}
     - target: {fileID: 8320128497755397637, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_IsActive
@@ -4233,6 +4260,21 @@ PrefabInstance:
     - target: {fileID: 8320128497755397658, guid: 340e04acef3d9004b9742b887fdf32ff,
         type: 3}
       propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320128497755397659, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 157763509}
+    - target: {fileID: 8320128497755397659, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 8320128497755397659, guid: 340e04acef3d9004b9742b887fdf32ff,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8320128497783284857, guid: 340e04acef3d9004b9742b887fdf32ff,

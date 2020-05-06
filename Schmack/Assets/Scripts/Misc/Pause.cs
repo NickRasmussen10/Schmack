@@ -71,7 +71,7 @@ public class Pause : MonoBehaviour
     public void Restart()
     {
         TogglePause();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void MainMenu()
