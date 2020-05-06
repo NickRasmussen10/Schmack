@@ -7,51 +7,45 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
-    float backgroundOpacity;
-
     float timeScaleSave;
+    Vector2 gravitySave;
 
     [SerializeField] bool enableMenu = true;
 
     [SerializeField] Image background;
     [SerializeField] GameObject[] buttons;
 
-    Controls controls;
-    Animator animator;
-
     public static bool isPaused = false;
 
     private void Awake()
     {
-        controls = new Controls();
-        controls.Quit.quit.performed += quit => Quit();
-        controls.Player.Pause.performed += pause => TogglePause();
-
         timeScaleSave = Time.timeScale;
+        gravitySave = Physics2D.gravity;
 
         foreach (GameObject button in buttons)
         {
             button.SetActive(false);
         }
-
-        animator = GetComponent<Animator>();
-        animator.SetBool("isPaused", isPaused);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        backgroundOpacity = background.color.a;
+        Inputs.controls.Player.Pause.performed += pause => TogglePause();
+        Inputs.controls.Quit.quit.performed += quit => Quit();
     }
 
     public void TogglePause()
     {
-        if (Time.timeScale == 0.0f)
+        if (isPaused)
         {
+            Debug.Log("unpause");
             Time.timeScale = timeScaleSave;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            Physics2D.gravity = gravitySave;
             isPaused = false;
             if (FindObjectOfType<PlayerMovement>()) FindObjectOfType<PlayerMovement>().enabled = true;
+            background.gameObject.SetActive(false);
             foreach (GameObject button in buttons)
             {
                 button.SetActive(false);
@@ -59,50 +53,19 @@ public class Pause : MonoBehaviour
         }
         else
         {
+            Debug.Log("pause");
             timeScaleSave = Time.timeScale;
             Time.timeScale = 0.0f;
             Time.fixedDeltaTime = 0.0f;
+            Physics2D.gravity = Vector2.zero;
             isPaused = true;
             if(FindObjectOfType<PlayerMovement>()) FindObjectOfType<PlayerMovement>().enabled = false;
+            background.gameObject.SetActive(true);
             foreach (GameObject button in buttons)
             {
                 button.SetActive(true);
             }
         }
-        animator.SetBool("isPaused", isPaused);
-    }
-
-    public void CallShowPause()
-    {
-        StartCoroutine(ShowPause());
-    }
-
-    IEnumerator ShowPause()
-    {
-        float lerpVal = 0.0f;
-        while(lerpVal < 1.0f)
-        {
-            lerpVal += Time.unscaledDeltaTime;
-            animator.Play("ShowPause", 0, lerpVal);
-            yield return null;
-        }
-    }
-
-    public void CallBackgroundFlicker()
-    {
-        if (Random.Range(0, 10) == 0) StartCoroutine(BackgroundFlicker());
-    }
-
-    IEnumerator BackgroundFlicker()
-    {
-        float originalAlpha = background.color.a;
-
-        Color c = background.color;
-        c.a = 0.0f;
-        background.color = c;
-        yield return new WaitForSecondsRealtime(0.1f);
-        c.a = backgroundOpacity;
-        background.color = c;
     }
 
     public void Restart()
@@ -128,13 +91,20 @@ public class Pause : MonoBehaviour
         Gamepad.current.SetMotorSpeeds(0.0f, 0.0f);
     }
 
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
+    //public void CallBackgroundFlicker()
+    //{
+    //    if (Random.Range(0, 10) == 0) StartCoroutine(BackgroundFlicker());
+    //}
 
-    private void OnDisable()
-    {
-        controls.Disable();
-    }
+    //IEnumerator BackgroundFlicker()
+    //{
+    //    float originalAlpha = background.color.a;
+
+    //    Color c = background.color;
+    //    c.a = 0.0f;
+    //    background.color = c;
+    //    yield return new WaitForSecondsRealtime(0.1f);
+    //    c.a = backgroundOpacity;
+    //    background.color = c;
+    //}
 }

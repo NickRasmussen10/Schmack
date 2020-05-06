@@ -96,11 +96,11 @@ public class Bow : MonoBehaviour
         ///Is it effective? Yes. Is it scalable? No. Will it cuase issues later? Well you're reading this so
         ///yikes bud, sorry about that. 
         ///                 Get fucked. -Nick
-        if (powerInput <= 0.5f && Time.timeScale != 1.0f)
-        {
-            Time.timeScale = 1.0f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        }
+        //if (powerInput <= 0.5f && Time.timeScale != 1.0f)
+        //{
+        //    Time.timeScale = 1.0f;
+        //    Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        //}
     }
 
 

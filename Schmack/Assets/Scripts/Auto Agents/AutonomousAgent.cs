@@ -37,7 +37,8 @@ public class AutonomousAgent : MonoBehaviour
         outerVelocity += outerAcceleration * Time.deltaTime;
         Mathf.Clamp(innerVelocity.x, -maxSpeed, maxSpeed);
         Mathf.Clamp(innerVelocity.y, -maxSpeed, maxSpeed);
-        rb.MovePosition(rb.position + (Vector2)innerVelocity + (Vector2)outerVelocity);
+        rb.MovePosition(rb.position + ((Vector2)innerVelocity + (Vector2)outerVelocity) * Time.timeScale);
+        Debug.Log(Time.timeScale);
 
         if (outerVelocity.sqrMagnitude > 0) outerVelocity *= friction;
         
