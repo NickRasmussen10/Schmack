@@ -151,7 +151,7 @@ public class CameraManager : MonoBehaviour
             ppv_flow.weight = Mathf.Lerp(0.0f, 1.0f, flerpVal);
             globalLight.intensity = Mathf.Lerp(0.75f, 2.0f, flerpVal);
 
-            vcam.m_Lens.OrthographicSize = Mathf.Lerp(8.5f, 10.0f, flerpVal);
+            vcam.m_Lens.OrthographicSize = Mathf.Lerp(15f, 20.0f, flerpVal);
 
             yield return null;
         }
@@ -171,7 +171,7 @@ public class CameraManager : MonoBehaviour
             ppv_flow.weight = Mathf.Lerp(1.0f, 0.0f, flerpVal);
             globalLight.intensity = Mathf.Lerp(2.0f, 0.75f, flerpVal);
 
-            vcam.m_Lens.OrthographicSize = Mathf.Lerp(10.0f, 8.5f, flerpVal);
+            vcam.m_Lens.OrthographicSize = Mathf.Lerp(20.0f, 15f, flerpVal);
 
             yield return null;
         }

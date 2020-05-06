@@ -38,7 +38,6 @@ public class AutonomousAgent : MonoBehaviour
         Mathf.Clamp(innerVelocity.x, -maxSpeed, maxSpeed);
         Mathf.Clamp(innerVelocity.y, -maxSpeed, maxSpeed);
         rb.MovePosition(rb.position + ((Vector2)innerVelocity + (Vector2)outerVelocity) * Time.timeScale);
-        Debug.Log(Time.timeScale);
 
         if (outerVelocity.sqrMagnitude > 0) outerVelocity *= friction;
         
@@ -74,6 +73,13 @@ public class AutonomousAgent : MonoBehaviour
         outerVelocity = Vector3.zero;
         outerAcceleration = Vector3.zero;
         rb.gravityScale = 1.0f;
-        Destroy(GetComponent<BoxCollider2D>());
+    }
+
+    public virtual void Die(Vector3 force)
+    {
+        innerVelocity = Vector3.zero;
+        innerAcceleration = Vector3.zero;
+        ApplyForce(force);
+        rb.gravityScale = 1.0f;
     }
 }

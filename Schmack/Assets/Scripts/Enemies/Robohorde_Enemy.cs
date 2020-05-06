@@ -37,4 +37,14 @@ public class Robohorde_Enemy : Enemy
         }
         base.TakeDamage(packet);
     }
+
+    public void TakeDamage(DamagePacket packet, Vector2 force)
+    {
+        TakeDamage(packet);
+        if(health <= 0)
+        {
+            Debug.Log("applying force");
+            GetComponent<RoboHordeAgent>().Die(force);
+        }
+    }
 }

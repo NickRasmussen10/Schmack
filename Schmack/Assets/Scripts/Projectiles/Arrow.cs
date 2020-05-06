@@ -78,7 +78,8 @@ public class Arrow : Projectile
             packet.damage = 0.5f;
             packet.isPowerShot = isPowerShot;
             packet.powerShotRadius = powerShotEffectRadius;
-            collision.gameObject.GetComponent<Enemy>().SendMessage("TakeDamage", packet);
+            if(collision.gameObject.GetComponent<Robohorde_Enemy>()) collision.gameObject.GetComponent<Robohorde_Enemy>().TakeDamage(packet, transform.forward * 500);
+            else collision.gameObject.GetComponent<Enemy>().TakeDamage(packet);
             FindObjectOfType<PlayerMovement>().AddFlow(0.15f);
             FindObjectOfType<Player>().score += 10;
         }
