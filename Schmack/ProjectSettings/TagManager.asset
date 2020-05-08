@@ -12,6 +12,7 @@ TagManager:
   - AudioManager
   - GlobalLight
   - Button
+  - Restart
   layers:
   - Default
   - TransparentFX

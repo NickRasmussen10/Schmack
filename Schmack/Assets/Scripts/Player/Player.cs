@@ -162,7 +162,8 @@ public class Player : MonoBehaviour
         //health = -1;
         //gameObject.GetComponent<PlayerMovement>().enabled = false;
         //cameraManager.SendMessage("CallDisplayDeath", transform.position);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Score.SetScore(score);
+        SceneManager.LoadScene(1);
     }
 
     /// <summary>

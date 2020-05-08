@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3278352143921608126}
   m_Layer: 10
   m_Name: BombArrow
-  m_TagString: BombArrow
+  m_TagString: Arrow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,5 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1bc2b486e51f024eaf962d444839cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trail: {fileID: 0}
+  powerShotEffectRadius: 1
   explosiveForce: 5
   radius: 10

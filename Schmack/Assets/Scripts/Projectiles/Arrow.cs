@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct DamagePacket
 {
@@ -95,6 +96,11 @@ public class Arrow : Projectile
         {
             Debug.Log("you idiot! you fool! you bumbling bafoon! you've disabled buttons for the target mini-game playtesting thing and forgotten! at last your hubris has become your undoing!");
             //collision.gameObject.GetComponent<ShootButton>().Activate();
+        }
+
+        else if(collision.gameObject.tag == "Restart")
+        {
+            SceneManager.LoadScene(0);
         }
 
         Vector3 randomization = (Vector2)rb.velocity.normalized * Random.Range(-0.25f, 0.25f);

@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trail: {fileID: 2427087281539736826, guid: d4beb3a5597981a4fa4606a88b2580b2, type: 3}
+  powerShotEffectRadius: 1
 --- !u!95 &8130429727887321711
 Animator:
   serializedVersion: 3
