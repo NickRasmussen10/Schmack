@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
 
         while (inFlow)
         {
-            if(rb.velocity.sqrMagnitude == 0.0f)
+            if (rb.velocity.sqrMagnitude == 0.0f)
             {
                 timer += Time.deltaTime;
                 if (timer > 0.5f) flowJuice -= Time.deltaTime * flowLossStill; // <-- yucky magic number
@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
                 flowSlider.fillAmount = flowJuice;
             }
 
-            if(flowJuice <= 0)
+            if (flowJuice <= 0)
             {
                 flowJuice = 0.0f;
                 FlowChange();
@@ -176,7 +176,12 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
-    public void AddFlow(float gain) { flowJuice += gain; flowSlider.fillAmount = flowJuice; }
+    public void AddFlow(float gain)
+    {
+        flowJuice += gain;
+        if (flowJuice > 1.0f) flowJuice = 1.0f;
+        flowSlider.fillAmount = flowJuice;
+    }
 
     void TryFlow()
     {
@@ -287,7 +292,7 @@ public class PlayerMovement : MonoBehaviour
             direction.x = inputRight > 0 ? 1 : -1;
         }
         //update player's scale to reflect their direction
-        if(transform.localScale.x != (direction.x == 1 ? scaleSave : -scaleSave))
+        if (transform.localScale.x != (direction.x == 1 ? scaleSave : -scaleSave))
             transform.localScale = new Vector3(direction.x == 1 ? scaleSave : -scaleSave, transform.localScale.y, transform.localScale.z);
         //float bowX = FindObjectOfType<Bow>().direction.x;
         //if ((bowX < 0 && direction.x > 0) || (bowX > 0 && direction.x < 0)) FindObjectOfType<Bow>().FlipDirection();
@@ -295,7 +300,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Movement(float direction)
     {
-        rb.AddForce(new Vector2(direction * acceleration * movementLimiter, 0.0f)); 
+        rb.AddForce(new Vector2(direction * acceleration * movementLimiter, 0.0f));
     }
 
 
@@ -310,7 +315,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector2(0.0f, jumpForce));
         }
         else if (state == PlayerState.wallSticking)
-        { 
+        {
             //negate player's current momentum, apply force upwards and away from the wall
             rb.velocity = Vector2.zero;
             if (inFlow)
