@@ -15,6 +15,7 @@ public class RobohordeManager : MonoBehaviour
 
     Transform leaderTransform;
     Leader leaderAgent;
+    public bool IsAlive() { return leaderAgent.state != RoboHordeAgent.State.dead; }
     List<Transform> followerTransforms = new List<Transform>();
     List<RoboHordeAgent> followerAgents = new List<RoboHordeAgent>();
 
@@ -135,8 +136,10 @@ public class RobohordeManager : MonoBehaviour
             
             foreach (Follower follower in furthest)
             {
-                follower.Attack(player);
-                follower.Push((leaderTransform.position - follower.transform.position).normalized * 10);
+                if (player)
+                {
+                    follower.Attack(player);
+                }
             }
 
             yield return new WaitForSeconds(attackRate);

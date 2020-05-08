@@ -43,7 +43,6 @@ public class Robohorde_Enemy : Enemy
         TakeDamage(packet);
         if(health <= 0)
         {
-            Debug.Log("applying force");
             GetComponent<RoboHordeAgent>().Die(force);
         }
     }

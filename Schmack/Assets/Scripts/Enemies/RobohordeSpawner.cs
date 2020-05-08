@@ -12,7 +12,7 @@ public class RobohordeSpawner : MonoBehaviour
     public float direction = 1.0f;
 
     [SerializeField] Transform[] pathway;
-    GameObject roboHorde;
+    RobohordeManager roboHorde;
     Transform player;
     Animator animator;
 
@@ -30,15 +30,15 @@ public class RobohordeSpawner : MonoBehaviour
     {
         if((player.position - transform.position).sqrMagnitude < visionRange * visionRange)
         {
-            if(c_spawn == null)
+            if(c_spawn == null && roboHorde == null)
             {
                 c_spawn = StartCoroutine(Spawn());
             }
         }
-        else if(c_spawn != null)
+
+        if(roboHorde != null)
         {
-            StopCoroutine(c_spawn);
-            c_spawn = null;
+            if (!roboHorde.IsAlive()) roboHorde = null;
         }
     }
 
@@ -47,7 +47,7 @@ public class RobohordeSpawner : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(1.0f, 5.0f));
         animator.SetBool("isOpen", true);
         yield return new WaitForSeconds(0.75f);
-        roboHorde = Instantiate(pref_robohorde, spawnPoint.position, Quaternion.identity);
+        roboHorde = Instantiate(pref_robohorde, spawnPoint.position, Quaternion.identity).GetComponent<RobohordeManager>();
         RobohordeManager manager = roboHorde.GetComponent<RobohordeManager>();
         manager.SetPath(pathway);
         manager.SpawnLeader(new Vector3(direction * 50, 0.0f, 0.0f));
@@ -59,5 +59,6 @@ public class RobohordeSpawner : MonoBehaviour
 
         manager.EnableAttack();
         animator.SetBool("isOpen", false);
+        c_spawn = null;
     }
 }

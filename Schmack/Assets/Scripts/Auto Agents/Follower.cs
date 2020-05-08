@@ -11,6 +11,8 @@ public class Follower : RoboHordeAgent
 
     BoxCollider2D boxCollider;
 
+    float maxSpeedSave;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -64,6 +66,8 @@ public class Follower : RoboHordeAgent
     public void Attack(Transform player)
     {
         state = State.attacking;
+        maxSpeedSave = maxSpeed;
+        maxSpeed *= 1.5f;
         audioSource.Play();
         boxCollider.size = Vector2.one * 2;
         target = player;
@@ -90,6 +94,7 @@ public class Follower : RoboHordeAgent
         target = leader_agent.gameObject.transform;
         boxCollider.size = Vector2.one;
         state = State.returning;
+        maxSpeed = maxSpeedSave;
     }
 
     public void Push(Vector3 force)
